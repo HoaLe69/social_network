@@ -1,45 +1,13 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer base {
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  html {
-    font-family: "Quicksand", sans-serif;
-  }
-  img {
-    object-fit: cover;
-    max-width: 100%;
-    max-height: 100%;
-  }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
-@layer components {
-  .form-heading {
-    @apply text-[39px] font-bold;
-  }
-  .form-des {
-    @apply text-[#96A0AD] text-[14px] mb-[32px] block;
-  }
-  .form-label {
-    @apply text-[14px] font-bold block mb-[8px];
-  }
-  .form-input {
-    @apply text-[16px] border-[1px] border-solid border-white-blur rounded-[12px] outline-none p-[10px] max-w-[360px] w-[100%];
-  }
-  .form-submit-btn {
-    @apply text-[18px] font-[bold] text-[#fff] w-full py-[10px] bg-[#000] rounded-[12px] hover:opacity-[.9] mb-[55px];
-  }
-  .form-link {
-    @apply text-[16px] font-medium text-center;
-  }
-  .form-error {
-    @apply mb-[28px] h-[10px];
-  }
-  .form-error-mess {
-    @apply ml-[4px] text-[13px] text-[#ff0000] mb-[32px];
-  }
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
 }

@@ -20,6 +20,7 @@ public class UserService implements UserDetailsService {
         if (userCollection == null) {
             throw new UsernameNotFoundException(username);
         }
+
         return new CustomUserDetail(userCollection);
     }
 }
