@@ -17,6 +17,9 @@ const styles = {
 const fonts = {
   heading: `'M PLUS Rounded 1c' , san-serif`,
 };
-const theme = extendTheme({ config, styles, fonts });
+const colors = {
+  grassTeal: "#88ccca",
+};
+const theme = extendTheme({ config, styles, fonts, colors });
 
 export default theme;

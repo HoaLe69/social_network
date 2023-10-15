@@ -1,15 +1,29 @@
-import { Box, Heading, Container } from "@chakra-ui/react";
-import { NavLink as ReactRouterLink } from "react-router-dom";
-import { Link } from "@chakra-ui/react";
-import Nav from "./nav";
+import { Flex, IconButton, Box } from "@chakra-ui/react";
+import Nav from "./nav-container";
 import Logo from "./logo";
-import ToggleThemeButton from "../theme-toggle-btn";
-
+import { useColorModeValue } from "@chakra-ui/react";
+import { AiOutlineHeart, AiOutlineMessage } from "react-icons/ai";
 const NavBar = () => {
   return (
     <Nav>
-      <Logo />
-      <ToggleThemeButton />
+      <Flex justify="space-between">
+        <Logo />
+        <Box>
+          <IconButton
+            fontSize={"20px"}
+            isRound={true}
+            icon={<AiOutlineHeart />}
+            bg={useColorModeValue("whiteAlpha.500", "whiteAlpha.200")}
+          />
+          <IconButton
+            fontSize={"20px"}
+            isRound={true}
+            ml={2}
+            icon={<AiOutlineMessage />}
+            bg={useColorModeValue("whiteAlpha.500", "whiteAlpha.200")}
+          />
+        </Box>
+      </Flex>
     </Nav>
   );
 };

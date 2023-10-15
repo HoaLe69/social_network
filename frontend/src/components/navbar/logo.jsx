@@ -3,12 +3,13 @@ import { Text, useColorModeValue } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { AiOutlineQq } from "react-icons/ai";
 
-const LogoBox = styled.div`
+const LogoBox = styled.span`
   font-weight: bold;
   font-size: 20px;
   display: inline-flex;
   align-items: center;
   padding: 10px 0;
+  line-height: 20px;
 `;
 
 const Logo = () => {
@@ -22,7 +23,7 @@ const Logo = () => {
           ml={1}
           fontFamily={`'M PLUS Rounded 1c' , san-serif`}
         >
-          Penguin
+          Penguin Hup
         </Text>
       </LogoBox>
     </Link>
