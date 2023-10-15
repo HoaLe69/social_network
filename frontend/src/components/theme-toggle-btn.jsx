@@ -1,4 +1,4 @@
-import { animate, AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { IconButton, useColorMode, useColorModeValue } from "@chakra-ui/react";
 import { FiSun } from "react-icons/fi";
 import { BiSolidMoon } from "react-icons/bi";
@@ -7,7 +7,6 @@ const ToggleThemeButton = () => {
   const { toggleColorMode } = useColorMode();
   return (
     <AnimatePresence>
-      {" "}
       <motion.div
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}

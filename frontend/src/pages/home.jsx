@@ -5,6 +5,7 @@ const Home = () => {
   return (
     <Box>
       <NavBar />
+      <Box></Box>
       <NavBot />
     </Box>
   );

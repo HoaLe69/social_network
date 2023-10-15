@@ -5,10 +5,10 @@ import { AiOutlineQq } from "react-icons/ai";
 
 const LogoBox = styled.div`
   font-weight: bold;
-  font-size: 25px;
+  font-size: 20px;
   display: inline-flex;
   align-items: center;
-  padding: 10px;
+  padding: 10px 0;
 `;
 
 const Logo = () => {
@@ -19,7 +19,8 @@ const Logo = () => {
         <Text
           color={useColorModeValue("gray.800", "whiteAlpha.900")}
           fontWeight={"bold"}
-          ml={3}
+          ml={1}
+          fontFamily={`'M PLUS Rounded 1c' , san-serif`}
         >
           Penguin
         </Text>
