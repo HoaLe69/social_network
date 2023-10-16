@@ -1,11 +1,12 @@
 import { Flex, IconButton, Box } from "@chakra-ui/react";
-import Nav from "./nav-container";
+import NavContainer from "./nav-container";
 import Logo from "./logo";
 import { useColorModeValue } from "@chakra-ui/react";
 import { AiOutlineHeart, AiOutlineMessage } from "react-icons/ai";
+
 const NavBar = () => {
   return (
-    <Nav>
+    <NavContainer>
       <Flex justify="space-between">
         <Logo />
         <Box>
@@ -24,7 +25,7 @@ const NavBar = () => {
           />
         </Box>
       </Flex>
-    </Nav>
+    </NavContainer>
   );
 };
 

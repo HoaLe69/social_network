@@ -1,9 +1,8 @@
-import { IconButton, Flex, Avatar, useColorModeValue } from "@chakra-ui/react";
+import { Flex, useColorModeValue, Text } from "@chakra-ui/react";
 import NavContainer from "./nav-container";
 import ToggleThemeButton from "../theme-toggle-btn";
 import { GoHomeFill, GoHome, GoSearch } from "react-icons/go";
-import { ImSearch } from "react-icons/im";
-import { NavLink, useLocation } from "react-router-dom";
+import { Link as ReactRouterLink, useLocation } from "react-router-dom";
 import { Link } from "@chakra-ui/react";
 import {
   BsFillPersonFill,
@@ -11,39 +10,54 @@ import {
   BsPerson,
   BsPatchPlus,
 } from "react-icons/bs";
+import { FaSearch } from "react-icons/fa";
 
-const NavBotItem = ({ activeIcon, icon, href, ...props }) => {
+const MenuItem = ({ activeIcon, icon, href, title, ...props }) => {
   const { pathname } = useLocation();
   const active = href === pathname;
   const inactiveColor = useColorModeValue("gray.800", "whiteAlpha.900");
   return (
     <Link
-      fontSize={"25px"}
-      colorScheme={"transperant"}
+      fontSize={title ? "25px" : "30px"}
       borderTop="2px"
       borderTopColor={active ? "grassTeal" : "transparent"}
       color={active ? "grassTeal" : inactiveColor}
-      as={NavLink}
+      as={ReactRouterLink}
       to={href}
       p={2}
+      display={"flex"}
+      flexDir={"column"}
+      alignItems={"center"}
+      _hover={{ textDecoration: "none" }}
       {...props}
     >
       {active ? activeIcon : icon}
+      {title && (
+        <Text
+          as="p"
+          fontSize={"12px"}
+          fontFamily={`'M PLUS Rounded 1c' , san-serif`}
+        >
+          {title}
+        </Text>
+      )}
     </Link>
   );
 };
 
 const NavBot = () => {
-  const NavList = [
+  const menu = [
     {
       icon: <GoHome />,
       href: "/",
       activeIcon: <GoHomeFill />,
+      title: "Home",
     },
     {
       icon: <GoSearch />,
       href: "/explore",
-      activeIcon: <ImSearch />,
+      activeIcon: <FaSearch />,
+      title: "Search",
     },
     {
       icon: <BsPatchPlus />,
@@ -55,18 +69,20 @@ const NavBot = () => {
       icon: <BsPerson />,
       href: "/profile",
       activeIcon: <BsFillPersonFill />,
+      title: "Profile",
     },
   ];
   return (
     <NavContainer bottom={0}>
       <Flex align="center" justify="space-evenly">
-        {NavList.map((item) => {
+        {menu.map((item) => {
           return (
-            <NavBotItem
+            <MenuItem
               key={item.href}
               activeIcon={item.activeIcon}
               icon={item.icon}
               href={item.href}
+              title={item.title}
             />
           );
         })}
