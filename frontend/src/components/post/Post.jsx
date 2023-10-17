@@ -8,10 +8,15 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
-import { AiOutlineHeart, AiOutlineMessage } from "react-icons/ai";
+import {
+  AiOutlineLeft,
+  AiOutlineHeart,
+  AiOutlineMessage,
+} from "react-icons/ai";
 import { BsPatchCheckFill } from "react-icons/bs";
 import styled from "@emotion/styled";
-import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { showPost } from "@redux/postSlice";
 
 const DesBox = styled.span`
   display: flex;
@@ -28,7 +33,7 @@ const DesBox = styled.span`
 `;
 
 const Post = (props) => {
-  const [showPostDetail, setShowPostDetail] = useState(false);
+  const dipatch = useDispatch();
   const {
     id,
     photoUrl,
@@ -38,28 +43,67 @@ const Post = (props) => {
     thumbNail,
     like,
     comments,
+    isDetail,
   } = props;
+  const SubLink = ({ children }) => {
+    return (
+      <Link
+        as={ReactRouterLink}
+        to={`/post/${id}`}
+        _hover={{ textDecoration: "none" }}
+      >
+        {children}
+      </Link>
+    );
+  };
+  const handleShowFullPost = () => {
+    const post = {
+      id,
+      photoUrl,
+      displayName,
+      status,
+      follower,
+      thumbNail,
+      like,
+      comments,
+      isDetail,
+    };
+    console.log(1);
+    dipatch(showPost(post));
+  };
+  let Wrap = SubLink;
+  if (isDetail) {
+    Wrap = Box;
+  }
   return (
     <Box>
-      <Box as="header" p={2}>
+      <HStack as="header" p={2} display="flex">
+        {isDetail && (
+          <Link as={ReactRouterLink} to="/">
+            <Box as="span">
+              <AiOutlineLeft />
+            </Box>
+          </Link>
+        )}
         <Link
           as={ReactRouterLink}
           to={`/profile/${displayName}`}
           _hover={{ textDecoration: "none" }}
+          display="flex"
+          alignItems="center"
+          gap="5px"
         >
-          <HStack>
-            <Avatar src={photoUrl} size="sm" />
-            <Heading as="h3" fontSize="14px">
-              {displayName}
-            </Heading>
-            {follower.length > 5 && (
-              <Box as="span" color={"grassTeal"}>
-                <BsPatchCheckFill />
-              </Box>
-            )}
-          </HStack>
+          <Avatar src={photoUrl} size="sm" />
+          <Heading as="h3" fontSize="14px">
+            {displayName}
+          </Heading>
+          {follower?.length > 5 && (
+            <Box as="span" color={"grassTeal"}>
+              <BsPatchCheckFill />
+            </Box>
+          )}
         </Link>
-      </Box>
+      </HStack>
       <Box pl={2} pb={2}>
         <Text noOfLines={3}>{status}</Text>
       </Box>
@@ -73,19 +117,14 @@ const Post = (props) => {
           </Box>
           <Text as="p">{like.length}</Text>
         </DesBox>
-
-        <Link
-          as={ReactRouterLink}
-          to={`/post/${id}`}
-          _hover={{ textDecoration: "none" }}
-        >
-          <DesBox onClick={() => setShowPostDetail(!showPostDetail)}>
+        <Wrap>
+          <DesBox onClick={() => !isDetail && handleShowFullPost()}>
             <Box as="span">
               <AiOutlineMessage />
             </Box>
             <Text as="p">{comments.length}</Text>
           </DesBox>
-        </Link>
+        </Wrap>
       </HStack>
     </Box>
   );

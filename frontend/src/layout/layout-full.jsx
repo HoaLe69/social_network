@@ -1,12 +1,14 @@
 import NavBar from "../components/navbar/navbar";
 import NavBot from "../components/navbar/nav-bot";
-import { Box } from "@chakra-ui/react";
+import { Box, Container } from "@chakra-ui/react";
 
 const LayoutFull = ({ children }) => {
   return (
     <Box>
       <NavBar />
-      {children}
+      <Container maxW={"container.lg"} pt={14} pb={20}>
+        {children}
+      </Container>
       <NavBot />
     </Box>
   );

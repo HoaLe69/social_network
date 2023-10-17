@@ -1,10 +1,12 @@
 import NavBot from "../components/navbar/nav-bot";
-import { Box } from "@chakra-ui/react";
+import { Box, Container } from "@chakra-ui/react";
 
 const LayoutNotHeader = ({ children, ...props }) => {
   return (
     <Box {...props}>
-      {children}
+      <Container maxW={"container.lg"} pb={20}>
+        {children}
+      </Container>
       <NavBot />
     </Box>
   );

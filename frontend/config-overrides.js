@@ -7,6 +7,7 @@ module.exports = function override(config) {
     "@config": "src/config",
     "@routes": "src/routes",
     "@layout": "src/layout",
+    "@redux": "src/redux",
   })(config);
   return config;
 };

@@ -47,6 +47,7 @@ const PostContainer = () => {
         return (
           <Post
             key={data.id}
+            id={data.id}
             photoUrl={data.photoUrl}
             displayName={data.displayName}
             status={data.status}
