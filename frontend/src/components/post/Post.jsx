@@ -11,6 +11,7 @@ import { Link as ReactRouterLink } from "react-router-dom";
 import { AiOutlineHeart, AiOutlineMessage } from "react-icons/ai";
 import { BsPatchCheckFill } from "react-icons/bs";
 import styled from "@emotion/styled";
+import { useState } from "react";
 
 const DesBox = styled.span`
   display: flex;
@@ -27,8 +28,17 @@ const DesBox = styled.span`
 `;
 
 const Post = (props) => {
-  const { photoUrl, displayName, status, follower, thumbNail, like, comments } =
-    props;
+  const [showPostDetail, setShowPostDetail] = useState(false);
+  const {
+    id,
+    photoUrl,
+    displayName,
+    status,
+    follower,
+    thumbNail,
+    like,
+    comments,
+  } = props;
   return (
     <Box>
       <Box as="header" p={2}>
@@ -63,12 +73,19 @@ const Post = (props) => {
           </Box>
           <Text as="p">{like.length}</Text>
         </DesBox>
-        <DesBox>
-          <Box as="span">
-            <AiOutlineMessage />
-          </Box>
-          <Text as="p">{comments.length}</Text>
-        </DesBox>
+
+        <Link
+          as={ReactRouterLink}
+          to={`/post/${id}`}
+          _hover={{ textDecoration: "none" }}
+        >
+          <DesBox onClick={() => setShowPostDetail(!showPostDetail)}>
+            <Box as="span">
+              <AiOutlineMessage />
+            </Box>
+            <Text as="p">{comments.length}</Text>
+          </DesBox>
+        </Link>
       </HStack>
     </Box>
   );

@@ -1,17 +1,14 @@
-import { Box, Container } from "@chakra-ui/react";
-import NavBar from "../components/navbar/navbar";
-import NavBot from "../components/navbar/nav-bot";
+import { Container } from "@chakra-ui/react";
 import PostContainer from "../components/post/PostContainer";
+import LayoutFull from "../layout/layout-full";
 
 const Home = () => {
   return (
-    <Box>
-      <NavBar />
+    <LayoutFull>
       <Container maxW={"container.lg"} pt={14} pb={20}>
         <PostContainer />
       </Container>
-      <NavBot />
-    </Box>
+    </LayoutFull>
   );
 };
 export default Home;
