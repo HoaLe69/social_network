@@ -1,9 +1,11 @@
 const route = {
-  home: "/",
+  home: "/home",
   profile: "/profile",
   search: "/explore",
   create: "/create/style",
-  detailPost: "/post/:id",
+  detailPost: "/home/post/:id",
+  notifi: "/notification",
+  message: "/message",
 };
 
 export default route;

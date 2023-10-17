@@ -4,14 +4,18 @@ import {
   Text,
   HStack,
   Heading,
-  Input,
+  InputGroup,
+  InputRightElement,
   Link,
   useColorModeValue,
+  Input,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { BsFillSendFill } from "react-icons/bs";
 
 const Comment = ({ photoUrl, displayName, content }) => {
   return (
-    <HStack p={1}>
+    <HStack p={1} alignItems="start">
       <Avatar src={photoUrl} size="sm" alt={displayName} />
       <Box
         bg={useColorModeValue("whiteAlpha.500", "whiteAlpha.200")}
@@ -27,47 +31,22 @@ const Comment = ({ photoUrl, displayName, content }) => {
 };
 
 const CommentWrap = () => {
-  const fakeData = [
-    {
-      photoUrl:
-        "https://hocdohoacaptoc.com/storage/2022/02/avata-dep-nam-2.jpg",
-      displayName: "Xuan Huong",
-      content: "Your equiment is beautifull",
-    },
-
-    {
-      photoUrl:
-        "https://hocdohoacaptoc.com/storage/2022/02/avata-dep-nam-2.jpg",
-      displayName: "Xuan Huong",
-      content: "Your equiment is beautifull",
-    },
-    {
-      photoUrl:
-        "https://hocdohoacaptoc.com/storage/2022/02/avata-dep-nam-2.jpg",
-      displayName: "Xuan Huong",
-      content: "Your equiment is beautifull",
-    },
-    {
-      photoUrl:
-        "https://hocdohoacaptoc.com/storage/2022/02/avata-dep-nam-2.jpg",
-      displayName: "Xuan Huong",
-      content: "Your equiment is beautifull",
-    },
-    {
-      photoUrl:
-        "https://hocdohoacaptoc.com/storage/2022/02/avata-dep-nam-2.jpg",
-      displayName: "Xuan Huong",
-      content: "Your equiment is beautifull",
-    },
-  ];
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/photos")
+      .then((res) => res.json())
+      .then((res) => setData(res.slice(0, 20)))
+      .catch((err) => console.log(err));
+  }, []);
   return (
     <Box>
-      {fakeData.map((data) => {
+      {data?.map((data, index) => {
         return (
           <Comment
-            photoUrl={data.photoUrl}
-            displayName={data.displayName}
-            content={data.content}
+            key={data.url}
+            photoUrl={data.thumbnailUrl}
+            displayName={`Hoa ${index}`}
+            content={data.title}
           />
         );
       })}
@@ -79,11 +58,14 @@ const CommentWrap = () => {
           bg={useColorModeValue("whiteAlpha.500", "whiteAlpha.200")}
           flex={1}
         >
-          <Input
-            placeholder="Enter Your Comment..."
-            name="comment"
-            id="comment"
-          />
+          <InputGroup>
+            <Input placeholder="Enter your comment..." name="comment" />
+            <InputRightElement>
+              <Box as="button">
+                <BsFillSendFill />
+              </Box>
+            </InputRightElement>
+          </InputGroup>
         </Box>
       </HStack>
     </Box>

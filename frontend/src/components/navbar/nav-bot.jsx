@@ -14,8 +14,7 @@ import { FaSearch } from "react-icons/fa";
 
 const MenuItem = ({ activeIcon, icon, href, title, subpath, ...props }) => {
   const { pathname } = useLocation();
-  const active = href === pathname || !!subpath;
-  console.log(subpath);
+  const active = href === pathname || pathname.includes(subpath);
   const inactiveColor = useColorModeValue("gray.800", "whiteAlpha.900");
   return (
     <Link
@@ -50,7 +49,7 @@ const NavBot = () => {
   const menu = [
     {
       icon: <GoHome />,
-      href: "/",
+      href: "/home",
       activeIcon: <GoHomeFill />,
       title: "Home",
       subpath: "post",
@@ -77,7 +76,7 @@ const NavBot = () => {
   return (
     <NavContainer bottom={0}>
       <Flex align="center" justify="space-evenly">
-        {menu.map((item) => {
+        {menu?.map((item) => {
           return (
             <MenuItem
               key={item.href}

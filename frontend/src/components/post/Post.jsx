@@ -17,6 +17,7 @@ import { BsPatchCheckFill } from "react-icons/bs";
 import styled from "@emotion/styled";
 import { useDispatch } from "react-redux";
 import { showPost } from "@redux/postSlice";
+import route from "@config/route";
 
 const DesBox = styled.span`
   display: flex;
@@ -49,7 +50,7 @@ const Post = (props) => {
     return (
       <Link
         as={ReactRouterLink}
-        to={`/post/${id}`}
+        to={`/home/post/${id}`}
         _hover={{ textDecoration: "none" }}
       >
         {children}
@@ -79,7 +80,7 @@ const Post = (props) => {
     <Box>
       <HStack as="header" p={2} display="flex">
         {isDetail && (
-          <Link as={ReactRouterLink} to="/">
+          <Link as={ReactRouterLink} to={route.home}>
             <Box as="span">
               <AiOutlineLeft />
             </Box>
@@ -105,7 +106,7 @@ const Post = (props) => {
         </Link>
       </HStack>
       <Box pl={2} pb={2}>
-        <Text noOfLines={3}>{status}</Text>
+        <Text noOfLines={`${isDetail ? "none" : 3}`}>{status}</Text>
       </Box>
       <Box borderRadius={"10px"} overflow={"hidden"}>
         <Image src={thumbNail} alt={displayName} objectFit={"cover"} />

@@ -1,4 +1,4 @@
-import NavBot from "../components/navbar/nav-bot";
+import NavBot from "@components/navbar/nav-bot";
 import { Box, Container } from "@chakra-ui/react";
 
 const LayoutNotHeader = ({ children, ...props }) => {

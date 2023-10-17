@@ -43,7 +43,7 @@ const PostContainer = () => {
   ];
   return (
     <Box>
-      {fakeData.map((data) => {
+      {fakeData?.map(function (data) {
         return (
           <Post
             key={data.id}

@@ -7,7 +7,7 @@ function App() {
   return (
     <Box className="App">
       <Routes>
-        {routes.map((route) => {
+        {routes?.map((route) => {
           return (
             <Route
               path={route.path}
