@@ -1,4 +1,4 @@
-import { Box, Link, Heading, Container, Wrap } from "@chakra-ui/react";
+import { Box, Link, Heading } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { AiOutlineLeft } from "react-icons/ai";
 import route from "@config/route";

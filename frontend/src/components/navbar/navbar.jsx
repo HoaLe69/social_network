@@ -7,7 +7,6 @@ import { Link as ReactRouterLink } from "react-router-dom";
 import route from "@config/route";
 
 const NavBar = () => {
-  console.log(route);
   return (
     <NavContainer>
       <Flex justify="space-between">

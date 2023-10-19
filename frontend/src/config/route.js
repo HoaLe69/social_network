@@ -6,6 +6,7 @@ const route = {
   detailPost: "/home/post/:id",
   notifi: "/notification",
   message: "/message",
+  roomChat: "/message/:id",
 };
 
 export default route;

@@ -69,7 +69,6 @@ const Post = (props) => {
       comments,
       isDetail,
     };
-    console.log(1);
     dipatch(showPost(post));
   };
   let Wrap = SubLink;

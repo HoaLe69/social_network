@@ -1,5 +1,5 @@
 import WrapContent from "@components/common/wrap-content";
-import { Text, Avatar, Button, Flex, Box } from "@chakra-ui/react";
+import { Text, Avatar, Button, Flex } from "@chakra-ui/react";
 
 const NotifyItem = ({ photoUrl, displayName }) => {
   return (
@@ -12,6 +12,7 @@ const NotifyItem = ({ photoUrl, displayName }) => {
     </Flex>
   );
 };
+
 const Notify = () => {
   const data = [
     {
