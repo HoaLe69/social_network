@@ -1,6 +1,6 @@
 const route = {
   home: "/home",
-  profile: "/profile",
+  profile: "/profile/:id",
   search: "/explore",
   makePost: "/create/style",
   detailPost: "/home/post/:id",

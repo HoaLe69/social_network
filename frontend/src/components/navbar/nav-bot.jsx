@@ -10,7 +10,6 @@ import {
   BsPerson,
   BsPatchPlus,
 } from "react-icons/bs";
-import { FaSearch } from "react-icons/fa";
 
 const MenuItem = ({ activeIcon, icon, href, title, subpath, ...props }) => {
   const { pathname } = useLocation();
@@ -57,7 +56,7 @@ const NavBot = () => {
     {
       icon: <GoSearch />,
       href: "/explore",
-      activeIcon: <FaSearch />,
+      activeIcon: <GoSearch />,
       title: "Search",
     },
     {
@@ -68,7 +67,7 @@ const NavBot = () => {
 
     {
       icon: <BsPerson />,
-      href: "/profile",
+      href: "/profile/232938028",
       activeIcon: <BsFillPersonFill />,
       title: "Profile",
     },

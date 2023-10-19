@@ -6,6 +6,7 @@ import Notification from "@pages/notification";
 import Message from "@pages/message";
 import RoomConversation from "@components/conversation/room-conversation";
 import CreatePost from "@pages/create-post";
+import Profile from "@pages/profile";
 
 const routes = [
   {
@@ -35,6 +36,10 @@ const routes = [
   {
     path: route.makePost,
     component: <CreatePost />,
+  },
+  {
+    path: route.profile,
+    component: <Profile />,
   },
 ];
 
