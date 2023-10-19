@@ -5,6 +5,7 @@ import DetailPost from "@pages/detail-post";
 import Notification from "@pages/notification";
 import Message from "@pages/message";
 import RoomConversation from "@components/conversation/room-conversation";
+import CreatePost from "@pages/create-post";
 
 const routes = [
   {
@@ -30,6 +31,10 @@ const routes = [
   {
     path: route.roomChat,
     component: <RoomConversation />,
+  },
+  {
+    path: route.makePost,
+    component: <CreatePost />,
   },
 ];
 

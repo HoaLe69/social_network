@@ -62,7 +62,7 @@ const NavBot = () => {
     },
     {
       icon: <BsPatchPlus />,
-      href: "/post",
+      href: "/create/style",
       activeIcon: <BsFillPatchPlusFill />,
     },
 

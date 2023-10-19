@@ -1,12 +1,12 @@
 import LayoutNotHeader from "@layout/layout-not-header";
-import Search from "@components/search/search";
+import MakePost from "@components/post/make-post";
 
-const Explore = () => {
+const CreatePost = () => {
   return (
     <LayoutNotHeader>
-      <Search />
+      <MakePost />
     </LayoutNotHeader>
   );
 };
 
-export default Explore;
+export default CreatePost;

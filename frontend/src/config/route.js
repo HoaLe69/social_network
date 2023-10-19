@@ -2,7 +2,7 @@ const route = {
   home: "/home",
   profile: "/profile",
   search: "/explore",
-  create: "/create/style",
+  makePost: "/create/style",
   detailPost: "/home/post/:id",
   notifi: "/notification",
   message: "/message",
