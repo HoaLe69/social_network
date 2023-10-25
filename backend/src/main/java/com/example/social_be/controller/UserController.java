@@ -1,13 +1,14 @@
-package com.example.social_app.controller;
+package com.example.social_be.controller;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/user")
-@CrossOrigin(origins = "http://localhost:300")
+@RequestMapping(value = "/api/user")
 public class UserController {
-
+    @GetMapping("/greet")
+    public String greetNewUser(){
+        return "Hello new User,WelCome to our Community asdasldlasjd";
+    }
 }

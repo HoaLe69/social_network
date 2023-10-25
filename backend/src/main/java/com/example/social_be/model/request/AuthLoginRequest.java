@@ -1,9 +1,9 @@
-package com.example.social_app.model;
+package com.example.social_be.model.request;
 
 import lombok.Data;
 
 @Data
-public class AuthRequestLogin {
+public class AuthLoginRequest {
     private String userName;
     private String password;
 }
