@@ -23,6 +23,5 @@ public class UserService implements UserDetailsService {
         UserCollection userCollection = userRepository.findUserCollectionByUserName(username);
         if (userCollection == null) throw new UsernameNotFoundException(username);
         return new User(userCollection.getUserName(), userCollection.getPassword(), new ArrayList<>());
-//        return CustomUserDetail.mapper(userCollection);
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Document(collection = "users")
@@ -15,16 +16,17 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 public class UserCollection {
-    private String id;
-    private String userName;
+    protected String id;
+    protected String userName;
     private String password;
-    private String email;
-    private String displayName;
-    private String avatar;
-    private String about;
-    private List<String> follower;
-    private List<String> following;
-    private List<GrantedAuthority> authorities;
+    protected String email;
+    protected String displayName;
+    protected String avatar;
+    protected String about;
+    protected boolean isOnline;
+    protected List<String> follower;
+    protected List<String> following;
+    protected Date createAt;
 
     public UserCollection() {
         this.displayName = null;
@@ -32,7 +34,6 @@ public class UserCollection {
         this.about = null;
         this.follower = new ArrayList<>();
         this.following = new ArrayList<>();
-        this.authorities = new ArrayList<>();
     }
 
     public UserCollection(AuthSignUpRequest authSignUpRequest) {
@@ -44,5 +45,7 @@ public class UserCollection {
         this.about = null;
         this.follower = new ArrayList<>();
         this.following = new ArrayList<>();
+        this.createAt = new Date();
+
     }
 }

@@ -8,7 +8,6 @@ import com.example.social_be.model.response.MessageResponse;
 import com.example.social_be.repository.UserRepository;
 import com.example.social_be.util.JwtTokenUtil;
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

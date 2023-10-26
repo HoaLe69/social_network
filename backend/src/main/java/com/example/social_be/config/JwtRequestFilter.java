@@ -7,11 +7,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -47,7 +45,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             String token = getTokenFromRequest(request);
             if (StringUtils.hasText(token)) {
                 String userName = jwtTokenUtil.getUserNameFromAccessToken(token);
-                System.out.println(userName);
                 UserDetails userDetails = userService.loadUserByUsername(userName);
                 if (userDetails != null && jwtTokenUtil.validateJwtAccessToken(token, userDetails.getUsername())) {
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, new ArrayList<>());

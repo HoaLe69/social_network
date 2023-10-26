@@ -28,20 +28,6 @@ public class CustomUserDetail implements UserDetails {
         return this.authorities;
     }
 
-    public static CustomUserDetail mapper(UserCollection userCollection) {
-        return new CustomUserDetail(
-                userCollection.getUserName(),
-                userCollection.getPassword(),
-                userCollection.getEmail(),
-                userCollection.getDisplayName(),
-                userCollection.getAvatar(),
-                userCollection.getAbout(),
-                userCollection.getFollower(),
-                userCollection.getFollowing(),
-                userCollection.getAuthorities()
-        );
-    }
-
     @Override
     public String getPassword() {
         return this.password;
