@@ -50,7 +50,7 @@ const Post = (props) => {
     return (
       <Link
         as={ReactRouterLink}
-        to={`/home/post/${id}`}
+        to={`/post/${id}`}
         _hover={{ textDecoration: "none" }}
       >
         {children}
@@ -107,7 +107,7 @@ const Post = (props) => {
       <Box pl={2} pb={2}>
         <Text noOfLines={`${isDetail ? "none" : 3}`}>{status}</Text>
       </Box>
-      <Box borderRadius={"10px"} overflow={"hidden"}>
+      <Box overflow={"hidden"}>
         <Image src={thumbNail} alt={displayName} objectFit={"cover"} />
       </Box>
       <HStack p={2}>

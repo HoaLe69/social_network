@@ -2,6 +2,7 @@ import { extendTheme } from "@chakra-ui/react";
 import { mode } from "@chakra-ui/theme-tools";
 import "@fontsource/m-plus-rounded-1c/300.css";
 import "@fontsource/m-plus-rounded-1c/700.css";
+import { modalTheme } from "@components/theme/modal";
 
 const config = {
   initialColorMode: "system",
@@ -20,6 +21,12 @@ const fonts = {
 const colors = {
   grassTeal: "#88ccca",
 };
-const theme = extendTheme({ config, styles, fonts, colors });
+const theme = extendTheme({
+  config,
+  styles,
+  fonts,
+  colors,
+  components: { Modal: modalTheme },
+});
 
 export default theme;

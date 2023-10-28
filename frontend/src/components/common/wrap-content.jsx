@@ -6,15 +6,19 @@ import route from "@config/route";
 const WrapContent = ({ children, title }) => {
   return (
     <Box>
-      <Box as="header" pt={2} display="flex" alignItems="center">
-        <Link as={ReactRouterLink} to={route.home}>
+      <Box as="header" pt={2} px={{ lg: 2 }} display="flex" alignItems="center">
+        <Link display={{ lg: "none" }} as={ReactRouterLink} to={route.home}>
           <Box mr={4} fontSize="20px">
             <AiOutlineLeft />
           </Box>
         </Link>
-        <Heading fontSize="20px">{title}</Heading>
+        <Heading variant="section-type" fontSize="20px">
+          {title}
+        </Heading>
       </Box>
-      <Box pt={2}>{children}</Box>
+      <Box pt={2} px={{ lg: 2 }}>
+        {children}
+      </Box>
     </Box>
   );
 };

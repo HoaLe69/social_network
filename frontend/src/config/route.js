@@ -1,9 +1,9 @@
 const route = {
-  home: "/home",
+  home: "/",
   profile: "/profile/:id",
   search: "/explore",
   makePost: "/create/style",
-  detailPost: "/home/post/:id",
+  detailPost: "/post/:id",
   notifi: "/notification",
   message: "/message",
   roomChat: "/message/:id",

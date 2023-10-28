@@ -1,33 +1,48 @@
-import { Flex, useColorModeValue, Text } from "@chakra-ui/react";
-import NavContainer from "./nav-container";
+import {
+  Flex,
+  Link,
+  useColorModeValue,
+  Text,
+  interactivity,
+} from "@chakra-ui/react";
+import NavWrap from "./nav-wrap";
 import ToggleThemeButton from "../theme-toggle-btn";
 import { GoHomeFill, GoHome, GoSearch } from "react-icons/go";
-import { Link as ReactRouterLink, useLocation } from "react-router-dom";
-import { Link } from "@chakra-ui/react";
+import { NavLink as ReactRouterLink, useLocation } from "react-router-dom";
 import {
   BsFillPersonFill,
   BsFillPatchPlusFill,
   BsPerson,
   BsPatchPlus,
 } from "react-icons/bs";
+import route from "@config/route";
+import { useRef } from "react";
 
-const MenuItem = ({ activeIcon, icon, href, title, subpath, ...props }) => {
+const MenuItem = ({ activeIcon, icon, href, title, subHref, ...props }) => {
   const { pathname } = useLocation();
-  const active = href === pathname || pathname.includes(subpath);
   const inactiveColor = useColorModeValue("gray.800", "whiteAlpha.900");
+  const active = href === pathname || pathname === subHref;
   return (
     <Link
-      fontSize={title ? "25px" : "30px"}
-      borderTop="2px"
-      borderTopColor={active ? "grassTeal" : "transparent"}
-      color={active ? "grassTeal" : inactiveColor}
       as={ReactRouterLink}
+      fontSize={title ? "25px" : "30px"}
+      color={active ? "grassTeal" : inactiveColor}
       to={href}
-      p={2}
       display={"flex"}
       flexDir={"column"}
       alignItems={"center"}
+      position="relative"
       _hover={{ textDecoration: "none" }}
+      _before={{
+        top: "-10px",
+        position: "absolute",
+        content: '""',
+        width: "45px",
+        borderRadius: "20px",
+        height: "2px",
+        display: "inline-block",
+        bg: `${active ? "grassTeal" : "transparent"}`,
+      }}
       {...props}
     >
       {active ? activeIcon : icon}
@@ -48,38 +63,40 @@ const NavBot = () => {
   const menu = [
     {
       icon: <GoHome />,
-      href: "/home",
+      href: route.home,
+      subHref: `/post/1`,
       activeIcon: <GoHomeFill />,
       title: "Home",
-      subpath: "post",
     },
     {
       icon: <GoSearch />,
-      href: "/explore",
+      href: route.search,
       activeIcon: <GoSearch />,
       title: "Search",
     },
     {
       icon: <BsPatchPlus />,
-      href: "/create/style",
+      href: route.makePost,
       activeIcon: <BsFillPatchPlusFill />,
+      title: "Create",
     },
 
     {
       icon: <BsPerson />,
-      href: "/profile/232938028",
+      href: "/profile/1",
       activeIcon: <BsFillPersonFill />,
       title: "Profile",
     },
   ];
+  const nav = useRef(null);
   return (
-    <NavContainer bottom={0}>
-      <Flex align="center" justify="space-evenly">
+    <NavWrap bottom={0} display={{ lg: "none" }}>
+      <Flex align="center" justify="space-evenly" ref={nav}>
         {menu?.map((item) => {
           return (
             <MenuItem
               key={item.href}
-              subpath={item.subpath}
+              subHref={item.subHref}
               activeIcon={item.activeIcon}
               icon={item.icon}
               href={item.href}
@@ -89,7 +106,7 @@ const NavBot = () => {
         })}
         <ToggleThemeButton />
       </Flex>
-    </NavContainer>
+    </NavWrap>
   );
 };
 

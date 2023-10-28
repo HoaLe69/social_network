@@ -15,7 +15,7 @@ import { BsFillSendFill } from "react-icons/bs";
 
 const Comment = ({ photoUrl, displayName, content }) => {
   return (
-    <HStack p={1} alignItems="start">
+    <HStack p={1} px={2} alignItems="start">
       <Avatar src={photoUrl} size="sm" alt={displayName} />
       <Box
         bg={useColorModeValue("whiteAlpha.500", "whiteAlpha.200")}
@@ -50,7 +50,7 @@ const CommentWrap = () => {
           />
         );
       })}
-      <HStack>
+      <HStack px={1}>
         <Link>
           <Avatar src="https://hocdohoacaptoc.com/storage/2022/02/avata-dep-nam-2.jpg" />
         </Link>

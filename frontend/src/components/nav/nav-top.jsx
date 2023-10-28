@@ -1,17 +1,18 @@
 import { Flex, IconButton, Box, Link } from "@chakra-ui/react";
-import NavContainer from "./nav-container";
+import NavWrap from "./nav-wrap";
 import Logo from "./logo";
 import { useColorModeValue } from "@chakra-ui/react";
 import { AiOutlineHeart, AiOutlineMessage } from "react-icons/ai";
 import { Link as ReactRouterLink } from "react-router-dom";
+import NavMenuPc from "./nav-menu-items-pc";
 import route from "@config/route";
 
-const NavBar = () => {
+const NavTop = () => {
   return (
-    <NavContainer>
+    <NavWrap>
       <Flex justify="space-between">
         <Logo />
-        <Box>
+        <Box display={{ lg: "none" }}>
           <Link to={route.notifi} as={ReactRouterLink}>
             <IconButton
               fontSize={"20px"}
@@ -30,9 +31,10 @@ const NavBar = () => {
             />
           </Link>
         </Box>
+        <NavMenuPc />
       </Flex>
-    </NavContainer>
+    </NavWrap>
   );
 };
 
-export default NavBar;
+export default NavTop;

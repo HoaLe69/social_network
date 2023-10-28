@@ -1,13 +1,4 @@
-import {
-  Box,
-  Text,
-  Link,
-  Heading,
-  Image,
-  Grid,
-  GridItem,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Box, Link, Heading, Image, Grid, GridItem } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { AiFillHeart } from "react-icons/ai";
 

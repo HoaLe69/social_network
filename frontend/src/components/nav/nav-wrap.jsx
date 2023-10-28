@@ -1,6 +1,6 @@
 import { Box, Container, useColorModeValue } from "@chakra-ui/react";
 
-const NavContainer = ({ children, ...props }) => {
+const NavWrap = ({ children, ...props }) => {
   return (
     <Box
       as="nav"
@@ -17,4 +17,4 @@ const NavContainer = ({ children, ...props }) => {
     </Box>
   );
 };
-export default NavContainer;
+export default NavWrap;
