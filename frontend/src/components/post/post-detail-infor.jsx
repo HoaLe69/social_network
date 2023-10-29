@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
-import Post from "./Post";
+import Post from "./post";
 
 const PostInfor = () => {
   const postInfor = useSelector((state) => state.posts.currentPost);

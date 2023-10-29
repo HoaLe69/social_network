@@ -7,6 +7,7 @@ const route = {
   notifi: "/notification",
   message: "/message",
   roomChat: "/message/:id",
+  chat: "/chat",
 };
 
 export default route;

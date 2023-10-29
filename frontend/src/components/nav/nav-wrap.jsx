@@ -1,11 +1,14 @@
 import { Box, Container, useColorModeValue } from "@chakra-ui/react";
+import { COLOR_THEME } from "../../constant";
 
-const NavWrap = ({ children, ...props }) => {
+const NavWrap = ({ children, isFixed, ...props }) => {
   return (
     <Box
       as="nav"
-      position={"fixed"}
       zIndex={2}
+      position={isFixed ? "relative" : "fixed"}
+      borderBottomWidth={isFixed && 1}
+      borderColor={COLOR_THEME.BORDER}
       css={{ backdropFilter: "blur(10px)" }}
       bg={useColorModeValue("#ffffff40", "#20202380")}
       w="full"

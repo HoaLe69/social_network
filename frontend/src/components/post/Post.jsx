@@ -8,30 +8,12 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
-import {
-  AiOutlineLeft,
-  AiOutlineHeart,
-  AiOutlineMessage,
-} from "react-icons/ai";
+import { AiOutlineLeft } from "react-icons/ai";
 import { BsPatchCheckFill } from "react-icons/bs";
-import styled from "@emotion/styled";
 import { useDispatch } from "react-redux";
 import { showPost } from "@redux/postSlice";
 import route from "@config/route";
-
-const DesBox = styled.span`
-  display: flex;
-  align-items: center;
-  > p {
-    margin-left: 5px;
-  }
-  > span {
-    font-size: 24px;
-  }
-  + span {
-    margin-left: 10px;
-  }
-`;
+import PostAction from "./post-action";
 
 const Post = (props) => {
   const dipatch = useDispatch();
@@ -46,17 +28,6 @@ const Post = (props) => {
     comments,
     isDetail,
   } = props;
-  const SubLink = ({ children }) => {
-    return (
-      <Link
-        as={ReactRouterLink}
-        to={`/post/${id}`}
-        _hover={{ textDecoration: "none" }}
-      >
-        {children}
-      </Link>
-    );
-  };
   const handleShowFullPost = () => {
     const post = {
       id,
@@ -71,15 +42,11 @@ const Post = (props) => {
     };
     dipatch(showPost(post));
   };
-  let Wrap = SubLink;
-  if (isDetail) {
-    Wrap = Box;
-  }
   return (
     <Box>
       <HStack as="header" p={2} display="flex">
         {isDetail && (
-          <Link as={ReactRouterLink} to={route.home}>
+          <Link display={{ lg: "none" }} as={ReactRouterLink} to={route.home}>
             <Box as="span">
               <AiOutlineLeft />
             </Box>
@@ -110,22 +77,13 @@ const Post = (props) => {
       <Box overflow={"hidden"}>
         <Image src={thumbNail} alt={displayName} objectFit={"cover"} />
       </Box>
-      <HStack p={2}>
-        <DesBox>
-          <Box as="span">
-            <AiOutlineHeart />
-          </Box>
-          <Text as="p">{like.length}</Text>
-        </DesBox>
-        <Wrap>
-          <DesBox onClick={() => !isDetail && handleShowFullPost()}>
-            <Box as="span">
-              <AiOutlineMessage />
-            </Box>
-            <Text as="p">{comments.length}</Text>
-          </DesBox>
-        </Wrap>
-      </HStack>
+      <PostAction
+        isDetail={isDetail}
+        id={id}
+        like={like}
+        comments={comments}
+        handleShowFullPost={handleShowFullPost}
+      />
     </Box>
   );
 };

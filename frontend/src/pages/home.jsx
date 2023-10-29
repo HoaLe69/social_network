@@ -1,5 +1,5 @@
-import PostContainer from "../components/post/PostContainer";
-import LayoutFull from "../layout/layout-full";
+import PostContainer from "@components/post/post-container";
+import LayoutFull from "@layout/layout-full";
 
 const Home = () => {
   return (

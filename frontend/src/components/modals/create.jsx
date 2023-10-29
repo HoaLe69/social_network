@@ -2,10 +2,8 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
   ModalCloseButton,
   ModalBody,
-  ModalFooter,
 } from "@chakra-ui/react";
 import MakePost from "../post/make-post";
 

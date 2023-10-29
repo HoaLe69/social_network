@@ -1,10 +1,4 @@
-import {
-  Flex,
-  Link,
-  useColorModeValue,
-  Text,
-  interactivity,
-} from "@chakra-ui/react";
+import { Flex, Link, useColorModeValue, Text } from "@chakra-ui/react";
 import NavWrap from "./nav-wrap";
 import ToggleThemeButton from "../theme-toggle-btn";
 import { GoHomeFill, GoHome, GoSearch } from "react-icons/go";
@@ -16,7 +10,6 @@ import {
   BsPatchPlus,
 } from "react-icons/bs";
 import route from "@config/route";
-import { useRef } from "react";
 
 const MenuItem = ({ activeIcon, icon, href, title, subHref, ...props }) => {
   const { pathname } = useLocation();
@@ -88,10 +81,9 @@ const NavBot = () => {
       title: "Profile",
     },
   ];
-  const nav = useRef(null);
   return (
     <NavWrap bottom={0} display={{ lg: "none" }}>
-      <Flex align="center" justify="space-evenly" ref={nav}>
+      <Flex align="center" justify="space-evenly">
         {menu?.map((item) => {
           return (
             <MenuItem

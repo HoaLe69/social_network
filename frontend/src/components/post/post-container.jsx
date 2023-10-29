@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import Post from "./Post";
+import Post from "./post";
 
 const PostContainer = () => {
   const fakeData = [

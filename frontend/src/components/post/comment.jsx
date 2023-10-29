@@ -39,7 +39,7 @@ const CommentWrap = () => {
       .catch((err) => console.log(err));
   }, []);
   return (
-    <Box>
+    <Box position="relative">
       {data?.map((data, index) => {
         return (
           <Comment

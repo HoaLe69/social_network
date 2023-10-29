@@ -7,4 +7,7 @@ export const COLOR_THEME = {
   BG_BUTTON: () => {
     return useColorModeValue("whiteAlpha.500", "whiteAlpha.200");
   },
+  BORDER: () => {
+    return useColorModeValue("blackAlpha.300", "whiteAlpha.300");
+  },
 };

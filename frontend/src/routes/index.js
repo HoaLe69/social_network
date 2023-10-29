@@ -7,6 +7,7 @@ import Message from "@pages/message";
 import RoomConversation from "@components/conversation/room-conversation";
 import CreatePost from "@pages/create-post";
 import Profile from "@pages/profile";
+import ChatPc from "@pages/chat-pc";
 
 const routes = [
   {
@@ -40,6 +41,10 @@ const routes = [
   {
     path: route.profile,
     component: <Profile />,
+  },
+  {
+    path: route.chat,
+    component: <ChatPc />,
   },
 ];
 

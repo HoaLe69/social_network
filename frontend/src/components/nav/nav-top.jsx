@@ -7,9 +7,9 @@ import { Link as ReactRouterLink } from "react-router-dom";
 import NavMenuPc from "./nav-menu-items-pc";
 import route from "@config/route";
 
-const NavTop = () => {
+const NavTop = ({ isFixed }) => {
   return (
-    <NavWrap>
+    <NavWrap isFixed={isFixed}>
       <Flex justify="space-between">
         <Logo />
         <Box display={{ lg: "none" }}>
