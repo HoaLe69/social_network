@@ -1,5 +1,6 @@
 import {
   Box,
+  Text,
   Tooltip,
   Avatar,
   useColorModeValue,
@@ -19,6 +20,7 @@ import Notify from "../notify/notify";
 import Conversation from "../conversation/conversation";
 import { BiLogOut } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
+import { Link } from "react-router-dom";
 
 const MenuItemPc = ({ icon, onOpen }) => {
   return (
@@ -49,7 +51,7 @@ const NavMenuPc = () => {
             <MenuItemPc icon={<AiFillHeart />} title="notification" />
           </MenuButton>
         </Tooltip>
-        <MenuList bg={COLOR_THEME.BG} maxH="60vh">
+        <MenuList bg={COLOR_THEME.BG} width="md" maxH="60vh">
           <Notify />
         </MenuList>
       </Menu>
@@ -59,7 +61,7 @@ const NavMenuPc = () => {
             <MenuItemPc icon={<AiFillMessage />} title="message" />
           </MenuButton>
         </Tooltip>
-        <MenuList bg={COLOR_THEME.BG} width={"lg"} maxH="60vh">
+        <MenuList bg={COLOR_THEME.BG} width={"md"} maxH="60vh">
           <Box>
             <Conversation />
           </Box>
@@ -80,12 +82,14 @@ const NavMenuPc = () => {
         </Tooltip>
         <MenuList>
           <MenuGroup title="Profile">
-            <MenuItem>
-              <Box as="span" fontSize="lg" mr={2}>
-                <CgProfile />
-              </Box>
-              My Profile
-            </MenuItem>
+            <Link to="/profile/129837">
+              <MenuItem>
+                <Box as="span" fontSize="lg" mr={2}>
+                  <CgProfile />
+                </Box>
+                <Text> My Profile</Text>
+              </MenuItem>
+            </Link>
             <MenuItem>
               <Box as="span" fontSize="lg" mr={2}>
                 <BiLogOut />

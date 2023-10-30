@@ -8,6 +8,8 @@ const route = {
   message: "/message",
   roomChat: "/message/:id",
   chat: "/chat",
+  login: "/login",
+  register: "/register",
 };
 
 export default route;

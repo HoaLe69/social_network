@@ -22,6 +22,7 @@ const MakePost = () => {
       setPreviewSource(reader.result);
     };
   };
+
   return (
     <Box>
       <Box as="header" textAlign={"center"} p={2}>

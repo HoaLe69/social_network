@@ -1,6 +1,7 @@
 import { Box, Link, Heading, Image, Grid, GridItem } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { AiFillHeart } from "react-icons/ai";
+import { profilePostDt } from "../../samepleData";
 
 const ProfilePostItem = ({ thumNail, like, postId }) => {
   return (
@@ -36,33 +37,6 @@ const ProfilePostItem = ({ thumNail, like, postId }) => {
 };
 
 const ProfilePost = () => {
-  const sampleData = [
-    {
-      thumNail:
-        "https://i.pinimg.com/564x/ab/c1/76/abc1760a916047d9bee769ae8e24e699.jpg",
-      postId: 123,
-      like: 100,
-    },
-    {
-      thumNail:
-        "https://i.pinimg.com/564x/ab/c1/76/abc1760a916047d9bee769ae8e24e699.jpg",
-      postId: 293912,
-      like: 100,
-    },
-
-    {
-      thumNail:
-        "https://i.pinimg.com/564x/ab/c1/76/abc1760a916047d9bee769ae8e24e699.jpg",
-      postId: 1231273,
-      like: 100,
-    },
-    {
-      thumNail:
-        "https://i.pinimg.com/564x/cf/db/1f/cfdb1ffbf9ebfe891428aa995e14904f.jpg",
-      postId: 1923123,
-      like: 100,
-    },
-  ];
   return (
     <Box pt={4}>
       <Heading
@@ -85,7 +59,7 @@ const ProfilePost = () => {
         gap={2}
         pt={4}
       >
-        {sampleData.map((data) => {
+        {profilePostDt.map((data) => {
           return (
             <GridItem key={data.postId}>
               <ProfilePostItem {...data} />

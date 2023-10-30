@@ -1,5 +1,4 @@
 import {
-  Container,
   Box,
   Flex,
   Avatar,
@@ -41,7 +40,7 @@ const ConversationItem = ({ photoUrl, displayName, content }) => {
     <WrapMessage>
       {photoUrl && <Avatar src={photoUrl} alt={displayName} size="sm" />}
       <Box
-        maxW="70%"
+        maxW="50%"
         bg={photoUrl ? inactive : "grassTeal"}
         p={1}
         px={2}

@@ -17,7 +17,7 @@ const ChatPc = () => {
         <Box flex={1} borderRightWidth={1} borderColor={COLOR_THEME.BORDER}>
           <Converstation />
         </Box>
-        <Box flex={2}>
+        <Box flex={4}>
           <RoomConversation />
         </Box>
       </Box>

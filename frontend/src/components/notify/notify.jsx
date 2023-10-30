@@ -1,9 +1,28 @@
 import WrapContent from "@components/common/wrap-content";
-import { Text, Avatar, Button, Flex } from "@chakra-ui/react";
+import {
+  Text,
+  Avatar,
+  Button,
+  Flex,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import { notifyDt } from "../../samepleData";
 
 const NotifyItem = ({ photoUrl, displayName }) => {
   return (
-    <Flex p={1} align="center" gap="10px">
+    <Flex
+      align="center"
+      gap="10px"
+      _hover={{
+        backgroundColor: `${useColorModeValue(
+          "blackAlpha.200",
+          "whiteAlpha.300",
+        )}`,
+      }}
+      p={2}
+      cursor="pointer"
+      rounded="10px"
+    >
       <Avatar src={photoUrl} alt={displayName} />
       <Text flex={1}>
         <strong>{displayName} </strong>started follow you on Peguin hub
@@ -14,26 +33,14 @@ const NotifyItem = ({ photoUrl, displayName }) => {
 };
 
 const Notify = () => {
-  const data = [
-    {
-      photoUrl:
-        "https://i.pinimg.com/236x/dc/cb/ee/dccbee93d3b5334a002e7e5aa9d89b5a.jpg",
-      displayName: "My Nguyen",
-    },
-    {
-      photoUrl:
-        "https://i.pinimg.com/236x/dc/cb/ee/dccbee93d3b5334a002e7e5aa9d89b5a.jpg",
-      displayName: "My Nguyen",
-    },
-  ];
   return (
     <WrapContent title="Notification">
-      {data.map((dt) => {
+      {notifyDt.map((dt, index) => {
         return (
           <NotifyItem
             photoUrl={dt.photoUrl}
             displayName={dt.displayName}
-            key={dt.displayName}
+            key={index}
           />
         );
       })}

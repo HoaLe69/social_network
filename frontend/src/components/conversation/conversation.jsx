@@ -7,12 +7,27 @@ import {
   Box,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
 
 const CoversItem = ({ photoUrl, displayName, lastesMessage }) => {
   return (
-    <Flex oap={"10px"} p={1} align="center">
-      <Avatar src={photoUrl} alt={displayName} />
+    <Flex
+      gap={"10px"}
+      p={2}
+      rounded="10px"
+      align="center"
+      cursor="pointer"
+      _hover={{
+        backgroundColor: `${useColorModeValue(
+          "blackAlpha.200",
+          "whiteAlpha.300",
+        )}`,
+      }}
+    >
+      <Avatar
+        sx={{ width: "40px", height: "40px" }}
+        src={photoUrl}
+        alt={displayName}
+      />
       <Box>
         <Heading as="h3" fontSize="md">
           {displayName}
@@ -42,17 +57,13 @@ const Converstation = () => {
       {data.map((dt) => {
         return (
           <CoversItem
+            key={dt.photoUrl}
             photoUrl={dt.photoUrl}
             displayName={dt.displayName}
             lastesMessage={dt.lastesMessage}
           />
         );
       })}
-      <Box display={{ lg: "block", base: "none" }} textAlign="center" py={2}>
-        <Link>
-          <Text>Open Messages</Text>
-        </Link>
-      </Box>
     </WrapContent>
   );
 };

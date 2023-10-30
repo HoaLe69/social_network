@@ -8,6 +8,8 @@ import RoomConversation from "@components/conversation/room-conversation";
 import CreatePost from "@pages/create-post";
 import Profile from "@pages/profile";
 import ChatPc from "@pages/chat-pc";
+import Login from "@pages/auth/login";
+import Register from "@pages/auth/register";
 
 const routes = [
   {
@@ -45,6 +47,14 @@ const routes = [
   {
     path: route.chat,
     component: <ChatPc />,
+  },
+  {
+    path: route.login,
+    component: <Login />,
+  },
+  {
+    path: route.register,
+    component: <Register />,
   },
 ];
 
