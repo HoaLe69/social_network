@@ -6,24 +6,29 @@ import {
   Avatar,
   Heading,
   HStack,
+  IconButton,
 } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
-import { AiOutlineLeft } from "react-icons/ai";
+import { AiOutlineLeft, AiFillDelete } from "react-icons/ai";
 import { BsPatchCheckFill } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { showPost } from "@redux/postSlice";
 import route from "@config/route";
 import PostAction from "./post-action";
+import MenuPost from "../menu-post";
 
 const Post = (props) => {
+  const currentUser = JSON.parse(localStorage.getItem("user"));
   const dipatch = useDispatch();
   const {
     id,
+    userId,
+    cloudId,
     photoUrl,
     displayName,
     status,
     follower,
-    thumbNail,
+    thumbnail,
     like,
     comments,
     isDetail,
@@ -31,11 +36,13 @@ const Post = (props) => {
   const handleShowFullPost = () => {
     const post = {
       id,
+      userId,
+      cloudId,
       photoUrl,
       displayName,
       status,
       follower,
-      thumbNail,
+      thumbnail,
       like,
       comments,
       isDetail,
@@ -54,7 +61,7 @@ const Post = (props) => {
         )}
         <Link
           as={ReactRouterLink}
-          to={`/profile/${displayName}`}
+          to={`/profile/${userId}`}
           _hover={{ textDecoration: "none" }}
           display="flex"
           alignItems="center"
@@ -70,13 +77,26 @@ const Post = (props) => {
             </Box>
           )}
         </Link>
+        {userId === currentUser?.id && (
+          <Box ml="auto">
+            <MenuPost id={id} cloudId={cloudId} />
+          </Box>
+        )}
       </HStack>
       <Box pl={2} pb={2}>
         <Text noOfLines={`${isDetail ? "none" : 3}`}>{status}</Text>
       </Box>
-      <Box overflow={"hidden"}>
-        <Image src={thumbNail} alt={displayName} objectFit={"cover"} />
-      </Box>
+      {thumbnail && (
+        <Box overflow={"hidden"}>
+          <Image
+            maxH="600px"
+            w="full"
+            src={thumbnail}
+            alt={displayName}
+            objectFit={"cover"}
+          />
+        </Box>
+      )}
       <PostAction
         isDetail={isDetail}
         id={id}

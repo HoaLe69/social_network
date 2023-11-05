@@ -9,11 +9,15 @@ import {
   useColorModeValue,
   Box,
   Link,
+  Alert,
+  AlertIcon,
 } from "@chakra-ui/react";
 import AuthWrap from "./auth-wrap";
 import styled from "@emotion/styled";
-import { Link as ReactRouterLink } from "react-router-dom";
+import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
+import { login } from "@redux/api-request/auth";
+import { useDispatch, useSelector } from "react-redux";
 
 const FormStyled = styled.form`
   width: 400px;
@@ -21,13 +25,17 @@ const FormStyled = styled.form`
 `;
 
 const Login = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const isLoadingLogin = useSelector((state) => state.auth.login.isFetching);
+  const message = useSelector((state) => state.auth.login.message);
   const formik = useFormik({
     initialValues: {
       userName: "",
       password: "",
     },
-    onSubmit: (data) => {
-      console.log(data);
+    onSubmit: (formData) => {
+      login(dispatch, navigate, formData);
     },
   });
   return (
@@ -89,8 +97,20 @@ const Login = () => {
               Forgot Password
             </Text>
           </FormControl>
-          <Button type="submit" colorScheme="teal" width="full">
-            Login
+          {message && (
+            <Alert status="error">
+              <AlertIcon />
+              {message}
+            </Alert>
+          )}
+          <Button
+            type="submit"
+            isLoading={isLoadingLogin}
+            loadingText="Sign in"
+            colorScheme="teal"
+            width="full"
+          >
+            Sign in
           </Button>
         </VStack>
         <Text mt={4} textAlign="center">

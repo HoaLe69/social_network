@@ -11,11 +11,15 @@ import {
   Heading,
   FormErrorMessage,
   useColorModeValue,
+  Alert,
+  AlertIcon,
 } from "@chakra-ui/react";
-import { Link as ReactRouterLink } from "react-router-dom";
+import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
 import styled from "@emotion/styled";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
+import { register } from "@redux/api-request/auth";
 
 const FormStyled = styled.form`
   width: 400px;
@@ -23,14 +27,20 @@ const FormStyled = styled.form`
 `;
 
 const Register = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isLoadingRegister = useSelector(
+    (state) => state.auth.register.isFetching,
+  );
+  const message = useSelector((state) => state.auth.register.message);
   const formik = useFormik({
     initialValues: {
       userName: "",
       email: "",
       password: "",
     },
-    onSubmit: (data) => {
-      console.log(data);
+    onSubmit: (formData) => {
+      register(dispatch, navigate, formData);
     },
     validationSchema: Yup.object({
       userName: Yup.string()
@@ -48,8 +58,8 @@ const Register = () => {
         .required("Required")
         .min(6, "Minimun 6 characters")
         .matches(
-          /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d][A-Za-z\d!@#$%^&*()_+]{6,19}$/,
-          "Include least one letter, one number, one special character",
+          /(?=.*\d)(?=.*[a-zA-Z]).*/,
+          "Include least one letter, one number",
         ),
     }),
   });
@@ -131,7 +141,19 @@ const Register = () => {
               <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
             )}
           </FormControl>
-          <Button type="submit" colorScheme="teal" width="full">
+          {message && (
+            <Alert status="error">
+              <AlertIcon />
+              {message}
+            </Alert>
+          )}
+          <Button
+            isLoading={isLoadingRegister}
+            loadingText="Sign up"
+            type="submit"
+            colorScheme="teal"
+            width="full"
+          >
             Sign up
           </Button>
         </VStack>

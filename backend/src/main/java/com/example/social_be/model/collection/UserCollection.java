@@ -40,12 +40,11 @@ public class UserCollection {
         this.userName = authSignUpRequest.getUserName();
         this.email = authSignUpRequest.getEmail();
         this.password = authSignUpRequest.getPassword();
-        this.displayName = null;
+        this.displayName = authSignUpRequest.getUserName();
         this.avatar = null;
         this.about = null;
         this.follower = new ArrayList<>();
         this.following = new ArrayList<>();
         this.createAt = new Date();
-
     }
 }

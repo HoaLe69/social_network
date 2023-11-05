@@ -2,10 +2,15 @@ package com.example.social_be.repository;
 
 import com.example.social_be.model.collection.UserCollection;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
+
+import java.util.List;
 
 public interface UserRepository extends MongoRepository<UserCollection, String> {
     UserCollection findUserCollectionByUserName(String userName);
 
     UserCollection findUserCollectionById(String Id);
 
+    @Query("{ userName : { $regex : ?0 } }")
+    List<UserCollection> findByLikeUserName(String name);
 }

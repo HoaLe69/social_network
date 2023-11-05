@@ -5,6 +5,7 @@ import com.example.social_be.model.request.AuthLoginRequest;
 import com.example.social_be.model.request.AuthSignUpRequest;
 import com.example.social_be.model.response.JwtResponse;
 import com.example.social_be.model.response.MessageResponse;
+import com.example.social_be.model.response.UserResponse;
 import com.example.social_be.repository.UserRepository;
 import com.example.social_be.util.JwtTokenUtil;
 import jakarta.servlet.http.Cookie;
@@ -19,6 +20,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin("http://localhost:3000")
 @RequestMapping(value = "/api/auth")
 public class AuthController {
     @Autowired
@@ -31,7 +33,10 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AuthLoginRequest authLoginRequest, HttpServletResponse response) throws Exception {
+    public ResponseEntity<?> login(@RequestBody AuthLoginRequest authLoginRequest, HttpServletResponse response) {
+        UserCollection userCheck = userRepository.findUserCollectionByUserName(authLoginRequest.getUserName());
+        if (userCheck == null)
+            return ResponseEntity.badRequest().body(new MessageResponse("Username không tồn tại!!!"));
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 authLoginRequest.getUserName(), authLoginRequest.getPassword()
         ));
@@ -40,8 +45,8 @@ public class AuthController {
             String refreshToken = jwtTokenUtil.generateJwtRefreshToken(authLoginRequest.getUserName());
             Cookie cookie = new Cookie("refreshToken", refreshToken);
             response.addCookie(cookie);
-//            final UserCollection userCollection = userRepository.findUserCollectionByUserName(authLoginRequest.getUserName());
-            return ResponseEntity.ok(new JwtResponse(accessToken, refreshToken));
+            UserResponse currentUserLogin = new UserResponse(userCheck, accessToken);
+            return ResponseEntity.ok(currentUserLogin);
         }
         return ResponseEntity.badRequest().body(new MessageResponse("fails to authenticated"));
     }
@@ -53,10 +58,11 @@ public class AuthController {
             String pass = encoder.encode(authSignUpRequest.getPassword());
             authSignUpRequest.setPassword(pass);
             UserCollection userCollection = new UserCollection(authSignUpRequest);
+
             userRepository.save(userCollection);
             return ResponseEntity.ok(new MessageResponse("Register successfully"));
         }
-        return ResponseEntity.badRequest().body(user);
+        return ResponseEntity.badRequest().body(new MessageResponse("Username is exiting"));
     }
 
     @PostMapping("/refresh-token")

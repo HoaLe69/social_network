@@ -1,22 +1,32 @@
 import { Box } from "@chakra-ui/react";
 import Post from "./post";
-import { postDt } from "../../samepleData";
+import { getAllPost } from "@redux/api-request/posts";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const PostContainer = () => {
+  const dispatch = useDispatch();
+  const posts = useSelector((state) => state.post.allPost.posts);
+  const accessToken = JSON.parse(localStorage.getItem("user"))?.accessToken;
+  useEffect(() => {
+    getAllPost(dispatch, accessToken);
+  }, [dispatch, accessToken]);
   return (
     <Box>
-      {postDt?.map(function (data) {
+      {posts?.map(function (post) {
         return (
           <Post
-            key={data.id}
-            id={data.id}
-            photoUrl={data.photoUrl}
-            displayName={data.displayName}
-            status={data.status}
-            follower={data.follower}
-            thumbNail={data.thumbNail}
-            like={data.like}
-            comments={data.comments}
+            key={post.id}
+            id={post.id}
+            cloudId={post.cloudinaryId}
+            userId={post.userId}
+            photoUrl={post.photoUrl}
+            displayName={post.displayName}
+            status={post.description}
+            follower={post.follower}
+            thumbnail={post.thumbnail}
+            like={post.like}
+            comments={post.comments}
           />
         );
       })}

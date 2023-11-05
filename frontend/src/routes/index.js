@@ -11,7 +11,7 @@ import ChatPc from "@pages/chat-pc";
 import Login from "@pages/auth/login";
 import Register from "@pages/auth/register";
 
-const routes = [
+export const routesPrivate = [
   {
     path: route.home,
     component: <Home />,
@@ -48,6 +48,9 @@ const routes = [
     path: route.chat,
     component: <ChatPc />,
   },
+];
+
+export const routesPublic = [
   {
     path: route.login,
     component: <Login />,
@@ -57,5 +60,3 @@ const routes = [
     component: <Register />,
   },
 ];
-
-export default routes;

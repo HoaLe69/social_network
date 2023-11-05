@@ -1,17 +1,27 @@
 import { Box, Link, Heading, Image, Grid, GridItem } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { AiFillHeart } from "react-icons/ai";
-import { profilePostDt } from "../../samepleData";
+import { getAllPostUser } from "@redux/api-request/posts";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 
-const ProfilePostItem = ({ thumNail, like, postId }) => {
+const ProfilePostItem = ({ thumbnail, like, id }) => {
   return (
     <Link
       as={ReactRouterLink}
-      to={`/home/post/${postId}`}
+      to={`/home/post/${id}`}
       position="relative"
       role="group"
     >
-      <Image src={thumNail} alt={postId} boxSize="300px" objectFit="cover" />
+      <Box height="400px">
+        <Image
+          src={thumbnail}
+          alt={id}
+          height="full"
+          width="full"
+          objectFit="cover"
+        />
+      </Box>
       <Box
         position="absolute"
         top={0}
@@ -29,16 +39,22 @@ const ProfilePostItem = ({ thumNail, like, postId }) => {
           gap="5px"
           color="whiteAlpha.800"
         >
-          {like} <AiFillHeart />
+          {like?.length} <AiFillHeart />
         </Box>
       </Box>
     </Link>
   );
 };
 
-const ProfilePost = () => {
+const ProfilePost = ({ userId }) => {
+  const dispatch = useDispatch();
+  const profilePost = useSelector((state) => state.post.getPostUser.posts);
+  const accessToken = JSON.parse(localStorage.getItem("user")).accessToken;
+  useEffect(() => {
+    getAllPostUser(dispatch, userId, accessToken);
+  }, [userId, dispatch, accessToken]);
   return (
-    <Box pt={4}>
+    <Box pt={5}>
       <Heading
         textAlign="center"
         fontSize={"md"}
@@ -52,16 +68,16 @@ const ProfilePost = () => {
       <Grid
         templateColumns={{
           base: "repeat(2, 1fr)",
-          sm: "repeat(3, 1fr)",
+          sm: "repeat(2, 1fr)",
           md: "repeat(3 , 1fr)",
-          lg: "repeat(4 , 1fr) ",
+          lg: "repeat(3 , 1fr) ",
         }}
         gap={2}
         pt={4}
       >
-        {profilePostDt.map((data) => {
+        {profilePost.map((data) => {
           return (
-            <GridItem key={data.postId}>
+            <GridItem key={data.id}>
               <ProfilePostItem {...data} />
             </GridItem>
           );

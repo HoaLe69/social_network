@@ -22,6 +22,11 @@ public class UserController {
     @Autowired
     private PasswordEncoder encoder;
 
+    @GetMapping("/search")
+    public ResponseEntity<?> searchUser(@RequestParam String name) {
+        return ResponseEntity.ok(userRepository.findByLikeUserName(name).stream().limit(3));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable String id) {
         try {

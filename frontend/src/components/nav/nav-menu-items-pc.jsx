@@ -39,6 +39,7 @@ const MenuItemPc = ({ icon, onOpen }) => {
 
 const NavMenuPc = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { id: userId, avatar } = JSON.parse(localStorage.getItem("user"));
   return (
     <Box display={{ base: "none", lg: "flex" }} alignItems="center" gap="10px">
       <Box>
@@ -76,13 +77,13 @@ const NavMenuPc = () => {
               borderStyle="solid"
               borderColor={useColorModeValue("gray.500", "whiteAlpha.500")}
               size={"md"}
-              src="https://i.pinimg.com/564x/20/94/7a/20947a0ec294a7aa90e2172914b5072d.jpg"
+              src={avatar}
             />
           </MenuButton>
         </Tooltip>
         <MenuList>
           <MenuGroup title="Profile">
-            <Link to="/profile/129837">
+            <Link to={`/profile/${userId}`}>
               <MenuItem>
                 <Box as="span" fontSize="lg" mr={2}>
                   <CgProfile />

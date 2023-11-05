@@ -5,6 +5,8 @@ import lombok.Data;
 
 @Data
 public class UserResponse extends UserCollection {
+    private String accessToken;
+
     public UserResponse(UserCollection user) {
         this.id = user.getId();
         this.userName = user.getUserName();
@@ -16,5 +18,19 @@ public class UserResponse extends UserCollection {
         this.follower = user.getFollower();
         this.following = user.getFollowing();
         this.createAt = user.getCreateAt();
+    }
+
+    public UserResponse(UserCollection user, String accessToken) {
+        this.id = user.getId();
+        this.userName = user.getUserName();
+        this.email = user.getEmail();
+        this.displayName = user.getDisplayName();
+        this.avatar = user.getAvatar();
+        this.about = user.getAbout();
+        this.isOnline = user.isOnline();
+        this.follower = user.getFollower();
+        this.following = user.getFollowing();
+        this.createAt = user.getCreateAt();
+        this.accessToken = accessToken;
     }
 }

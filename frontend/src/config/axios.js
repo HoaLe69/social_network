@@ -3,9 +3,15 @@ import queryString from "query-string";
 
 const axiosClient = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
+  // headers: {
+  //   // "Access-Control-Allow-Credentials": "true",
+  //   // "Access-Control-Allow-Origin": "*",
+  //   // "Access-Control-Allow-Methods": "GET, POST, PATCH, DELETE, PUT, OPTIONS",
+  //   // "Access-Control-Allow-Headers":
+  //   //   "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With",
+  //   Authorization: "Bearer " + accessToken,
+  //   // Accept: "application/json",
+  // },
   paramsSerializer: (params) => queryString.stringify(params),
 });
 axiosClient.interceptors.request.use(async (config) => {
