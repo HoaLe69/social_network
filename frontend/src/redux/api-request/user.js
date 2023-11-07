@@ -12,6 +12,9 @@ import {
   getListUserFollowingStart,
   getListUserFollowingSuccess,
   getListUserFollowingFailed,
+  getListUserFollowerStart,
+  getListUserFollowerFailed,
+  getListUserFollowerSuccess,
 } from "../userSlice";
 import axios from "axios";
 
@@ -81,7 +84,7 @@ export const getListFollowing = async (dispatch, listIdUser, accessToken) => {
   dispatch(getListUserFollowingStart());
   try {
     const res = await axios.post(
-      `${baseUrl}/user/getUserFollowing`,
+      `${baseUrl}/user/getUserFollow`,
       { follow: listIdUser },
       {
         headers: {
@@ -93,5 +96,25 @@ export const getListFollowing = async (dispatch, listIdUser, accessToken) => {
   } catch (err) {
     console.log(err);
     dispatch(getListUserFollowingFailed());
+  }
+};
+
+// get list follower
+export const getListFollower = async (dispatch, listIdUser, accessToken) => {
+  dispatch(getListUserFollowerStart());
+  try {
+    const res = await axios.post(
+      `${baseUrl}/user/getUserFollow`,
+      { follow: listIdUser },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    dispatch(getListUserFollowerSuccess(res));
+  } catch (err) {
+    console.log(err);
+    dispatch(getListUserFollowerFailed());
   }
 };

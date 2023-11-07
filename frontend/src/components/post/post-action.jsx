@@ -39,10 +39,10 @@ const PostAction = ({ isDetail, like, comments, id, handleShowFullPost }) => {
           <Box fontSize="12px" p={1} color="white" bg="red.500" rounded="full">
             <AiFillHeart />
           </Box>
-          <Text lineHeight={1}>You and {like?.length} other</Text>
+          <Text lineHeight={1}>You and {like && like?.length} other</Text>
         </Box>
         <Box>
-          <Text onClick={handleShowFullPost}>{comments.length} comments</Text>
+          <Text onClick={handleShowFullPost}>{comments} comments</Text>
         </Box>
       </Flex>
       <Flex px={10} align="center" justify="space-around" mt={1}>

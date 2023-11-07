@@ -21,6 +21,11 @@ const userSlice = createSlice({
       error: false,
       listFollowing: [],
     },
+    getListUserFollower: {
+      isFetching: false,
+      error: false,
+      listFollower: [],
+    },
   },
   reducers: {
     getUserStart: (state) => {
@@ -70,6 +75,18 @@ const userSlice = createSlice({
       state.getListUserFollowing.isFetching = false;
       state.getListUserFollowing.error = true;
     },
+    getListUserFollowerStart: (state) => {
+      state.getListUserFollower.isFetching = true;
+    },
+    getListUserFollowerSuccess: (state, action) => {
+      state.getListUserFollower.isFetching = false;
+      state.getListUserFollower.listFollower = action.payload;
+      state.getListUserFollower.error = false;
+    },
+    getListUserFollowerFailed: (state) => {
+      state.getListUserFollower.isFetching = false;
+      state.getListUserFollower.error = true;
+    },
   },
 });
 
@@ -86,6 +103,9 @@ export const {
   getListUserFollowingStart,
   getListUserFollowingSuccess,
   getListUserFollowingFailed,
+  getListUserFollowerStart,
+  getListUserFollowerFailed,
+  getListUserFollowerSuccess,
 } = userSlice.actions;
 
 export default userSlice.reducer;

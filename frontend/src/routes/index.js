@@ -48,6 +48,10 @@ export const routesPrivate = [
     path: route.chat,
     component: <ChatPc />,
   },
+  {
+    path: route.chatRoom,
+    component: <ChatPc />,
+  },
 ];
 
 export const routesPublic = [

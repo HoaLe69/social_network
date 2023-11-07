@@ -3,7 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 export const postSlice = createSlice({
   name: "posts",
   initialState: {
-    currentPost: {},
+    currentPostId: {
+      id: undefined,
+    },
     allPost: {
       isFetching: false,
       error: false,
@@ -24,8 +26,16 @@ export const postSlice = createSlice({
       error: false,
       posts: [],
     },
+    getPostById: {
+      isFetching: false,
+      error: false,
+      post: {},
+    },
   },
   reducers: {
+    getCurrentPostId: (state, action) => {
+      state.currentPostId.id = action.payload;
+    },
     getAllPostStart: (state) => {
       state.allPost.isFetching = true;
     },
@@ -35,9 +45,6 @@ export const postSlice = createSlice({
     },
     getAllPostFailed: (state) => {
       state.allPost.error = true;
-    },
-    showPost: (state, action) => {
-      state.currentPost = { ...state.currentPost, ...action.payload };
     },
     createPostStart: (state) => {
       state.createPost.isFetching = true;
@@ -73,11 +80,23 @@ export const postSlice = createSlice({
       state.getPostUser.isFetching = false;
       state.getPostUser.error = true;
     },
+    getPostByIdStart: (state) => {
+      state.getPostById.isFetching = true;
+    },
+    getPostByIdSuccess: (state, action) => {
+      state.getPostById.isFetching = false;
+      state.getPostById.post = action.payload;
+      state.getPostById.error = false;
+    },
+    getPostByIdFailed: (state) => {
+      state.getPostById.isFetching = false;
+      state.getPostById.error = true;
+    },
   },
 });
 
 export const {
-  showPost,
+  getCurrentPostId,
   getAllPostStart,
   getAllPostFailed,
   getAllPostSuccess,
@@ -90,5 +109,8 @@ export const {
   getPostUserStart,
   getPostUserFalied,
   getPostUserSuccess,
+  getPostByIdStart,
+  getPostByIdFailed,
+  getPostByIdSuccess,
 } = postSlice.actions;
 export default postSlice.reducer;

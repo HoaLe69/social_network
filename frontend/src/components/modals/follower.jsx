@@ -14,27 +14,27 @@ import {
 import { Link as ReacRouterLink } from "react-router-dom";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getListFollowing } from "../../redux/api-request/user";
+import { getListFollower } from "@redux/api-request/user";
 
-const ListFollowingModal = ({ isOpen, onClose, listsUserIdFollowing }) => {
+const ListFollowerModal = ({ isOpen, onClose, listsUserIdFollower }) => {
   const dispatch = useDispatch();
   const accessToken = JSON.parse(localStorage.getItem("user"))?.accessToken;
-  const listsFollowing = useSelector(
-    (state) => state.user.getListUserFollowing?.listFollowing,
+  const listFollower = useSelector(
+    (state) => state.user.getListUserFollower?.listFollower,
   );
   useEffect(() => {
-    if (listsUserIdFollowing) {
-      getListFollowing(dispatch, listsUserIdFollowing, accessToken);
+    if (listsUserIdFollower) {
+      getListFollower(dispatch, listsUserIdFollower, accessToken);
     }
-  }, [dispatch, accessToken, listsUserIdFollowing]);
+  }, [dispatch, accessToken, listsUserIdFollower]);
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="sm">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Following</ModalHeader>
+        <ModalHeader>Follower</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          {listsFollowing?.map((user) => {
+          {listFollower?.map((user) => {
             return <UserItem onClose={onClose} user={user} key={user?.id} />;
           })}
         </ModalBody>
@@ -71,4 +71,4 @@ const UserItem = ({ user, onClose }) => {
   );
 };
 
-export default ListFollowingModal;
+export default ListFollowerModal;

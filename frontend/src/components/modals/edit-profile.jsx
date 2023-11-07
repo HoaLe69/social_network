@@ -76,7 +76,7 @@ const EditProfileModal = ({ isOpen, onClose }) => {
       );
       const userStorage = {
         ...userClient,
-        avatar: previewSource,
+        avatar: previewSource || userClient.avatar,
         displayName: data.displayName,
         about: data.about,
       };

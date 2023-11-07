@@ -8,6 +8,7 @@ const route = {
   message: "/message",
   roomChat: "/message/:id",
   chat: "/chat",
+  chatRoom: "/chat/:id",
   login: "/login",
   register: "/register",
 };

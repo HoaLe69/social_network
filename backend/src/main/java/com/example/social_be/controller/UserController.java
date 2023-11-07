@@ -1,19 +1,24 @@
 package com.example.social_be.controller;
 
+import com.example.social_be.model.collection.PostCollection;
 import com.example.social_be.model.collection.UserCollection;
+import com.example.social_be.model.request.FollowingRequest;
 import com.example.social_be.model.request.UserUpdateRequest;
 import com.example.social_be.model.response.MessageResponse;
 import com.example.social_be.model.response.UserResponse;
+import com.example.social_be.repository.PostRepository;
 import com.example.social_be.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 @RestController
+@CrossOrigin("http://localhost:3000/")
 @RequestMapping(value = "/api/user")
 public class UserController {
     @Autowired
@@ -21,6 +26,10 @@ public class UserController {
     // get user by id
     @Autowired
     private PasswordEncoder encoder;
+
+    @Autowired
+    private PostRepository postRepository;
+
 
     @GetMapping("/search")
     public ResponseEntity<?> searchUser(@RequestParam String name) {
@@ -37,23 +46,48 @@ public class UserController {
         }
     }
 
+    @PostMapping("/getUserFollow")
+    public ResponseEntity<?> getUserFollowing(@RequestBody FollowingRequest following) {
+        if (following.getFollow() != null) {
+            List<UserCollection> userFollowing = new ArrayList<>();
+            for (int i = 0; i < following.getFollow().size(); i++) {
+                userFollowing.add(userRepository.findUserCollectionById((String) following.getFollow().get(i)));
+            }
+            return ResponseEntity.ok(userFollowing);
+        }
+        return ResponseEntity.badRequest().body(following);
+    }
+
     // update user by id
     @PatchMapping("/update/{id}")
     public ResponseEntity<?> updateUser(@RequestBody UserUpdateRequest update, @PathVariable String id) {
-        UserCollection user = userRepository.findUserCollectionById(id);
-        if (user != null) {
-            String pass = null;
-            if (update.getPassword() != null) {
-                pass = encoder.encode(update.getPassword());
+        try {
+            UserCollection user = userRepository.findUserCollectionById(id);
+            List<PostCollection> posts = postRepository.findAllByUserId(id);
+            if (user != null) {
+                if (!posts.isEmpty()) {
+                    for (PostCollection post : posts) {
+                        post.setDisplayName(update.getDisplayName() != null ? update.getDisplayName() : user.getDisplayName());
+                        post.setPhotoUrl(update.getAvatar() != null ? update.getAvatar() : user.getAvatar());
+                        postRepository.save(post);
+                    }
+                }
+                String pass = null;
+                if (update.getPassword() != null) {
+                    pass = encoder.encode(update.getPassword());
+                }
+                user.setDisplayName(update.getDisplayName() != null ? update.getDisplayName() : user.getDisplayName());
+                user.setAbout(update.getAbout() != null ? update.getAbout() : user.getAbout());
+                user.setAvatar(update.getAvatar() != null ? update.getAvatar() : user.getAvatar());
+                user.setPassword(pass != null ? pass : user.getPassword());
+                userRepository.save(user);
+                return ResponseEntity.ok(new MessageResponse("Update successfully"));
+            } else {
+                return ResponseEntity.badRequest().body(new MessageResponse("Something wrong"));
             }
-            user.setDisplayName(update.getDisplayName() != null ? update.getDisplayName() : user.getDisplayName());
-            user.setAbout(update.getAbout() != null ? update.getAbout() : user.getAbout());
-            user.setAvatar(update.getAvatar() != null ? update.getAvatar() : user.getAvatar());
-            user.setPassword(pass != null ? pass : user.getPassword());
-            userRepository.save(user);
-            return ResponseEntity.ok(new MessageResponse("Update successfully"));
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Something wrong"));
         }
-        return ResponseEntity.badRequest().body(new MessageResponse("Something wrong"));
     }
 
     //delete user by id

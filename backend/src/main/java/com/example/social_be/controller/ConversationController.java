@@ -1,0 +1,49 @@
+package com.example.social_be.controller;
+
+import com.example.social_be.model.collection.ConversationCollection;
+import com.example.social_be.model.request.ConversationRequest;
+import com.example.social_be.model.response.MessageResponse;
+import com.example.social_be.repository.ConversationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.data.mongodb.core.query.Query;
+
+import java.util.List;
+
+
+@RestController
+@RequestMapping("/api/conversation")
+@CrossOrigin("http://localhost:3000/")
+public class ConversationController {
+    @Autowired
+    private ConversationRepository conversationRepository;
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    @PostMapping("/create")
+    public ResponseEntity<?> createConversation(@RequestBody ConversationRequest conversationRequest) {
+        try {
+            ConversationCollection conversationCollection = new ConversationCollection(conversationRequest.getMember());
+            conversationRepository.save(conversationCollection);
+            return ResponseEntity.ok(conversationCollection);
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Something wrong"));
+        }
+    }
+
+    @GetMapping("/find/{senderId}/{receiveId}")
+    public ResponseEntity<?> findConversation(@PathVariable String senderId, @PathVariable String receiveId) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("member").all(senderId, receiveId));
+        List<ConversationCollection> result = mongoTemplate.find(query, ConversationCollection.class, "room");
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllRoomConversation() {
+        return ResponseEntity.ok(conversationRepository.findAll());
+    }
+}

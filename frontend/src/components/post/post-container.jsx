@@ -22,7 +22,7 @@ const PostContainer = () => {
             userId={post.userId}
             photoUrl={post.photoUrl}
             displayName={post.displayName}
-            status={post.description}
+            description={post.description}
             follower={post.follower}
             thumbnail={post.thumbnail}
             like={post.like}

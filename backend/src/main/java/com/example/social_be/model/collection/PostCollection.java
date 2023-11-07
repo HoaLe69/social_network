@@ -1,12 +1,14 @@
 package com.example.social_be.model.collection;
 
 
+import com.example.social_be.util.Utilties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,21 +27,21 @@ public class PostCollection {
     private List<String> like;
     private String description;
     private long comments;
-    private Date createAt;
+    private String createAt;
 
-    public PostCollection(String userId, String photoUrl, String displayName, String thumbnail, String cloudinaryId, List<String> like, String description, long comments) {
+    public PostCollection(String userId, String photoUrl, String displayName, String thumbnail, String cloudinaryId, String description) {
         this.userId = userId;
         this.photoUrl = photoUrl;
         this.displayName = displayName;
         this.thumbnail = thumbnail;
         this.cloudinaryId = cloudinaryId;
-        this.like = like;
+        this.like = new ArrayList<>();
         this.description = description;
-        this.comments = comments;
-        this.createAt = new Date();
+        this.comments = 0;
+        this.createAt = new Utilties().dayTimeFormat();
     }
 
     public PostCollection() {
-        this.createAt = new Date();
+        this.createAt = new Utilties().dayTimeFormat();
     }
 }

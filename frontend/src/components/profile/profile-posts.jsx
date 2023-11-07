@@ -9,7 +9,7 @@ const ProfilePostItem = ({ thumbnail, like, id }) => {
   return (
     <Link
       as={ReactRouterLink}
-      to={`/home/post/${id}`}
+      to={`/post/${id}`}
       position="relative"
       role="group"
     >

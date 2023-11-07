@@ -13,6 +13,9 @@ import {
   getPostUserStart,
   getPostUserSuccess,
   getPostUserFalied,
+  getPostByIdStart,
+  getPostByIdFailed,
+  getPostByIdSuccess,
 } from "../postSlice";
 import { config } from "./configAxiosHeader";
 
@@ -75,5 +78,21 @@ export const getAllPostUser = async (dispatch, id, accessToken) => {
   } catch (err) {
     console.log(err);
     dispatch(getPostUserFalied());
+  }
+};
+
+// get  post by id
+export const getPostById = async (dispatch, id, accessToken) => {
+  dispatch(getPostByIdStart());
+  try {
+    const res = await axios.get(`${baseUrl}/post/${id}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    dispatch(getPostByIdSuccess(res));
+  } catch (err) {
+    console.log(err);
+    dispatch(getPostByIdFailed());
   }
 };

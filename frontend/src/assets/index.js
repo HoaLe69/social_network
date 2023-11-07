@@ -4,6 +4,7 @@ const images = {
   cute: require("./cute.jpg"),
   girl: require("./girl.jpg"),
   korean: require("./korean.jpg"),
+  emptyRoom: require("./no-room.png"),
 };
 
 export default images;

@@ -6,48 +6,33 @@ import {
   Avatar,
   Heading,
   HStack,
-  IconButton,
 } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
-import { AiOutlineLeft, AiFillDelete } from "react-icons/ai";
+import { AiOutlineLeft } from "react-icons/ai";
 import { BsPatchCheckFill } from "react-icons/bs";
 import { useDispatch } from "react-redux";
-import { showPost } from "@redux/postSlice";
 import route from "@config/route";
 import PostAction from "./post-action";
 import MenuPost from "../menu-post";
+import { getCurrentPostId } from "@redux/postSlice";
 
 const Post = (props) => {
   const currentUser = JSON.parse(localStorage.getItem("user"));
-  const dipatch = useDispatch();
+  const dispatch = useDispatch();
   const {
     id,
     userId,
     cloudId,
     photoUrl,
     displayName,
-    status,
-    follower,
+    description,
     thumbnail,
     like,
     comments,
     isDetail,
   } = props;
   const handleShowFullPost = () => {
-    const post = {
-      id,
-      userId,
-      cloudId,
-      photoUrl,
-      displayName,
-      status,
-      follower,
-      thumbnail,
-      like,
-      comments,
-      isDetail,
-    };
-    dipatch(showPost(post));
+    dispatch(getCurrentPostId(id));
   };
   return (
     <Box>
@@ -71,11 +56,9 @@ const Post = (props) => {
           <Heading as="h3" fontSize="14px">
             {displayName}
           </Heading>
-          {follower?.length > 5 && (
-            <Box as="span" color={"grassTeal"}>
-              <BsPatchCheckFill />
-            </Box>
-          )}
+          <Box as="span" color={"grassTeal"}>
+            <BsPatchCheckFill />
+          </Box>
         </Link>
         {userId === currentUser?.id && (
           <Box ml="auto">
@@ -84,7 +67,7 @@ const Post = (props) => {
         )}
       </HStack>
       <Box pl={2} pb={2}>
-        <Text noOfLines={`${isDetail ? "none" : 3}`}>{status}</Text>
+        <Text noOfLines={`${isDetail ? "none" : 3}`}>{description}</Text>
       </Box>
       {thumbnail && (
         <Box overflow={"hidden"}>
