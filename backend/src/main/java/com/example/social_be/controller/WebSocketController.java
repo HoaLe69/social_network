@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin("http://localhost:3000/")
-public class MessageController {
+public class WebSocketController {
     @Autowired
     private MessageRepository messageRepository;
 
     // Handles messages from /app/messages. (Note the Spring adds the /app prefix for us).
-    @MessageMapping("/messages")
+    @MessageMapping("/messages/{id}")
     // Sends the return value of this method to /topic/messages
-    @SendTo("/topic/messages")
+    @SendTo("/topic/messages/{id}")
     public ResponseEntity<?> addMessage(MessageCollection mess) {
         return ResponseEntity.ok(mess);
     }

@@ -11,6 +11,7 @@ const route = {
   chatRoom: "/chat/:id",
   login: "/login",
   register: "/register",
+  testsocket: "/testsocket/:id",
 };
 
 export default route;

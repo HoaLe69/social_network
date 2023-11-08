@@ -21,7 +21,7 @@ const useFetchData = (url, token) => {
       }
     };
     fetchData();
-  }, [url]);
+  }, [url, token]);
   return { isLoading, apiData, serverError };
 };
 

@@ -57,9 +57,7 @@ const CoversItem = ({ senderId, accessToken, room }) => {
         <Heading as="h3" fontSize="md">
           {user?.displayName}
         </Heading>
-        <Text color={`${textColor}`} fontSize="sm" noOfLines={1}>
-          {room?.lastestMessage}
-        </Text>
+        <Text color={`${textColor}`} fontSize="sm" noOfLines={1}></Text>
       </Box>
     </Flex>
   );

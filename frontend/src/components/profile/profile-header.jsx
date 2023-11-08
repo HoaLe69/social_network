@@ -109,6 +109,7 @@ const ProfileHeader = ({ userId: userIdFromUrl }) => {
                   onClick={handleFollowOrtherUser}
                   colorScheme="teal"
                   isLoading={isLoadingFollow}
+                  mr={2}
                 >
                   {relation()}
                 </Button>

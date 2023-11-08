@@ -38,3 +38,16 @@ export const getAllRoomConversation = async (dispatch, accessToken) => {
     dispatch(getAllRoomConversationFailed());
   }
 };
+
+// update lastMessage
+export const updateLastestMess = async (id, lastestMessage, accessToken) => {
+  try {
+    await axios.patch(
+      `${baseUrl}/conversation/update/lastestMessage/${id}`,
+      { lastestMessage: lastestMessage },
+      { headers: { Authorization: `Bearer ${accessToken}` } },
+    );
+  } catch (err) {
+    console.log(err);
+  }
+};

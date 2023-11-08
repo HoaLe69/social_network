@@ -3,6 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 const conversationSlice = createSlice({
   name: "roomConversation",
   initialState: {
+    getLastestMessage: {
+      lastestMessage: undefined,
+      roomId: undefined,
+    },
     selectedRoom: {
       id: undefined,
       recevierId: undefined,
@@ -19,6 +23,10 @@ const conversationSlice = createSlice({
     },
   },
   reducers: {
+    getLastestMessage: (state, action) => {
+      state.getLastestMessage.lastestMessage = action.payload.mess;
+      state.getLastestMessage.roomId = action.payload.id;
+    },
     getSelectedRoom: (state, action) => {
       state.selectedRoom.id = action.payload;
     },
@@ -52,6 +60,7 @@ const conversationSlice = createSlice({
 
 export const {
   getSelectedRoom,
+  getLastestMessage,
   createRoomConversationStart,
   createRoomConversationFailed,
   createRoomConversationSuccess,

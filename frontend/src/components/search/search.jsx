@@ -79,8 +79,8 @@ const Search = () => {
         <Heading as="h3" fontSize="18px">
           Search Results
         </Heading>
-        {sampleData.map((data) => {
-          return <SearchResult displayName={data.displayName} />;
+        {sampleData.map((data, index) => {
+          return <SearchResult key={index} displayName={data.displayName} />;
         })}
       </Box>
     </Box>

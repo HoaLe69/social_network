@@ -1,77 +1,63 @@
 import {
   Box,
+  Text,
   Flex,
   Avatar,
   Heading,
-  Input,
-  InputGroup,
-  InputRightElement,
-  Text,
   useColorModeValue,
   Link,
 } from "@chakra-ui/react";
 import { AiOutlineLeft } from "react-icons/ai";
-import { BsFillSendFill } from "react-icons/bs";
-import {
-  Link as ReactRouterLink,
-  useLocation,
-  useParams,
-} from "react-router-dom";
+import { Link as ReactRouterLink, useParams } from "react-router-dom";
 import route from "@config/route";
 import { COLOR_THEME } from "../../constant";
-import { chatsDt } from "../../samepleData";
 import { useSelector } from "react-redux";
 import useFetchData from "../../hooks/useFetchData";
 import EmptyRoom from "./room-empty";
-
-const ConversationItem = ({ photoUrl, displayName, content }) => {
-  const WrapMessage = ({ children }) => {
-    return photoUrl ? (
-      <Flex gap="5px" align="end" mt={3}>
-        {children}
-      </Flex>
-    ) : (
-      <Flex
-        gap="5px"
-        align="end"
-        mt={3}
-        justifyContent="end"
-        flexDir="row-reverse"
-      >
-        {children}
-      </Flex>
-    );
-  };
-  const inactive = useColorModeValue("whiteAlpha.500", "whiteAlpha.200");
-  return (
-    <WrapMessage>
-      {photoUrl && <Avatar src={photoUrl} alt={displayName} size="sm" />}
-      <Box
-        maxW="50%"
-        bg={photoUrl ? inactive : "grassTeal"}
-        p={1}
-        px={2}
-        borderRadius="10px"
-      >
-        <Text>{content}</Text>
-      </Box>
-    </WrapMessage>
-  );
-};
+import Message from "./message";
+import WebSocket from "../../hooks/useWebSocket";
+import { useEffect, useRef, useState } from "react";
+import InputRoomChat from "./input-mess";
+import axios from "axios";
 
 const RoomConversation = () => {
-  const { id } = useParams();
+  const baseUrl = process.env.REACT_APP_API_URL;
+  const [messages, setMessages] = useState([]);
+  const params = useParams();
+  const refDiv = useRef(null);
   const receiverId = new URLSearchParams(document.location.search).get(
     "receiver",
   );
-  const accessToken = JSON.parse(localStorage.getItem("user")).accessToken;
+  const userLogin = JSON.parse(localStorage.getItem("user"));
   const roomFormStore = useSelector((state) => state.room.selectedRoom.id);
-  const roomId = roomFormStore || id;
-  const url = `${process.env.REACT_APP_API_URL}/user/${receiverId}`;
-  const { apiData: user } = useFetchData(url, accessToken);
+  const roomId = roomFormStore || params?.id;
+  const url = `${baseUrl}/user/${receiverId}`;
+  const { apiData: user } = useFetchData(url, userLogin.accessToken);
 
   const bgHeader = useColorModeValue("#ffffff40", "#20202380");
-  const bgInput = useColorModeValue("whiteAlpha.700", "whiteAlpha.100");
+  const [message, sendMessage, disconnect, connect] = WebSocket();
+  useEffect(() => {
+    setMessages([...messages, message]);
+    refDiv.current.scrollTop = refDiv.current.scrollHeight;
+  }, [message]);
+  useEffect(() => {
+    if (roomId) connect("messages", roomId);
+    return () => disconnect();
+  }, [roomId]);
+
+  useEffect(() => {
+    const getMessages = async () => {
+      try {
+        const res = await axios.get(`${baseUrl}/message/all/${roomId}`, {
+          headers: { Authorization: `Bearer ${userLogin.accessToken}` },
+        });
+        setMessages(res);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    if (roomId) getMessages();
+  }, [roomId, baseUrl, userLogin.accessToken]);
   return (
     <>
       {roomId ? (
@@ -112,27 +98,34 @@ const RoomConversation = () => {
             flexDir="column"
             justifyContent="flex-end"
           >
-            <Box p={2} maxH="100%" overflowY="auto">
-              {chatsDt.map((data, index) => {
-                return (
-                  <ConversationItem
-                    key={index}
-                    photoUrl={data.photoUrl}
-                    content={data.content}
-                  />
-                );
-              })}
+            <Box
+              p={2}
+              display="flex"
+              flexDir="column"
+              maxH="100%"
+              ref={refDiv}
+              overflowY="auto"
+            >
+              <Box display="flex" flexDir="column" alignItems="center" mb={20}>
+                <Avatar src={user?.avatar} size="xl" alt={user?.displayName} />
+                <Text color="gray.500">Let chat with {user?.displayName}</Text>
+              </Box>
+              <Box pb={12}>
+                {messages.map((message, index) => {
+                  return (
+                    <Message
+                      key={index}
+                      createAt={message?.createAt}
+                      userId={message?.userId}
+                      photoUrl={user?.avatar}
+                      displayName={user?.displayName}
+                      content={message?.content}
+                    />
+                  );
+                })}
+              </Box>
             </Box>
-            <Box py={2} bg={bgInput}>
-              <InputGroup>
-                <Input placeholder="Message..." name="message" />
-                <InputRightElement>
-                  <Box as="button">
-                    <BsFillSendFill />
-                  </Box>
-                </InputRightElement>
-              </InputGroup>
-            </Box>
+            <InputRoomChat roomId={roomId} sendMessage={sendMessage} />
           </Box>
         </Box>
       ) : (
