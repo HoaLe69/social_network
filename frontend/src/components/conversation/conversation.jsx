@@ -67,17 +67,17 @@ const Converstation = () => {
   const userLogin = JSON.parse(localStorage.getItem("user"));
   const rooms = useSelector((state) => state.room.getAllRoomConversation.rooms);
   useEffect(() => {
-    if (userLogin.accessToken) {
-      getAllRoomConversation(dispatch, userLogin.accessToken);
+    if (userLogin?.accessToken) {
+      getAllRoomConversation(dispatch, userLogin.accessToken, userLogin?.id);
     }
-  }, [userLogin.accessToken, dispatch]);
+  }, [userLogin?.accessToken, dispatch, userLogin?.id]);
   return (
     <WrapContent title="Message">
       {rooms.map((room) => {
         return (
           <CoversItem
             senderId={userLogin.id}
-            accessToken={userLogin.accessToken}
+            accessToken={userLogin?.accessToken}
             key={room.id}
             room={room}
           />

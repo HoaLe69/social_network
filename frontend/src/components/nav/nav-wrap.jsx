@@ -5,7 +5,7 @@ const NavWrap = ({ children, isFixed, ...props }) => {
   return (
     <Box
       as="nav"
-      zIndex={2}
+      zIndex={1}
       position={isFixed ? "relative" : "fixed"}
       borderBottomWidth={isFixed && 1}
       borderColor={COLOR_THEME.BORDER}

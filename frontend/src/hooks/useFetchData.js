@@ -20,7 +20,7 @@ const useFetchData = (url, token) => {
         setLoading(false);
       }
     };
-    fetchData();
+    if (!url?.includes("null")) fetchData();
   }, [url, token]);
   return { isLoading, apiData, serverError };
 };

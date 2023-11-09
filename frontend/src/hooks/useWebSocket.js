@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import SockJS from "sockjs-client";
 import * as Stomp from "stompjs";
 
-const WebSocket = (id) => {
+const WebSocket = () => {
   const [stompClient, setStompClient] = useState(null);
   const [message, setMessage] = useState({});
   const connect = useCallback((channel, id) => {
@@ -18,20 +18,21 @@ const WebSocket = (id) => {
     setStompClient(stomp);
   }, []);
   const sendMessage = (message, channel, id) => {
-    stompClient.send(
-      `/app/${channel}/${id}`,
-      {},
-      JSON.stringify({
-        userId: message?.userId,
-        conversationId: message?.conversationId,
-        content: message?.content,
-      }),
-    );
+    console.log(stompClient);
+    if (stompClient) {
+      stompClient.send(
+        `/app/${channel}/${id}`,
+        {},
+        JSON.stringify({
+          ...message,
+        }),
+      );
+    }
   };
   const disconnect = () => {
     if (stompClient) stompClient.disconnect();
   };
-  return [message, sendMessage, disconnect, connect];
+  return { message, sendMessage, disconnect, connect };
 };
 
 export default WebSocket;

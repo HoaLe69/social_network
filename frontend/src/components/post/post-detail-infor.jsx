@@ -17,10 +17,9 @@ const PostInfor = () => {
       getPostById(dispatch, idPost, accessToken);
     }
   }, [accessToken, dispatch, idPost]);
-  console.log(postInfor);
   return (
     <Box>
-      <Post {...postInfor} isDetail />
+      <Post {...postInfor} />
     </Box>
   );
 };

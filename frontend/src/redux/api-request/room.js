@@ -26,10 +26,10 @@ export const createRoomChat = async (dispatch, member) => {
 };
 
 //get all room chat
-export const getAllRoomConversation = async (dispatch, accessToken) => {
+export const getAllRoomConversation = async (dispatch, accessToken, id) => {
   dispatch(getAllRoomConversationStart());
   try {
-    const res = await axios.get(`${baseUrl}/conversation/all`, {
+    const res = await axios.get(`${baseUrl}/conversation/all/${id}`, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     dispatch(getAllRoomConversationSuccess(res));

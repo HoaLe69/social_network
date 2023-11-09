@@ -1,19 +1,20 @@
 import {
   Box,
-  Avatar,
-  Text,
   HStack,
+  Avatar,
   Heading,
-  InputGroup,
-  InputRightElement,
+  Text,
   Link,
   useColorModeValue,
-  Input,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { BsFillSendFill } from "react-icons/bs";
+import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import { Link as ReactRouterLink } from "react-router-dom";
+import InputComment from "./input-comment";
+import useWebSocket from "../../hooks/useWebSocket";
+import axios from "axios";
 
-const Comment = ({ photoUrl, displayName, content }) => {
+const CommentItem = ({ photoUrl, displayName, content }) => {
   return (
     <HStack p={1} px={2} alignItems="start">
       <Avatar src={photoUrl} size="sm" alt={displayName} />
@@ -30,45 +31,67 @@ const Comment = ({ photoUrl, displayName, content }) => {
   );
 };
 
-const CommentWrap = () => {
-  const [data, setData] = useState([]);
+const Comment = ({ isOpen }) => {
+  const [comments, SetComments] = useState([]);
+  const { message, sendMessage, disconnect, connect } = useWebSocket();
+  const postId = useSelector((state) => state.post?.currentPostId?.id);
+  const userLogin = JSON.parse(localStorage.getItem("user"));
+  const baseUrl = process.env.REACT_APP_API_URL;
+
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/photos")
-      .then((res) => res.json())
-      .then((res) => setData(res.slice(0, 20)))
-      .catch((err) => console.log(err));
-  }, []);
+    SetComments([...comments, message]);
+  }, [message?.id]);
+
+  useEffect(() => {
+    if (postId) {
+      const getAllComment = async () => {
+        try {
+          const res = await axios.get(`${baseUrl}/comment/${postId}`, {
+            headers: { Authorization: `Bearer ${userLogin?.accessToken}` },
+          });
+          SetComments(res);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      getAllComment();
+    }
+  }, [postId, userLogin.accessToken]);
+
+  useEffect(() => {
+    if (isOpen) connect("comments", postId);
+    return () => {
+      console.log(1);
+      disconnect();
+    };
+  }, [isOpen]);
   return (
     <Box position="relative">
-      {data?.map((data, index) => {
+      {comments?.map((comment, index) => {
         return (
-          <Comment
-            key={data.url}
-            photoUrl={data.thumbnailUrl}
-            displayName={`Hoa ${index}`}
-            content={data.title}
+          <CommentItem
+            key={comment.id || index}
+            photoUrl={comment.avatar}
+            displayName={comment.displayName}
+            content={comment.content}
           />
         );
       })}
-      <HStack px={1}>
+      <HStack alignItems="center">
         <Link>
-          <Avatar src="https://hocdohoacaptoc.com/storage/2022/02/avata-dep-nam-2.jpg" />
+          <Avatar src={userLogin?.avatar} size="sm" />
         </Link>
         <Box
+          mt={2}
           bg={useColorModeValue("whiteAlpha.500", "whiteAlpha.200")}
+          alignItems="center"
           flex={1}
         >
-          <InputGroup>
-            <Input placeholder="Enter your comment..." name="comment" />
-            <InputRightElement>
-              <Box as="button">
-                <BsFillSendFill />
-              </Box>
-            </InputRightElement>
-          </InputGroup>
+          <InputComment postId={postId} sendMessage={sendMessage} />
         </Box>
       </HStack>
     </Box>
   );
 };
-export default CommentWrap;
+
+export default Comment;

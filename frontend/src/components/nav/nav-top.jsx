@@ -24,7 +24,7 @@ import useDebounce from "../../hooks/useDebounce";
 import axios from "axios";
 import accessToken from "../../utilties/token";
 
-const PopResult = ({ isOpen, children, result }) => {
+const PopResult = ({ isOpen, result }) => {
   const bgHover = useColorModeValue("blackAlpha.200", "whiteAlpha.300");
   return (
     <Box

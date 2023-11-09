@@ -1,15 +1,6 @@
 import { Flex, Avatar, Box, Text, useColorModeValue } from "@chakra-ui/react";
 
-const formatDay = (createAt) => {
-  const date = createAt.split("-");
-  const day = date[0];
-  const mouth = Number(date[1]);
-  const year = date[2].slice(0, 4);
-  console.log(day, mouth, year);
-};
-
 const Message = ({ photoUrl, userId, displayName, content, createAt }) => {
-  if (createAt) console.log(formatDay(createAt));
   const userLoginId = JSON.parse(localStorage.getItem("user"))?.id;
   const WrapMessage = ({ children, isMyMess }) => {
     return !isMyMess ? (
