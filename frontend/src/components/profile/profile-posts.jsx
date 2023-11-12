@@ -49,7 +49,7 @@ const ProfilePostItem = ({ thumbnail, like, id }) => {
 const ProfilePost = ({ userId }) => {
   const dispatch = useDispatch();
   const profilePost = useSelector((state) => state.post.getPostUser.posts);
-  const accessToken = JSON.parse(localStorage.getItem("user")).accessToken;
+  const accessToken = JSON.parse(localStorage.getItem("user"))?.accessToken;
   useEffect(() => {
     getAllPostUser(dispatch, userId, accessToken);
   }, [userId, dispatch, accessToken]);

@@ -8,16 +8,18 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link as ReactRouterLink } from "react-router-dom";
 import InputComment from "./input-comment";
-import useWebSocket from "../../hooks/useWebSocket";
+import socketService from "../../hooks/useWebSocket";
 import axios from "axios";
 
-const CommentItem = ({ photoUrl, displayName, content }) => {
+const CommentItem = ({ photoUrl, displayName, content, userId }) => {
   return (
     <HStack p={1} px={2} alignItems="start">
-      <Avatar src={photoUrl} size="sm" alt={displayName} />
+      <Link as={ReactRouterLink} to={`/profile/${userId}`}>
+        <Avatar src={photoUrl} size="sm" alt={displayName} />
+      </Link>
       <Box
         bg={useColorModeValue("whiteAlpha.500", "whiteAlpha.200")}
         p={1}
@@ -32,15 +34,14 @@ const CommentItem = ({ photoUrl, displayName, content }) => {
 };
 
 const Comment = ({ isOpen }) => {
-  const [comments, SetComments] = useState([]);
-  const { message, sendMessage, disconnect, connect } = useWebSocket();
-  const postId = useSelector((state) => state.post?.currentPostId?.id);
+  const [comments, setComments] = useState([]);
+  const { sendMessage, disconnect, connect } = useMemo(
+    () => socketService(setComments),
+    [],
+  );
+  const postId = useSelector((state) => state.post?.currentPostInfor?.post?.id);
   const userLogin = JSON.parse(localStorage.getItem("user"));
   const baseUrl = process.env.REACT_APP_API_URL;
-
-  useEffect(() => {
-    SetComments([...comments, message]);
-  }, [message?.id]);
 
   useEffect(() => {
     if (postId) {
@@ -49,31 +50,30 @@ const Comment = ({ isOpen }) => {
           const res = await axios.get(`${baseUrl}/comment/${postId}`, {
             headers: { Authorization: `Bearer ${userLogin?.accessToken}` },
           });
-          SetComments(res);
+          setComments(res);
         } catch (err) {
           console.log(err);
         }
       };
       getAllComment();
     }
-  }, [postId, userLogin.accessToken]);
-
+  }, [postId, userLogin.accessToken, baseUrl]);
   useEffect(() => {
-    if (isOpen) connect("comments", postId);
-    return () => {
-      console.log(1);
-      disconnect();
-    };
-  }, [isOpen]);
+    if (isOpen) {
+      connect("comments", postId);
+    }
+    return () => disconnect();
+  }, [isOpen, postId]);
   return (
     <Box position="relative">
       {comments?.map((comment, index) => {
         return (
           <CommentItem
-            key={comment.id || index}
-            photoUrl={comment.avatar}
-            displayName={comment.displayName}
-            content={comment.content}
+            key={comment?.id || index}
+            photoUrl={comment?.avatar}
+            displayName={comment?.displayName}
+            content={comment?.content}
+            userId={comment?.userId}
           />
         );
       })}

@@ -3,8 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 export const postSlice = createSlice({
   name: "posts",
   initialState: {
-    currentPostId: {
-      id: undefined,
+    currentPostInfor: {
+      post: {},
     },
     allPost: {
       isFetching: false,
@@ -33,15 +33,15 @@ export const postSlice = createSlice({
     },
   },
   reducers: {
-    getCurrentPostId: (state, action) => {
-      state.currentPostId.id = action.payload;
+    getCurrentPostInfor: (state, action) => {
+      state.currentPostInfor.post = action.payload;
     },
     getAllPostStart: (state) => {
       state.allPost.isFetching = true;
     },
     getAllPostSuccess: (state, action) => {
       state.allPost.isFetching = false;
-      state.allPost.posts = action.payload;
+      state.allPost.posts = [...state.allPost.posts, ...action.payload];
     },
     getAllPostFailed: (state) => {
       state.allPost.error = true;
@@ -96,7 +96,7 @@ export const postSlice = createSlice({
 });
 
 export const {
-  getCurrentPostId,
+  getCurrentPostInfor,
   getAllPostStart,
   getAllPostFailed,
   getAllPostSuccess,

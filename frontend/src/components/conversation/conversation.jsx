@@ -16,9 +16,9 @@ import { getSelectedRoom } from "@redux/conversationSlice";
 
 const CoversItem = ({ senderId, accessToken, room }) => {
   //get room id
-  const { id } = useParams();
+  const params = useParams();
   const roomFormStore = useSelector((state) => state.room.selectedRoom.id);
-  const roomId = roomFormStore || id;
+  const roomId = roomFormStore || params?.id;
 
   const dispatch = useDispatch();
 
@@ -76,7 +76,7 @@ const Converstation = () => {
       {rooms.map((room) => {
         return (
           <CoversItem
-            senderId={userLogin.id}
+            senderId={userLogin?.id}
             accessToken={userLogin?.accessToken}
             key={room.id}
             room={room}

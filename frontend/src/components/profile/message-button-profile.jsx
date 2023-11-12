@@ -8,7 +8,7 @@ const MessaageButton = ({ member }) => {
   const [senderId, receiveId] = member;
   const { id } = useParams();
 
-  const accessToken = JSON.parse(localStorage.getItem("user")).accessToken;
+  const accessToken = JSON.parse(localStorage.getItem("user"))?.accessToken;
   const baseUrl = process.env.REACT_APP_API_URL;
 
   const handleGoToRoomChat = async () => {

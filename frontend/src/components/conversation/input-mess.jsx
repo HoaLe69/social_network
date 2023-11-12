@@ -25,7 +25,7 @@ const InputRoomChat = ({ roomId, sendMessage }) => {
       inputRef?.current.focus();
     }
   };
-  const handleKeydow = (e) => {
+  const handleKeydown = (e) => {
     if (e.key === "Enter") handleSendMessage();
   };
 
@@ -39,7 +39,7 @@ const InputRoomChat = ({ roomId, sendMessage }) => {
           value={content}
           name="content"
           onChange={(e) => setContent(e.target.value)}
-          onKeyDown={handleKeydow}
+          onKeyDown={handleKeydown}
         />
         <InputRightElement>
           <Box as="button" onClick={handleSendMessage}>

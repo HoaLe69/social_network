@@ -8,4 +8,5 @@ const Home = () => {
     </LayoutFull>
   );
 };
+
 export default Home;

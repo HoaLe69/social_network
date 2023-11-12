@@ -7,7 +7,7 @@ const RequireAuthentication = ({ children }) => {
   const auth = JSON.parse(localStorage.getItem("user"));
   useEffect(() => {
     if (!auth) navigate("/login");
-  }, []);
+  }, [auth, navigate]);
   return <Box>{children}</Box>;
 };
 

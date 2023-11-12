@@ -15,13 +15,12 @@ import { BsPatchCheckFill } from "react-icons/bs";
 import MenuPost from "../menu-post";
 import { AiOutlineHeart, AiFillHeart, AiOutlineMessage } from "react-icons/ai";
 import { useDispatch } from "react-redux";
-import { getCurrentPostId } from "@redux/postSlice";
+import { getCurrentPostInfor } from "@redux/postSlice";
 import FeedModal from "../modals/feed";
+import { reactPost } from "@redux/api-request/posts";
+import { forwardRef, useState, memo } from "react";
 
-const Post = (props) => {
-  const userLogin = JSON.parse(localStorage.getItem("user"));
-  const dispatch = useDispatch();
-  const { isOpen, onClose, onOpen } = useDisclosure();
+const Post = forwardRef((props, ref) => {
   const {
     id,
     userId,
@@ -35,11 +34,53 @@ const Post = (props) => {
     isDetail,
   } = props;
 
+  const userLogin = JSON.parse(localStorage.getItem("user"));
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  const [isLiked, setIsLike] = useState(() =>
+    like ? like?.includes(userLogin?.id) : false,
+  );
+  const [liked, setLiked] = useState(like || []);
+  const dispatch = useDispatch();
+
+  const handleOnClickLike = () => {
+    if (userLogin?.accessToken && id) {
+      reactPost(userLogin?.accessToken, id, userLogin?.id);
+    }
+    if (isLiked) {
+      setLiked([...liked].filter((likerId) => likerId !== userLogin?.id));
+    } else setLiked([...liked, userLogin?.id]);
+    setIsLike(!isLiked);
+  };
   const handleShowFullPost = () => {
-    dispatch(getCurrentPostId(id));
+    dispatch(
+      getCurrentPostInfor({
+        id,
+        userId,
+        cloudId,
+        photoUrl,
+        displayName,
+        description,
+        thumbnail,
+        like: liked,
+        comments,
+        isDetail,
+      }),
+    );
+  };
+
+  const colorReact = useColorModeValue("#1a202c", "#ffffff");
+
+  const showRectPost = () => {
+    const quantity = liked?.length;
+    if (quantity === 0) return "0";
+    else {
+      if (quantity === 1 && isLiked) return "you";
+      else if (isLiked) return `you and ${quantity - 1} other`;
+      return `${quantity} other`;
+    }
   };
   return (
-    <Box mb={4}>
+    <Box mb={4} ref={ref}>
       <HStack as="header" p={2} display="flex">
         <Link
           as={ReactRouterLink}
@@ -88,10 +129,10 @@ const Post = (props) => {
         )}
       >
         <Box display="flex" alignItems="center" gap="5px">
-          <Box fontSize="12px" p={1} color="white" bg="red.500" rounded="full">
+          <Box fontSize="12px" p={1} color="white" bg="pink.400" rounded="full">
             <AiFillHeart />
           </Box>
-          <Text lineHeight={1}>You and {like && like?.length} other</Text>
+          <Text lineHeight={1}>{showRectPost()}</Text>
         </Box>
         <Box>
           <Text onClick={handleShowFullPost}>{comments} comments</Text>
@@ -117,6 +158,8 @@ const Post = (props) => {
           rounded="5px"
           _hover={{ bg: useColorModeValue("whiteAlpha.500", "whiteAlpha.200") }}
           cursor="pointer"
+          onClick={handleOnClickLike}
+          color={isLiked ? "pink.400" : colorReact}
         >
           <Box lineHeight={1}>
             <AiOutlineHeart />
@@ -145,6 +188,6 @@ const Post = (props) => {
       </Flex>
     </Box>
   );
-};
+});
 
-export default Post;
+export default memo(Post);

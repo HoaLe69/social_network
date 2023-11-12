@@ -35,15 +35,16 @@ export const createPost = async (dispatch, navigate, formData) => {
 };
 
 //get all post
-export const getAllPost = async (dispatch, accessToken) => {
+export const getAllPost = async (dispatch, accessToken, page, setHasmore) => {
   dispatch(getAllPostStart());
   try {
-    const res = await axios.get(`${baseUrl}/post/all-post`, {
+    const res = await axios.get(`${baseUrl}/post/all-post?page=${page}`, {
       headers: {
         Authorization: "Bearer " + accessToken,
       },
     });
-    dispatch(getAllPostSuccess(res));
+    setHasmore(res.content.length > 0);
+    dispatch(getAllPostSuccess(res.content));
   } catch (err) {
     console.log(err);
     dispatch(getAllPostFailed());
@@ -94,5 +95,18 @@ export const getPostById = async (dispatch, id, accessToken) => {
   } catch (err) {
     console.log(err);
     dispatch(getPostByIdFailed());
+  }
+};
+
+// react post
+export const reactPost = async (accessToken, postId, userId) => {
+  try {
+    axios.patch(
+      `${baseUrl}/post/react/${postId}/${userId}`,
+      {},
+      { headers: { Authorization: `Bearer ${accessToken}` } },
+    );
+  } catch (err) {
+    console.log(err);
   }
 };

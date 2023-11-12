@@ -15,8 +15,8 @@ import { useSelector } from "react-redux";
 import useFetchData from "../../hooks/useFetchData";
 import EmptyRoom from "./room-empty";
 import Message from "./message";
-import useWebSocket from "../../hooks/useWebSocket";
-import { useEffect, useRef, useState } from "react";
+import socketService from "../../hooks/useWebSocket";
+import { useEffect, useRef, useState, useMemo } from "react";
 import InputRoomChat from "./input-mess";
 import axios from "axios";
 
@@ -35,11 +35,15 @@ const RoomConversation = () => {
   const { apiData: user } = useFetchData(url, userLogin.accessToken);
 
   const bgHeader = useColorModeValue("#ffffff40", "#20202380");
-  const { message, sendMessage, disconnect, connect } = useWebSocket();
+  const { sendMessage, disconnect, connect } = useMemo(
+    () => socketService(setMessages),
+    [],
+  );
+
   useEffect(() => {
-    setMessages([...messages, message]);
     if (refDiv.current) refDiv.current.scrollTop = refDiv.current.scrollHeight;
-  }, [message]);
+  }, [messages]);
+
   useEffect(() => {
     if (roomId) connect("messages", roomId);
     return () => disconnect();

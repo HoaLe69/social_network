@@ -21,6 +21,9 @@ const InputComment = ({ postId, sendMessage }) => {
     }
   };
 
+  const handleKeydown = (e) => {
+    if (e.key === "Enter") handleSendMessage();
+  };
   return (
     <InputGroup>
       <Input
@@ -32,6 +35,7 @@ const InputComment = ({ postId, sendMessage }) => {
         name="comment"
         value={commentValue}
         onChange={(e) => setCommentValue(e.target.value)}
+        onKeyDown={handleKeydown}
       />
       <InputRightElement>
         <Box as="button" onClick={handleSendMessage}>
