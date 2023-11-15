@@ -15,6 +15,8 @@ import { MdOutlineCloudUpload } from "react-icons/md";
 import { createPost } from "@redux/api-request/posts";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { EmojiKeyboard } from "reactjs-emoji-keyboard";
+import { FaRegSmile } from "react-icons/fa";
 
 const MakePost = () => {
   const toast = useToast();
@@ -25,6 +27,7 @@ const MakePost = () => {
   const [previewSource, setPreviewSource] = useState();
   const currentUser = JSON.parse(localStorage.getItem("user"));
   const [err, setErr] = useState("");
+  const [showEmoji, setShowEmoji] = useState(false);
 
   const [formData, setFormData] = useState({
     thumbnail: null,
@@ -90,7 +93,7 @@ const MakePost = () => {
   };
   console.log(err);
   return (
-    <Box>
+    <Box pb={2}>
       <Box as="header" textAlign={"center"} p={2}>
         <Heading fontSize="20px">Create New Posts</Heading>
       </Box>
@@ -99,15 +102,44 @@ const MakePost = () => {
           <Avatar size="sm" src={currentUser?.avatar} />
           <Heading fontSize="15px">{currentUser?.displayName}</Heading>
         </Box>
-        <Textarea
-          mt={2}
-          placeholder="What your on mind ?"
-          bg={useColorModeValue("whiteAlpha.700", "whiteAlpha.200")}
-          resize="vertical"
-          name="description"
-          onChange={handleOnChange}
-          value={description}
-        />
+        <Box position="relative">
+          <Textarea
+            mt={2}
+            placeholder="What your on mind ?"
+            bg={useColorModeValue("whiteAlpha.700", "whiteAlpha.200")}
+            resize="vertical"
+            name="description"
+            onChange={handleOnChange}
+            value={description}
+          />
+          <Box
+            fontSize="20px"
+            position="absolute"
+            right={2}
+            bottom={2}
+            cursor="pointer"
+          >
+            <FaRegSmile onClick={() => setShowEmoji(!showEmoji)} />
+            <Box
+              display={showEmoji ? "block" : "none"}
+              position="absolute"
+              top={0}
+              right={"10px"}
+            >
+              <EmojiKeyboard
+                height={320}
+                width={350}
+                theme={useColorModeValue("light", "dark")}
+                searchLabel="Procurar emoji"
+                searchDisabled={false}
+                onEmojiSelect={(emoji) =>
+                  setDescription((pre) => pre + emoji.character)
+                }
+                categoryDisabled={false}
+              />
+            </Box>
+          </Box>
+        </Box>
         <FormLabel
           mt={2}
           htmlFor="input-file"

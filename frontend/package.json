@@ -25,6 +25,7 @@
     "react-router-dom": "^6.16.0",
     "react-scripts": "5.0.1",
     "react-spinners": "^0.13.8",
+    "reactjs-emoji-keyboard": "^1.0.17",
     "sockjs-client": "^1.6.1",
     "stompjs": "^2.3.3",
     "web-vitals": "^2.1.4",

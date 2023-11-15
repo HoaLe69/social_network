@@ -18,9 +18,9 @@ const CreatePostModal = ({ isOpen, onClose }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="lg">
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent py={0}>
         <ModalCloseButton />
-        <ModalBody>
+        <ModalBody py={0}>
           <MakePost />
         </ModalBody>
       </ModalContent>
