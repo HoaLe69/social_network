@@ -4,6 +4,7 @@ import {
   MenuList,
   MenuItem,
   IconButton,
+  Button,
 } from "@chakra-ui/react";
 import { BiDotsHorizontalRounded } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
@@ -18,15 +19,21 @@ const MenuPost = ({ id, cloudId }) => {
     deletePost(dispatch, id, cloudId, accessToken);
   };
   return (
-    <Menu placement="bottom-end">
+    <Menu placement="bottom-end" closeOnSelect={false}>
       <MenuButton
         rounded="full"
         as={IconButton}
         icon={<BiDotsHorizontalRounded />}
       />
       <MenuList>
-        <MenuItem onClick={handleOnClickMenuItemDel} icon={<AiFillDelete />}>
-          {isLoading ? "delete..." : "delete"}
+        <MenuItem
+          leftIcon={<AiFillDelete />}
+          isLoading={isLoading}
+          loadingText="delete"
+          as={Button}
+          onClick={handleOnClickMenuItemDel}
+        >
+          Delete post
         </MenuItem>
       </MenuList>
     </Menu>

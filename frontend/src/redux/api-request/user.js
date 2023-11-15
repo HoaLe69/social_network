@@ -45,7 +45,7 @@ export const updateUser = async (
 ) => {
   dispatch(updateUserStart());
   try {
-    await axiosClient.patch(`/user/update/${id}`, userInforUpdate, {
+    const res = await axiosClient.patch(`/user/update/${id}`, userInforUpdate, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -63,15 +63,39 @@ export const followOrtherUser = async (
   friendId,
   yourId,
   accessToken,
+  relation,
+  userLogin,
 ) => {
   dispatch(followOrtherUserStart());
   try {
-    await axiosClient.patch(`/user/interactive/${friendId}`, yourId, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
+    const res = await axios.patch(
+      `${baseUrl}/user/interactive/${friendId}`,
+      yourId,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       },
-    });
-    dispatch(followOrtherUserSuccess());
+    );
+    const relationship = relation();
+    if (relationship === "Following")
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...userLogin,
+          following: userLogin?.following.filter((id) => id !== friendId),
+        }),
+      );
+    else {
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...userLogin,
+          following: [...userLogin?.following, friendId],
+        }),
+      );
+    }
+    dispatch(getUserSuccess(res));
   } catch (err) {
     console.log(err);
     dispatch(followOrtherUserFailed());
@@ -85,7 +109,7 @@ export const getListFollowing = async (dispatch, listIdUser, accessToken) => {
   try {
     const res = await axios.post(
       `${baseUrl}/user/getUserFollow`,
-      { follow: listIdUser },
+      { list: listIdUser },
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -105,7 +129,7 @@ export const getListFollower = async (dispatch, listIdUser, accessToken) => {
   try {
     const res = await axios.post(
       `${baseUrl}/user/getUserFollow`,
-      { follow: listIdUser },
+      { list: listIdUser },
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,

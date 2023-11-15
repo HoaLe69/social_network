@@ -8,20 +8,23 @@ import {
   Image,
   useColorModeValue,
   Avatar,
+  useToast,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdOutlineCloudUpload } from "react-icons/md";
 import { createPost } from "@redux/api-request/posts";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const MakePost = () => {
+  const toast = useToast();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isLoading = useSelector((state) => state.post.createPost.isFetching);
   const [description, setDescription] = useState("");
   const [previewSource, setPreviewSource] = useState();
   const currentUser = JSON.parse(localStorage.getItem("user"));
+  const [err, setErr] = useState("");
 
   const [formData, setFormData] = useState({
     thumbnail: null,
@@ -30,15 +33,33 @@ const MakePost = () => {
       photoUrl: currentUser?.avatar,
       description: description,
       displayName: currentUser?.displayName,
+      tag: "",
     },
   });
-
+  useEffect(() => {
+    if (err) {
+      toast({
+        title: "Create Post",
+        description: err,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+        position: "top-right",
+      });
+      setErr("");
+    }
+  }, [err]);
   const handleOnChange = (e) => {
     let { name, value } = e.target;
     if (name === "image") {
       const file = e.target.files[0];
       setFormData((pre) => ({ ...pre, thumbnail: file }));
       previewImage(file);
+    } else if (name === "tag") {
+      setFormData((pre) => ({
+        ...pre,
+        formData: { ...pre.formData, [name]: value },
+      }));
     } else {
       setFormData((pre) => ({
         ...pre,
@@ -55,6 +76,10 @@ const MakePost = () => {
     };
   };
   const handleSubmit = () => {
+    if (!formData.thumbnail && !formData.formData.description) {
+      setErr("empty post");
+      return;
+    }
     const form = new FormData();
     const blob = new Blob([JSON.stringify(formData.formData)], {
       type: "application/json",
@@ -63,6 +88,7 @@ const MakePost = () => {
     form.append("formData", blob);
     createPost(dispatch, navigate, form);
   };
+  console.log(err);
   return (
     <Box>
       <Box as="header" textAlign={"center"} p={2}>
@@ -105,13 +131,21 @@ const MakePost = () => {
           />
         </FormLabel>
         <Box display="flex" justifyContent="center">
-          <Image
-            src={previewSource}
-            boxSize="xs"
-            loading="eager"
-            objectFit="cover"
-          />
+          <Image src={previewSource} boxSize="xs" objectFit="cover" />
         </Box>
+
+        <FormLabel>
+          HasTag
+          <Input
+            mt={2}
+            id="input-hastag"
+            type="text"
+            onChange={handleOnChange}
+            name="tag"
+            placeholder="Write title about your post..."
+            value={formData.formData.tag}
+          />
+        </FormLabel>
       </Box>
       <Box pt="3" display="flex" justifyContent="center">
         <Button

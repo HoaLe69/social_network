@@ -57,6 +57,8 @@ const ProfileHeader = ({ userId: userIdFromUrl }) => {
       userIdFromUrl,
       { id: userLogin?.id },
       userLogin?.accessToken,
+      relation,
+      userLogin,
     );
   };
   const relation = () => {
@@ -100,7 +102,11 @@ const ProfileHeader = ({ userId: userIdFromUrl }) => {
                 <Button colorScheme="teal" onClick={onOpen}>
                   Edit profile
                 </Button>
-                <EditProfileModal isOpen={isOpen} onClose={onClose} />
+                <EditProfileModal
+                  isOpen={isOpen}
+                  user={currentUser}
+                  onClose={onClose}
+                />
               </Box>
             ) : (
               <Box mt={2}>

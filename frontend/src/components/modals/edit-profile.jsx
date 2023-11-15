@@ -29,6 +29,7 @@ import { useSelector, useDispatch } from "react-redux";
 import images from "../../assets";
 import { useFormik } from "formik";
 import { updateUser } from "@redux/api-request/user";
+import { getUserSuccess } from "@redux/userSlice";
 
 const ListAvatar = ({ handleChooseImage }) => {
   return (
@@ -52,9 +53,9 @@ const ListAvatar = ({ handleChooseImage }) => {
   );
 };
 
-const EditProfileModal = ({ isOpen, onClose }) => {
+const EditProfileModal = ({ isOpen, onClose, user }) => {
   const dispatch = useDispatch();
-  const userClient = JSON.parse(localStorage.getItem("user"));
+  const userLogin = JSON.parse(localStorage.getItem("user"));
   const currentUser = useSelector((state) => state.user.users?.currentUser);
   const isLoading = useSelector((state) => state.user.updateUser.isFetching);
   const [previewSource, setPreviewSource] = useState(undefined);
@@ -65,20 +66,24 @@ const EditProfileModal = ({ isOpen, onClose }) => {
       about: "",
     },
     onSubmit: (data) => {
+      const sendData = {};
+      for (const key in data) {
+        if (key === "avatar") {
+          if (previewSource) sendData[key] = previewSource;
+        } else if (data[key] !== "") sendData[key] = data[key];
+      }
       updateUser(
         dispatch,
         currentUser?.id,
         {
-          ...data,
-          avatar: previewSource,
+          ...sendData,
         },
-        userClient?.accessToken,
+        userLogin?.accessToken,
       );
+      dispatch(getUserSuccess({ ...user, ...sendData }));
       const userStorage = {
-        ...userClient,
-        avatar: previewSource || userClient.avatar,
-        displayName: data.displayName,
-        about: data.about,
+        ...userLogin,
+        ...sendData,
       };
       localStorage.setItem("user", JSON.stringify(userStorage));
       if (!isLoading) {

@@ -19,7 +19,7 @@ const useInfinity = () => {
       );
       if (node) observer.current.observe(node);
     },
-    [hasMore, page],
+    [hasMore],
   );
   return { lastPostRef, page, setHasmore };
 };

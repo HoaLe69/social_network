@@ -22,7 +22,6 @@ import { BiSearchAlt } from "react-icons/bi";
 import { useEffect, useState } from "react";
 import useDebounce from "../../hooks/useDebounce";
 import axios from "axios";
-import accessToken from "../../utilties/token";
 
 const PopResult = ({ isOpen, result }) => {
   const bgHover = useColorModeValue("blackAlpha.200", "whiteAlpha.300");
@@ -77,6 +76,7 @@ const NavTop = ({ isFixed }) => {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState([]);
   const searchOutput = useDebounce(search);
+  const userLogin = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     if (!searchOutput.trim()) {
@@ -89,7 +89,7 @@ const NavTop = ({ isFixed }) => {
         setLoading(true);
         const res = await axios.get(
           `${baseUrl}/user/search?name=${searchOutput}`,
-          { headers: { Authorization: `Bearer ${accessToken}` } },
+          { headers: { Authorization: `Bearer ${userLogin?.accessToken}` } },
         );
         if (res) {
           setIsOpen(true);

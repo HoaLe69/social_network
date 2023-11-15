@@ -16,6 +16,9 @@ import {
   getPostByIdStart,
   getPostByIdFailed,
   getPostByIdSuccess,
+  getAllPostUserStart,
+  getAllPostUserSuccess,
+  getAllPostUserFailed,
 } from "../postSlice";
 import { config } from "./configAxiosHeader";
 
@@ -25,9 +28,9 @@ const baseUrl = process.env.REACT_APP_API_URL;
 export const createPost = async (dispatch, navigate, formData) => {
   dispatch(createPostStart());
   try {
-    const res = await axiosClient.post("/post/upload", formData, config);
-    dispatch(createPostSuccess(res.data));
-    navigate("/");
+    const res = await axios.post(`${baseUrl}/post/upload`, formData, config);
+    console.log(res);
+    dispatch(createPostSuccess(res));
   } catch (err) {
     console.log(err);
     dispatch(createPostFailed());
@@ -44,7 +47,7 @@ export const getAllPost = async (dispatch, accessToken, page, setHasmore) => {
       },
     });
     setHasmore(res.content.length > 0);
-    dispatch(getAllPostSuccess(res.content));
+    dispatch(getAllPostSuccess(res));
   } catch (err) {
     console.log(err);
     dispatch(getAllPostFailed());
@@ -60,7 +63,7 @@ export const deletePost = async (dispatch, id, cloudId, accessToken) => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    dispatch(deletePostSuccess());
+    dispatch(deletePostSuccess(id));
   } catch (err) {
     dispatch(deletePostFailed());
   }
@@ -108,5 +111,32 @@ export const reactPost = async (accessToken, postId, userId) => {
     );
   } catch (err) {
     console.log(err);
+  }
+};
+
+// get all post from userFollowing
+// get list following
+
+export const getAllPostFromUserFollowing = async (
+  dispatch,
+  listIdUser,
+  accessToken,
+) => {
+  dispatch(getAllPostUserStart());
+  try {
+    const res = await axios.post(
+      `${baseUrl}/post/all-post-user-following`,
+      { list: listIdUser },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
+    console.log(res);
+    dispatch(getAllPostUserSuccess(res));
+  } catch (err) {
+    console.log(err);
+    dispatch(getAllPostUserFailed());
   }
 };

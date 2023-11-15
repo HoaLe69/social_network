@@ -9,6 +9,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FollowingRequest {
+public class RequestList {
     private List<String> follow;
 }

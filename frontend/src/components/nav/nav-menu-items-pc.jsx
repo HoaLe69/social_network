@@ -21,6 +21,7 @@ import Conversation from "../conversation/conversation";
 import { BiLogOut } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const MenuItemPc = ({ icon, onOpen }) => {
   return (
@@ -39,7 +40,9 @@ const MenuItemPc = ({ icon, onOpen }) => {
 
 const NavMenuPc = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const userFromStore = useSelector((state) => state.user.users?.currentUser);
   const userLogin = JSON.parse(localStorage.getItem("user"));
+
   return (
     <Box display={{ base: "none", lg: "flex" }} alignItems="center" gap="10px">
       <Box>

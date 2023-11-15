@@ -15,6 +15,7 @@ const userSlice = createSlice({
     followOrtherUser: {
       isFetching: false,
       error: false,
+      user: {},
     },
     getListUserFollowing: {
       isFetching: false,
@@ -36,6 +37,7 @@ const userSlice = createSlice({
       state.users.isFetching = false;
       state.users.currentUser = action.payload;
       state.users.error = false;
+      state.followOrtherUser.isFetching = false;
     },
     getUserFailed: (state) => {
       state.users.isFetching = false;
@@ -55,9 +57,10 @@ const userSlice = createSlice({
     followOrtherUserStart: (state) => {
       state.followOrtherUser.isFetching = true;
     },
-    followOrtherUserSuccess: (state) => {
+    followOrtherUserSuccess: (state, action) => {
       state.followOrtherUser.isFetching = false;
       state.followOrtherUser.error = false;
+      state.followOrtherUser.user = action.payload;
     },
     followOrtherUserFailed: (state) => {
       state.followOrtherUser.isFetching = false;

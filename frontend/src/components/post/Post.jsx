@@ -7,11 +7,11 @@ import {
   Heading,
   HStack,
   Flex,
+  Badge,
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from "react-router-dom";
-import { BsPatchCheckFill } from "react-icons/bs";
 import MenuPost from "../menu-post";
 import { AiOutlineHeart, AiFillHeart, AiOutlineMessage } from "react-icons/ai";
 import { useDispatch } from "react-redux";
@@ -19,18 +19,21 @@ import { getCurrentPostInfor } from "@redux/postSlice";
 import FeedModal from "../modals/feed";
 import { reactPost } from "@redux/api-request/posts";
 import { forwardRef, useState, memo } from "react";
+import formatTime from "../../util/timeago";
 
 const Post = forwardRef((props, ref) => {
   const {
     id,
     userId,
-    cloudId,
+    cloudinaryId,
     photoUrl,
     displayName,
     description,
     thumbnail,
     like,
+    tag,
     comments,
+    createAt,
     isDetail,
   } = props;
 
@@ -56,20 +59,21 @@ const Post = forwardRef((props, ref) => {
       getCurrentPostInfor({
         id,
         userId,
-        cloudId,
+        cloudId: cloudinaryId,
         photoUrl,
+        tag,
         displayName,
         description,
         thumbnail,
         like: liked,
         comments,
+        createAt,
         isDetail,
       }),
     );
   };
-
   const colorReact = useColorModeValue("#1a202c", "#ffffff");
-
+  console.log(tag);
   const showRectPost = () => {
     const quantity = liked?.length;
     if (quantity === 0) return "0";
@@ -80,7 +84,12 @@ const Post = forwardRef((props, ref) => {
     }
   };
   return (
-    <Box mb={4} ref={ref}>
+    <Box
+      mb={4}
+      ref={ref}
+      bg={useColorModeValue("whiteAlpha.700", "whiteAlpha.200")}
+      rounded="10px"
+    >
       <HStack as="header" p={2} display="flex">
         <Link
           as={ReactRouterLink}
@@ -91,25 +100,38 @@ const Post = forwardRef((props, ref) => {
           gap="5px"
         >
           <Avatar src={photoUrl} size="sm" />
-          <Heading as="h3" fontSize="14px">
-            {displayName}
-          </Heading>
-          <Box as="span" color={"grassTeal"}>
-            <BsPatchCheckFill />
+          <Box>
+            <Heading as="h3" fontSize="15px">
+              {displayName}
+            </Heading>
+            <Text
+              fontSize="12px"
+              textAlign={"left"}
+              color={useColorModeValue("blackAlpha.600", "whiteAlpha.500")}
+            >
+              {formatTime(createAt)}
+            </Text>
           </Box>
         </Link>
         {userId === userLogin?.id && (
           <Box ml="auto">
-            <MenuPost id={id} cloudId={cloudId} />
+            <MenuPost id={id} cloudId={cloudinaryId} />
           </Box>
         )}
       </HStack>
-      <Box pl={2} pb={2}>
-        <Text noOfLines={`${isDetail ? "none" : 3}`}>{description}</Text>
+      <Box pl={2}>
+        <Text textAlign="left" noOfLines={`${isDetail ? "none" : 3}`}>
+          {description}
+        </Text>
+      </Box>
+      <Box pb={2} pl={2} textAlign="left">
+        {tag && <Badge colorScheme="red">{tag}</Badge>}
       </Box>
       {thumbnail && (
         <Box overflow={"hidden"}>
           <Image
+            loading="lazy"
+            minH="400px"
             maxH="600px"
             w="full"
             src={thumbnail}

@@ -14,7 +14,7 @@ export const postSlice = createSlice({
     createPost: {
       isFetching: false,
       error: false,
-      data: {},
+      success: false,
     },
     deletePost: {
       isFetching: false,
@@ -31,6 +31,11 @@ export const postSlice = createSlice({
       error: false,
       post: {},
     },
+    allPostFromUser: {
+      isFetching: false,
+      error: false,
+      posts: [],
+    },
   },
   reducers: {
     getCurrentPostInfor: (state, action) => {
@@ -41,17 +46,38 @@ export const postSlice = createSlice({
     },
     getAllPostSuccess: (state, action) => {
       state.allPost.isFetching = false;
-      state.allPost.posts = [...state.allPost.posts, ...action.payload];
+      state.allPost.error = false;
+      state.allPost.posts = [
+        ...new Set([
+          ...state.allPost.posts,
+          ...action.payload.content,
+          { page: action.payload.number },
+        ]),
+      ];
     },
     getAllPostFailed: (state) => {
       state.allPost.error = true;
+      state.allPost.isFetching = false;
+    },
+    getAllPostUserStart: (state) => {
+      state.allPost.isFetching = true;
+    },
+    getAllPostUserSuccess: (state, action) => {
+      state.allPostFromUser.isFetching = false;
+      state.allPostFromUser.error = false;
+      state.allPostFromUser.posts = [...action.payload];
+    },
+    getAllPostUserFailed: (state) => {
+      state.allPostFromUser.error = true;
+      state.allPostFromUser.isFetching = false;
     },
     createPostStart: (state) => {
       state.createPost.isFetching = true;
     },
     createPostSuccess: (state, action) => {
       state.createPost.isFetching = false;
-      state.createPost.data = action.payload;
+      state.allPost.posts = [action.payload, ...state.allPost.posts];
+      state.createPost.success = true;
     },
     createPostFailed: (state) => {
       state.createPost.error = true;
@@ -60,9 +86,12 @@ export const postSlice = createSlice({
     deletePostStart: (state) => {
       state.deletePost.isFetching = true;
     },
-    deletePostSuccess: (state) => {
+    deletePostSuccess: (state, action) => {
       state.deletePost.isFetching = false;
       state.deletePost.error = false;
+      state.allPost.posts = [
+        ...state.allPost.posts.filter((post) => post.id !== action.payload),
+      ];
     },
     deletePostFailed: (state) => {
       state.deletePost.error = true;
@@ -96,6 +125,9 @@ export const postSlice = createSlice({
 });
 
 export const {
+  getAllPostUserStart,
+  getAllPostUserFailed,
+  getAllPostUserSuccess,
   getCurrentPostInfor,
   getAllPostStart,
   getAllPostFailed,
