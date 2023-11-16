@@ -1,8 +1,14 @@
 import { Flex, Avatar, Box, Text, useColorModeValue } from "@chakra-ui/react";
 import formatTime from "../../util/timeago";
 
-const Message = ({ photoUrl, userId, displayName, content, createAt }) => {
-  console.log(formatTime(createAt));
+const Message = ({
+  photoUrl,
+  userId,
+  displayName,
+  content,
+  createAt,
+  isFloat,
+}) => {
   const userLoginId = JSON.parse(localStorage.getItem("user"))?.id;
   const WrapMessage = ({ children, isMyMess }) => {
     return !isMyMess ? (
@@ -25,14 +31,19 @@ const Message = ({ photoUrl, userId, displayName, content, createAt }) => {
   const isMyMess = userLoginId === userId;
   return (
     <WrapMessage isMyMess={isMyMess}>
-      <Box display="flex" gap="5px" maxW="50%">
+      <Box display="flex" gap="5px" maxW={isFloat ? "70%" : "50%"}>
         {!isMyMess && <Avatar src={photoUrl} alt={displayName} size="sm" />}
-        <Box>
+        <Box
+          display="flex"
+          flexDir="column"
+          alignItems={isMyMess ? "flex-end" : "flex-start"}
+        >
           <Box
             bg={isMyMess ? "grassTeal" : inactive}
             p={1}
             px={2}
             borderRadius="10px"
+            maxW="max-content"
           >
             <Text fontSize="17px">{content}</Text>
           </Box>

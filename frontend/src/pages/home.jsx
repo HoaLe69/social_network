@@ -15,9 +15,8 @@ import {
 } from "@chakra-ui/react";
 import CreatePostModal from "@components/modals/create";
 import PostFollowing from "@components/post/post-from-user-following";
-import { useState } from "react";
+import { memo, useState } from "react";
 import News from "@components/new/new";
-import { EmojiKeyboard } from "reactjs-emoji-keyboard";
 
 const Home = () => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -83,4 +82,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default memo(Home);

@@ -21,8 +21,31 @@ const conversationSlice = createSlice({
       error: false,
       rooms: [],
     },
+    roomFloatSelect: {
+      Listreceiver: [],
+    },
   },
   reducers: {
+    chooseRoomFloat: (state, action) => {
+      const isOpened = state.roomFloatSelect.Listreceiver.some((room) => {
+        return room?.roomId === action.payload.roomId;
+      });
+      if (isOpened)
+        state.roomFloatSelect.Listreceiver = [
+          ...state.roomFloatSelect.Listreceiver,
+        ];
+      else
+        state.roomFloatSelect.Listreceiver = [
+          ...state.roomFloatSelect.Listreceiver,
+          { ...action.payload },
+        ];
+    },
+    closeRoomFloat: (state, action) => {
+      state.roomFloatSelect.Listreceiver =
+        state.roomFloatSelect.Listreceiver.filter((room) => {
+          return room.roomId !== action.payload;
+        });
+    },
     getLastestMessage: (state, action) => {
       state.getLastestMessage.lastestMessage = action.payload.mess;
       state.getLastestMessage.roomId = action.payload.id;
@@ -59,6 +82,8 @@ const conversationSlice = createSlice({
 });
 
 export const {
+  closeRoomFloat,
+  chooseRoomFloat,
   getSelectedRoom,
   getLastestMessage,
   createRoomConversationStart,

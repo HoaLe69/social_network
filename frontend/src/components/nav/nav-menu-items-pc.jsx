@@ -17,11 +17,11 @@ import CreatePostModal from "../modals/create";
 import ToggleThemeButton from "../theme-toggle-btn";
 import { COLOR_THEME } from "../../constant";
 import Notify from "../notify/notify";
-import Conversation from "../conversation/conversation";
 import { BiLogOut } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import RoomsHome from "../chat-float/room-float";
 
 const MenuItemPc = ({ icon, onOpen }) => {
   return (
@@ -59,7 +59,7 @@ const NavMenuPc = () => {
           <Notify />
         </MenuList>
       </Menu>
-      <Menu placement="auto">
+      <Menu placement="bottom">
         <Tooltip label="message">
           <MenuButton _expanded={{ color: "grassTeal" }}>
             <MenuItemPc icon={<AiFillMessage />} title="message" />
@@ -67,7 +67,7 @@ const NavMenuPc = () => {
         </Tooltip>
         <MenuList bg={COLOR_THEME.BG} width={"md"} maxH="60vh">
           <Box>
-            <Conversation />
+            <RoomsHome />
           </Box>
         </MenuList>
       </Menu>

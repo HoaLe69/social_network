@@ -73,7 +73,6 @@ const Post = forwardRef((props, ref) => {
     );
   };
   const colorReact = useColorModeValue("#1a202c", "#ffffff");
-  console.log(tag);
   const showRectPost = () => {
     const quantity = liked?.length;
     if (quantity === 0) return "0";

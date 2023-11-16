@@ -133,7 +133,6 @@ export const getAllPostFromUserFollowing = async (
         },
       },
     );
-    console.log(res);
     dispatch(getAllPostUserSuccess(res));
   } catch (err) {
     console.log(err);

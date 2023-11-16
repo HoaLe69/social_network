@@ -22,12 +22,13 @@ import { BiSearchAlt } from "react-icons/bi";
 import { useEffect, useState } from "react";
 import useDebounce from "../../hooks/useDebounce";
 import axios from "axios";
+import { IoMdClose } from "react-icons/io";
 
-const PopResult = ({ isOpen, result }) => {
+const PopResult = ({ result, setResult }) => {
   const bgHover = useColorModeValue("blackAlpha.200", "whiteAlpha.300");
   return (
     <Box
-      display={isOpen && result.length > 0 ? "block" : "none"}
+      display={result.length > 0 ? "block" : "none"}
       p={1}
       rounded="10px"
       pos="absolute"
@@ -37,7 +38,16 @@ const PopResult = ({ isOpen, result }) => {
       width="100%"
       bg={useColorModeValue("#fff", "#2D3748")}
     >
-      <Heading fontSize="16px">Result</Heading>
+      <Box display="flex" alignItems="center">
+        <Heading fontSize="16px">Result</Heading>
+        <IconButton
+          ml="auto"
+          onClick={() => setResult([])}
+          icon={<IoMdClose />}
+          size="sm"
+          rounded="full"
+        />
+      </Box>
       <Box p={1}>
         {result?.map((user) => {
           return (
@@ -72,7 +82,6 @@ const NavTop = ({ isFixed }) => {
   const baseUrl = process.env.REACT_APP_API_URL;
 
   const [search, setSearchValue] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState([]);
   const searchOutput = useDebounce(search);
@@ -92,7 +101,6 @@ const NavTop = ({ isFixed }) => {
           { headers: { Authorization: `Bearer ${userLogin?.accessToken}` } },
         );
         if (res) {
-          setIsOpen(true);
           setResult(res);
           setLoading(false);
         }
@@ -133,7 +141,7 @@ const NavTop = ({ isFixed }) => {
               </InputRightElement>
             )}
           </InputGroup>
-          <PopResult result={result} isOpen={isOpen} />
+          <PopResult result={result} setResult={setResult} />
         </Box>
 
         <Box display={{ lg: "none" }}>

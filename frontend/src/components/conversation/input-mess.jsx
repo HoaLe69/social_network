@@ -40,7 +40,7 @@ const InputRoomChat = ({ roomId, sendMessage }) => {
   return (
     <Box p={3} onClick={handleHideEmojiKeyboard}>
       <Box
-        py={4}
+        py={2}
         display="flex"
         alignItems="center"
         bg={bgInput}
@@ -74,6 +74,7 @@ const InputRoomChat = ({ roomId, sendMessage }) => {
         </Box>
         <InputGroup px={2}>
           <Input
+            autoComplete="off"
             fontSize="18px"
             ref={inputRef}
             placeholder="Message..."
@@ -84,7 +85,7 @@ const InputRoomChat = ({ roomId, sendMessage }) => {
             variant="unstyled"
           />
           <InputRightElement>
-            <Box as="button" onClick={handleSendMessage}>
+            <Box pb={2} as="button" onClick={handleSendMessage}>
               <BsFillSendFill />
             </Box>
           </InputRightElement>

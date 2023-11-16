@@ -6,6 +6,7 @@ const LayoutOnlyHeader = ({ children }) => {
     <Box>
       <NavTop />
       <Container maxW="container.lg">{children}</Container>
+      asdjklhajksd
     </Box>
   );
 };
