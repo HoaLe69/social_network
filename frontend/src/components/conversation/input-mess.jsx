@@ -32,10 +32,13 @@ const InputRoomChat = ({ roomId, sendMessage }) => {
     if (e.key === "Enter") handleSendMessage();
   };
 
+  const handleHideEmojiKeyboard = (e) => {
+    if (e.target.closest(".emoji")) setShowEmoji(true);
+    else setShowEmoji(false);
+  };
   const bgInput = useColorModeValue("whiteAlpha.700", "whiteAlpha.100");
-  console.log(showEmoji);
   return (
-    <Box p={3}>
+    <Box p={3} onClick={handleHideEmojiKeyboard}>
       <Box
         py={4}
         display="flex"
@@ -44,8 +47,13 @@ const InputRoomChat = ({ roomId, sendMessage }) => {
         px={2}
         rounded="25px"
       >
-        <Box fontSize="25px" cursor="pointer" position="relative">
-          <FaRegSmile onClick={() => setShowEmoji(!showEmoji)} />
+        <Box
+          fontSize="25px"
+          className="emoji"
+          cursor="pointer"
+          position="relative"
+        >
+          <FaRegSmile />
           <Box
             display={showEmoji ? "block" : "none"}
             position="absolute"

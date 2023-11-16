@@ -73,7 +73,7 @@ const CommentItem = ({
               as={Button}
               onClick={handleDeleteComent}
             >
-              Delete post
+              delete
             </MenuItem>
           </MenuList>
         </Menu>

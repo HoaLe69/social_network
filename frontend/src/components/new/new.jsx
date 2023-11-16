@@ -20,7 +20,7 @@ const NewCard = forwardRef(({ infor }, ref) => {
       rounded={"10px"}
       bg={useColorModeValue("whiteAlpha.700", "whiteAlpha.200")}
     >
-      <Link isExternal href={infor?.url} _hover={{ textDecoration: "none" }}>
+      <Link isExternal href={infor?.url} _hover={{ textDecortion: "none" }}>
         <Box as="header" px={2} pb={2}>
           <Heading textAlign="left" fontSize="20px">
             {infor?.title}

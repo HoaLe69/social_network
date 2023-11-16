@@ -91,9 +91,12 @@ const MakePost = () => {
     form.append("formData", blob);
     createPost(dispatch, navigate, form);
   };
-  console.log(err);
+  const handleHideEmojiKeyboard = (e) => {
+    if (e.target.closest(".emoji")) setShowEmoji(true);
+    else setShowEmoji(false);
+  };
   return (
-    <Box pb={2}>
+    <Box pb={2} onClick={handleHideEmojiKeyboard}>
       <Box as="header" textAlign={"center"} p={2}>
         <Heading fontSize="20px">Create New Posts</Heading>
       </Box>
@@ -117,14 +120,16 @@ const MakePost = () => {
             position="absolute"
             right={2}
             bottom={2}
+            zIndex={10}
             cursor="pointer"
+            className="emoji"
           >
-            <FaRegSmile onClick={() => setShowEmoji(!showEmoji)} />
+            <FaRegSmile />
             <Box
               display={showEmoji ? "block" : "none"}
               position="absolute"
               top={0}
-              right={"10px"}
+              right={"20px"}
             >
               <EmojiKeyboard
                 height={320}

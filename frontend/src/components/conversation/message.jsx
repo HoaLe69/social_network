@@ -34,7 +34,7 @@ const Message = ({ photoUrl, userId, displayName, content, createAt }) => {
             px={2}
             borderRadius="10px"
           >
-            <Text fontSize="18px">{content}</Text>
+            <Text fontSize="17px">{content}</Text>
           </Box>
           <Text
             color={useColorModeValue("blackAlpha.800", "whiteAlpha.700")}

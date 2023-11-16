@@ -33,8 +33,13 @@ const InputComment = ({ postId, sendMessage }) => {
   const handleKeydown = (e) => {
     if (e.key === "Enter") handleSendMessage();
   };
+
+  const handleHideEmojiKeyboard = (e) => {
+    if (e.target.closest(".emoji")) setShowEmoji(true);
+    else setShowEmoji(false);
+  };
   return (
-    <InputGroup display="flex">
+    <InputGroup display="flex" onClick={handleHideEmojiKeyboard}>
       <Input
         flex="1"
         ref={refInput}
@@ -49,8 +54,8 @@ const InputComment = ({ postId, sendMessage }) => {
         onKeyDown={handleKeydown}
       />
       <InputRightElement display="flex" alignItems="center" gap="4">
-        <Box pos="relative" fontSize="20px" cursor="pointer">
-          <FaRegSmile onClick={() => setShowEmoji(!showEmoji)} />
+        <Box pos="relative" fontSize="20px" cursor="pointer" className="emoji">
+          <FaRegSmile />
           <Box
             display={showEmoji ? "block" : "none"}
             position="absolute"
