@@ -121,7 +121,7 @@ const RoomConversation = () => {
                       key={index}
                       createAt={message?.createAt}
                       userId={message?.userId}
-                      photoUrl={user?.avatar}
+                      avatar={user?.avatar}
                       displayName={user?.displayName}
                       content={message?.content}
                     />

@@ -24,11 +24,12 @@ import useDebounce from "../../hooks/useDebounce";
 import axios from "axios";
 import { IoMdClose } from "react-icons/io";
 
-const PopResult = ({ result, setResult }) => {
+const PopResult = ({ result, setResult, userLoginId }) => {
   const bgHover = useColorModeValue("blackAlpha.200", "whiteAlpha.300");
+  const users = result.filter((user) => user.id !== userLoginId) || [];
   return (
     <Box
-      display={result.length > 0 ? "block" : "none"}
+      display={users?.length > 0 ? "block" : "none"}
       p={1}
       rounded="10px"
       pos="absolute"
@@ -48,32 +49,40 @@ const PopResult = ({ result, setResult }) => {
           rounded="full"
         />
       </Box>
-      <Box p={1}>
-        {result?.map((user) => {
-          return (
-            <Link
-              _hover={{ textDecoration: "none" }}
-              key={user?.id}
-              as={ReactRouterLink}
-              to={`/profile/${user?.id}`}
-            >
-              <Flex
-                alignItems="center"
-                gap="2"
-                py={1}
-                px={2}
-                rounded="10px"
-                _hover={{
-                  backgroundColor: bgHover,
-                }}
+      {users?.length === 0 ? (
+        <Box p={1}>Khong tim thay ket qua</Box>
+      ) : (
+        <Box p={1}>
+          {users?.map((user) => {
+            return (
+              <Link
+                _hover={{ textDecoration: "none" }}
+                key={user?.id}
+                as={ReactRouterLink}
+                to={`/profile/${user?.id}`}
               >
-                <Avatar src={user?.avatar} alt={user?.displayName} size="sm" />
-                <Heading fontSize="13px">{user?.displayName}</Heading>
-              </Flex>
-            </Link>
-          );
-        })}
-      </Box>
+                <Flex
+                  alignItems="center"
+                  gap="2"
+                  py={1}
+                  px={2}
+                  rounded="10px"
+                  _hover={{
+                    backgroundColor: bgHover,
+                  }}
+                >
+                  <Avatar
+                    src={user?.avatar}
+                    alt={user?.displayName}
+                    size="sm"
+                  />
+                  <Heading fontSize="13px">{user?.displayName}</Heading>
+                </Flex>
+              </Link>
+            );
+          })}
+        </Box>
+      )}
     </Box>
   );
 };
@@ -141,7 +150,11 @@ const NavTop = ({ isFixed }) => {
               </InputRightElement>
             )}
           </InputGroup>
-          <PopResult result={result} setResult={setResult} />
+          <PopResult
+            userLoginId={userLogin?.id}
+            result={result}
+            setResult={setResult}
+          />
         </Box>
 
         <Box display={{ lg: "none" }}>

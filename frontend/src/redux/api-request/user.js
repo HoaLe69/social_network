@@ -7,7 +7,6 @@ import {
   updateUserSuccess,
   updateUserFailed,
   followOrtherUserStart,
-  followOrtherUserSuccess,
   followOrtherUserFailed,
   getListUserFollowingStart,
   getListUserFollowingSuccess,

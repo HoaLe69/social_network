@@ -1,4 +1,3 @@
-import axiosClient from "@config/axios";
 import axios from "axios";
 import {
   createPostStart,
@@ -19,6 +18,9 @@ import {
   getAllPostUserStart,
   getAllPostUserSuccess,
   getAllPostUserFailed,
+  editPostStart,
+  editPostSuccess,
+  editPostFailed,
 } from "../postSlice";
 import { config } from "./configAxiosHeader";
 
@@ -37,6 +39,22 @@ export const createPost = async (dispatch, navigate, formData) => {
   }
 };
 
+// edit post
+export const editPost = async (dispatch, formData, postId, cloudId) => {
+  dispatch(editPostStart());
+  try {
+    const res = await axios.patch(
+      `${baseUrl}/post/edit/${postId}/${cloudId}`,
+      formData,
+      config,
+    );
+    console.log(res);
+    dispatch(editPostSuccess(res));
+  } catch (err) {
+    console.log(err);
+    dispatch(editPostFailed());
+  }
+};
 //get all post
 export const getAllPost = async (dispatch, accessToken, page, setHasmore) => {
   dispatch(getAllPostStart());

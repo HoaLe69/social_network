@@ -10,7 +10,6 @@ import Profile from "@pages/profile";
 import ChatPc from "@pages/chat-pc";
 import Login from "@pages/auth/login";
 import Register from "@pages/auth/register";
-import TestSocket from "../pages/testsock";
 
 export const routesPrivate = [
   {
@@ -52,10 +51,6 @@ export const routesPrivate = [
   {
     path: route.chatRoom,
     component: <ChatPc />,
-  },
-  {
-    path: route.testsocket,
-    component: <TestSocket />,
   },
 ];
 

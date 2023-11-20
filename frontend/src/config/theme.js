@@ -13,6 +13,18 @@ const styles = {
     body: {
       bg: mode("#f0e7db", "#202023")(props),
     },
+    "html *::-webkit-scrollbar": {
+      borderRadius: 0,
+      width: "8px",
+    },
+    "html *::-webkit-scrollbar-thumb": {
+      borderRadius: "4px",
+      backgroundColor: "#888",
+    },
+    "html *::-webkit-scrollbar-track": {
+      borderRadius: 0,
+      backgroundColor: "rgba(0, 0, 0, 0)",
+    },
   }),
 };
 const fonts = {

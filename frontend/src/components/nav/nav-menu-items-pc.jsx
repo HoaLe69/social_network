@@ -19,9 +19,10 @@ import { COLOR_THEME } from "../../constant";
 import Notify from "../notify/notify";
 import { BiLogOut } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import RoomsHome from "../chat-float/room-float";
+import axios from "axios";
 
 const MenuItemPc = ({ icon, onOpen }) => {
   return (
@@ -39,10 +40,22 @@ const MenuItemPc = ({ icon, onOpen }) => {
 };
 
 const NavMenuPc = () => {
+  const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const userFromStore = useSelector((state) => state.user.users?.currentUser);
   const userLogin = JSON.parse(localStorage.getItem("user"));
-
+  const handleLogOut = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:8080/api/auth/log-out/${userLogin?.userName}`,
+      );
+      if (res) {
+        localStorage.removeItem("user");
+        navigate("/login");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <Box display={{ base: "none", lg: "flex" }} alignItems="center" gap="10px">
       <Box>
@@ -94,7 +107,7 @@ const NavMenuPc = () => {
                 <Text> My Profile</Text>
               </MenuItem>
             </Link>
-            <MenuItem>
+            <MenuItem onClick={handleLogOut}>
               <Box as="span" fontSize="lg" mr={2}>
                 <BiLogOut />
               </Box>

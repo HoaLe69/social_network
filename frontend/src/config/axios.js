@@ -12,6 +12,9 @@ const axiosClient = axios.create({
   //   Authorization: "Bearer " + accessToken,
   //   // Accept: "application/json",
   // },
+  headers: {},
+
+  withCredentials: true,
   paramsSerializer: (params) => queryString.stringify(params),
 });
 axiosClient.interceptors.request.use(async (config) => {

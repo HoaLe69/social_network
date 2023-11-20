@@ -105,7 +105,14 @@ const ChatFloatRoom = ({ receiver, roomId }) => {
           ref={refDiv}
         >
           {messages?.map((message, index) => {
-            return <Message {...message} key={message?.id || index} isFloat />;
+            return (
+              <Message
+                {...message}
+                avatar={receiver?.avatar}
+                key={message?.id || index}
+                isFloat
+              />
+            );
           })}
         </Box>
         <InputRoomChat roomId={roomId} sendMessage={sendMessage} />

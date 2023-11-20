@@ -36,8 +36,8 @@ const conversationSlice = createSlice({
         ];
       else
         state.roomFloatSelect.Listreceiver = [
-          ...state.roomFloatSelect.Listreceiver,
           { ...action.payload },
+          ...state.roomFloatSelect.Listreceiver,
         ];
     },
     closeRoomFloat: (state, action) => {

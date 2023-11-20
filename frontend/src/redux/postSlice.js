@@ -36,8 +36,31 @@ export const postSlice = createSlice({
       error: false,
       posts: [],
     },
+    editPost: {
+      isFetching: false,
+      error: false,
+      success: false,
+    },
   },
   reducers: {
+    editPostStart: (state) => {
+      state.editPost.isFetching = true;
+    },
+    editPostSuccess: (state, action) => {
+      state.editPost.error = false;
+      state.editPost.isFetching = false;
+      state.editPost.success = true;
+      const index = state.allPost.posts.findIndex(
+        (post) => post.id === action.payload.id,
+      );
+
+      const newList = [...state.allPost.posts.splice(index, 1, action.payload)];
+    },
+    editPostFailed: (state) => {
+      state.editPost.error = true;
+      state.editPost.success = false;
+      state.editPost.isFetching = false;
+    },
     getCurrentPostInfor: (state, action) => {
       state.currentPostInfor.post = action.payload;
     },
@@ -125,6 +148,9 @@ export const postSlice = createSlice({
 });
 
 export const {
+  editPostStart,
+  editPostFailed,
+  editPostSuccess,
   getAllPostUserStart,
   getAllPostUserFailed,
   getAllPostUserSuccess,

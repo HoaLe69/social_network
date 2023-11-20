@@ -26,25 +26,30 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import images from "../../assets";
 import { useFormik } from "formik";
 import { updateUser } from "@redux/api-request/user";
 import { getUserSuccess } from "@redux/userSlice";
 
 const ListAvatar = ({ handleChooseImage }) => {
+  const importAll = (r) => r.keys().map(r);
+  const images = importAll(
+    require.context("../../assets/avatar", false, /\.(png|jpe?g|svg)$/),
+  );
+
+  const exclude = ["auth", "emptyRoom"];
   return (
-    <HStack justifyContent="center" gap="20px">
-      {Object.keys(images).map((image) => {
+    <HStack justifyContent="center" gap="20px" flexWrap="wrap">
+      {images.map((image) => {
         return (
-          image !== "auth" && (
+          !exclude.includes(image) && (
             <Avatar
               key={image}
-              onClick={() => handleChooseImage(images[image])}
+              onClick={() => handleChooseImage(image)}
               cursor="pointer"
               _hover={{
                 boxShadow: "1px 1px 4px 4px rgba(255 , 255 ,255 , 0.7)",
               }}
-              src={images[image]}
+              src={image}
             />
           )
         );

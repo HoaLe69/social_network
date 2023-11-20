@@ -1,17 +1,60 @@
-import { Box, Link, Heading, Image, Grid, GridItem } from "@chakra-ui/react";
-import { Link as ReactRouterLink } from "react-router-dom";
+import {
+  Box,
+  Link,
+  Heading,
+  Image,
+  Grid,
+  GridItem,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { AiFillHeart } from "react-icons/ai";
 import { getAllPostUser } from "@redux/api-request/posts";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import { getCurrentPostInfor } from "@redux/postSlice";
+import FeedModal from "../modals/feed";
 
-const ProfilePostItem = ({ thumbnail, like, id }) => {
+const ProfilePostItem = ({
+  userId,
+  description,
+  comments,
+  displayName,
+  cloudinaryId,
+  tag,
+  photoUrl,
+  thumbnail,
+  like,
+  id,
+  createAt,
+  isDetail,
+}) => {
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  const dispatch = useDispatch();
+  const handleShowFullPost = () => {
+    dispatch(
+      getCurrentPostInfor({
+        id,
+        userId,
+        cloudId: cloudinaryId,
+        photoUrl,
+        tag,
+        displayName,
+        description,
+        thumbnail,
+        like,
+        comments,
+        createAt,
+        isDetail,
+      }),
+    );
+    onOpen();
+  };
   return (
-    <Link
-      as={ReactRouterLink}
-      to={`/post/${id}`}
+    <Box
       position="relative"
       role="group"
+      cursor="pointer"
+      onClick={handleShowFullPost}
     >
       <Box height="400px">
         <Image
@@ -41,8 +84,9 @@ const ProfilePostItem = ({ thumbnail, like, id }) => {
         >
           {like?.length} <AiFillHeart />
         </Box>
+        <FeedModal isOpen={isOpen} onClose={onClose} />
       </Box>
-    </Link>
+    </Box>
   );
 };
 

@@ -5,13 +5,15 @@ import {
   Flex,
   Box,
   Avatar,
+  Link,
 } from "@chakra-ui/react";
 import WrapContent from "@components/common/wrap-content";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getAllRoomConversation } from "../../redux/api-request/room";
+import { getAllRoomConversation } from "@redux/api-request/room";
 import useFetchData from "../../hooks/useFetchData";
-import { chooseRoomFloat } from "../../redux/conversationSlice";
+import { chooseRoomFloat } from "@redux/conversationSlice";
+import { Link as ReactRouterLink } from "react-router-dom";
 
 const RoomsHome = () => {
   const dispatch = useDispatch();
@@ -35,6 +37,14 @@ const RoomsHome = () => {
           />
         );
       })}
+      <Link as={ReactRouterLink} to="/chat">
+        <Text
+          textAlign="center"
+          color={useColorModeValue("blue.500", "pink.400")}
+        >
+          Open messenger
+        </Text>
+      </Link>
     </WrapContent>
   );
 };

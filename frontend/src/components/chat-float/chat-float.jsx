@@ -6,6 +6,7 @@ const ChatFloat = () => {
   const receiver = useSelector(
     (state) => state.room.roomFloatSelect.Listreceiver,
   );
+
   return (
     <Box position="fixed" display="flex" gap={5} bottom={0} right={10}>
       {receiver?.map((roomData, index) => {

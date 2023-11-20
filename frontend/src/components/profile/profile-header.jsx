@@ -39,6 +39,7 @@ const ProfileHeader = ({ userId: userIdFromUrl }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const currentUser = useSelector((state) => state.user.users?.currentUser);
+  console.log(currentUser);
   const isLoadingFollow = useSelector(
     (state) => state.user.followOrtherUser.isFetching,
   );

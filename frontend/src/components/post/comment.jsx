@@ -21,6 +21,7 @@ import socketService from "../../hooks/useWebSocket";
 import axios from "axios";
 import { BsThreeDots } from "react-icons/bs";
 import { AiFillDelete } from "react-icons/ai";
+import formatTime from "../../util/timeago";
 
 const CommentItem = ({
   photoUrl,
@@ -29,6 +30,7 @@ const CommentItem = ({
   content,
   userId,
   id,
+  createAt,
   setComments,
   postId,
 }) => {
@@ -58,26 +60,34 @@ const CommentItem = ({
         <Heading fontSize={"13px"}>{displayName}</Heading>
         <Text as="p">{content}</Text>
       </Box>
-      {(userLogin?.id === userId || userLogin?.id === userOfPost) && (
-        <Menu placement="bottom-end">
-          <MenuButton
-            size="sm"
-            rounded="full"
-            icon={<BsThreeDots />}
-            as={IconButton}
-          />
-          <MenuList>
-            <MenuItem
-              leftIcon={<AiFillDelete />}
-              loadingText="delete"
-              as={Button}
-              onClick={handleDeleteComent}
-            >
-              delete
-            </MenuItem>
-          </MenuList>
-        </Menu>
-      )}
+      <Box>
+        {(userLogin?.id === userId || userLogin?.id === userOfPost) && (
+          <Menu placement="bottom-end">
+            <MenuButton
+              size="sm"
+              rounded="full"
+              icon={<BsThreeDots />}
+              as={IconButton}
+            />
+            <MenuList>
+              <MenuItem
+                leftIcon={<AiFillDelete />}
+                loadingText="delete"
+                as={Button}
+                onClick={handleDeleteComent}
+              >
+                delete
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        )}
+        <Text
+          fontSize="12px"
+          color={useColorModeValue("blackAlpha.800", "whiteAlpha.700")}
+        >
+          {formatTime(createAt)}
+        </Text>
+      </Box>
     </HStack>
   );
 };
@@ -130,12 +140,13 @@ const Comment = ({ isOpen }) => {
             displayName={comment?.displayName}
             content={comment?.content}
             userId={comment?.userId}
+            createAt={comment?.createAt}
             setComments={setComments}
             postId={postId}
           />
         );
       })}
-      <HStack alignItems="center">
+      <HStack alignItems="center" px={2}>
         <Link>
           <Avatar src={userLogin?.avatar} size="sm" />
         </Link>

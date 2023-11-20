@@ -82,13 +82,9 @@ const Post = forwardRef((props, ref) => {
       return `${quantity} other`;
     }
   };
+  const bgPost = useColorModeValue("whiteAlpha.700", "whiteAlpha.200");
   return (
-    <Box
-      mb={4}
-      ref={ref}
-      bg={useColorModeValue("whiteAlpha.700", "whiteAlpha.200")}
-      rounded="10px"
-    >
+    <Box mb={4} ref={ref} bg={isDetail ? "none" : bgPost} rounded="10px">
       <HStack as="header" p={2} display="flex">
         <Link
           as={ReactRouterLink}
@@ -98,7 +94,7 @@ const Post = forwardRef((props, ref) => {
           alignItems="center"
           gap="5px"
         >
-          <Avatar src={photoUrl} size="sm" />
+          <Avatar src={photoUrl} size="md" />
           <Box>
             <Heading as="h3" fontSize="15px">
               {displayName}
@@ -114,7 +110,7 @@ const Post = forwardRef((props, ref) => {
         </Link>
         {userId === userLogin?.id && (
           <Box ml="auto">
-            <MenuPost id={id} cloudId={cloudinaryId} />
+            <MenuPost inforPost={props} id={id} cloudId={cloudinaryId} />
           </Box>
         )}
       </HStack>
@@ -156,7 +152,7 @@ const Post = forwardRef((props, ref) => {
           <Text lineHeight={1}>{showRectPost()}</Text>
         </Box>
         <Box>
-          <Text onClick={handleShowFullPost}>{comments} comments</Text>
+          <Text>{comments} comments</Text>
         </Box>
       </Flex>
       <Flex
@@ -187,7 +183,11 @@ const Post = forwardRef((props, ref) => {
           </Box>
           Like
         </Flex>
-        <Box flex={1} onClick={handleShowFullPost}>
+        <Box
+          flex={1}
+          pointerEvents={isDetail && "none"}
+          onClick={handleShowFullPost}
+        >
           <Flex
             onClick={onOpen}
             cursor="pointer"

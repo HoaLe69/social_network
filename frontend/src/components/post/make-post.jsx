@@ -17,14 +17,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { EmojiKeyboard } from "reactjs-emoji-keyboard";
 import { FaRegSmile } from "react-icons/fa";
+import { editPost } from "../../redux/api-request/posts";
 
-const MakePost = () => {
+const MakePost = ({ postDataEditMode }) => {
   const toast = useToast();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isLoading = useSelector((state) => state.post.createPost.isFetching);
-  const [description, setDescription] = useState("");
-  const [previewSource, setPreviewSource] = useState();
+  const isLoadingEdit = useSelector((state) => state.post.editPost.isFetching);
+  const [description, setDescription] = useState(
+    postDataEditMode?.description || "",
+  );
+  const [previewSource, setPreviewSource] = useState(
+    postDataEditMode?.thumbnail || undefined,
+  );
   const currentUser = JSON.parse(localStorage.getItem("user"));
   const [err, setErr] = useState("");
   const [showEmoji, setShowEmoji] = useState(false);
@@ -36,7 +42,7 @@ const MakePost = () => {
       photoUrl: currentUser?.avatar,
       description: description,
       displayName: currentUser?.displayName,
-      tag: "",
+      tag: postDataEditMode?.tag || "",
     },
   });
   useEffect(() => {
@@ -89,17 +95,21 @@ const MakePost = () => {
     });
     form.append("thumbnail", formData.thumbnail);
     form.append("formData", blob);
-    createPost(dispatch, navigate, form);
+    if (postDataEditMode) {
+      editPost(
+        dispatch,
+        form,
+        postDataEditMode?.id,
+        postDataEditMode?.cloudinaryId,
+      );
+    } else createPost(dispatch, navigate, form);
   };
   const handleHideEmojiKeyboard = (e) => {
     if (e.target.closest(".emoji")) setShowEmoji(true);
     else setShowEmoji(false);
   };
   return (
-    <Box pb={2} onClick={handleHideEmojiKeyboard}>
-      <Box as="header" textAlign={"center"} p={2}>
-        <Heading fontSize="20px">Create New Posts</Heading>
-      </Box>
+    <Box pb={2} pt={2} onClick={handleHideEmojiKeyboard}>
       <Box>
         <Box display="flex" alignItems="center" gap="5px">
           <Avatar size="sm" src={currentUser?.avatar} />
@@ -186,13 +196,13 @@ const MakePost = () => {
       </Box>
       <Box pt="3" display="flex" justifyContent="center">
         <Button
-          isLoading={isLoading}
-          loadingText="Upload"
+          isLoading={postDataEditMode ? isLoadingEdit : isLoading}
+          loadingText={postDataEditMode ? "Saving..." : "Upload..."}
           colorScheme="teal"
           px={8}
           onClick={handleSubmit}
         >
-          Post
+          {postDataEditMode ? "Save" : "Post"}
         </Button>
       </Box>
     </Box>
