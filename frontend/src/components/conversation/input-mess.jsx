@@ -22,7 +22,7 @@ const InputRoomChat = ({ roomId, sendMessage }) => {
       conversationId: roomId,
       content: content,
     };
-    if (roomId) {
+    if (roomId && content?.trim().length > 0) {
       sendMessage(infor, "messages", roomId);
       setContent("");
       inputRef?.current.focus();

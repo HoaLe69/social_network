@@ -23,7 +23,7 @@ const InputComment = ({ postId, sendMessage }) => {
       displayName: userLogin?.displayName,
       content: commentValue,
     };
-    if (postId && userLogin?.id) {
+    if (postId && userLogin?.id && commentValue.trim().length > 0) {
       sendMessage(message, "comments", postId);
       setCommentValue("");
       refInput?.current.focus();

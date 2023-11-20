@@ -15,7 +15,7 @@ import { COLOR_THEME } from "../../constant";
 const FeedModal = ({ isOpen, onClose }) => {
   const postInfor = useSelector((state) => state.post?.currentPostInfor.post);
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="2xl">
+    <Modal isOpen={isOpen} onClose={onClose} size="3xl">
       <ModalOverlay />
       <ModalContent pb={2} px={0}>
         <ModalHeader
