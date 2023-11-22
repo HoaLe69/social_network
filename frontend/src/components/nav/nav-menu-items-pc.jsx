@@ -20,7 +20,6 @@ import Notify from "../notify/notify";
 import { BiLogOut } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import RoomsHome from "../chat-float/room-float";
 import axios from "axios";
 

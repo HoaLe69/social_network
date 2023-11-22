@@ -1,7 +1,7 @@
 import SockJS from "sockjs-client";
 import * as Stomp from "stompjs";
 
-const WebSocket = (setComments) => {
+const WebSocket = (setComments, setFilterDel = function () {}) => {
   // const [stompClient, setStompClient] = useState(null);
   let stompClient = null;
   // const [message, setMessage] = useState({});
@@ -12,8 +12,22 @@ const WebSocket = (setComments) => {
     stomp.connect({}, (frame) => {
       console.log("Connected", frame);
       stomp.subscribe(`/topic/${channel}/${id}`, (message) => {
-        const messageBody = JSON.parse(message.body);
-        setComments((pre) => [...pre, messageBody.body]);
+        const messageRes = JSON.parse(message.body);
+        if (messageRes.body.message) {
+          setFilterDel(messageRes.body);
+        } else {
+          setComments((pre) => {
+            const index = pre.findIndex(
+              (mess) => mess.id === messageRes.body.id,
+            );
+            if (index !== -1) {
+              const newListComment = pre;
+              const temp = newListComment.splice(index, 1, messageRes.body);
+              return [...newListComment];
+            }
+            return [...pre, messageRes.body];
+          });
+        }
       });
     });
 

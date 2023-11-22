@@ -4,13 +4,21 @@ import {
   Input,
   InputRightElement,
   Box,
+  Badge,
 } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { BsFillSendFill } from "react-icons/bs";
 import { FaRegSmile } from "react-icons/fa";
 import { EmojiKeyboard } from "reactjs-emoji-keyboard";
+import { v4 as uuid } from "uuid";
 
-const InputComment = ({ postId, sendMessage }) => {
+const InputComment = ({
+  postId,
+  sendMessage,
+  id: commentId,
+  replyId,
+  displayName,
+}) => {
   const userLogin = JSON.parse(localStorage.getItem("user"));
   const [commentValue, setCommentValue] = useState("");
   const refInput = useRef();
@@ -24,7 +32,21 @@ const InputComment = ({ postId, sendMessage }) => {
       content: commentValue,
     };
     if (postId && userLogin?.id && commentValue.trim().length > 0) {
-      sendMessage(message, "comments", postId);
+      if (commentId) {
+        const subCommentId = uuid();
+        sendMessage(
+          {
+            ...message,
+            id: commentId,
+            replyId: replyId,
+            subCommentId: subCommentId,
+          },
+          "comments",
+          postId,
+        );
+      } else {
+        sendMessage(message, "comments", postId);
+      }
       setCommentValue("");
       refInput?.current.focus();
     }
@@ -39,7 +61,20 @@ const InputComment = ({ postId, sendMessage }) => {
     else setShowEmoji(false);
   };
   return (
-    <InputGroup display="flex" onClick={handleHideEmojiKeyboard}>
+    <InputGroup
+      position="relative"
+      display="flex"
+      alignItems="center"
+      onClick={handleHideEmojiKeyboard}
+      px={2}
+    >
+      {displayName && (
+        <Box>
+          <Badge variant="solid" colorScheme="teal">
+            {displayName}
+          </Badge>
+        </Box>
+      )}
       <Input
         flex="1"
         ref={refInput}
@@ -47,7 +82,9 @@ const InputComment = ({ postId, sendMessage }) => {
         pr={20}
         variant="flushed"
         focusBorderColor="grassTeal"
-        placeholder="Enter your comment..."
+        placeholder={
+          displayName ? `reply ${displayName}` : "Enter you comment.."
+        }
         name="comment"
         value={commentValue}
         onChange={(e) => setCommentValue(e.target.value)}

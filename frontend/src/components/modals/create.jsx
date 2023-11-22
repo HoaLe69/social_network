@@ -14,7 +14,6 @@ import MakePost from "../post/make-post";
 const CreatePostModal = ({ mode, isOpen, onClose, postDataEditMode }) => {
   const isCreateSuccess = useSelector((state) => state.post.createPost.success);
   const isEditSuccess = useSelector((state) => state.post.editPost.success);
-  console.log(isEditSuccess);
   useEffect(() => {
     if (isCreateSuccess || isEditSuccess) onClose();
   }, [isCreateSuccess, onClose, isEditSuccess]);
