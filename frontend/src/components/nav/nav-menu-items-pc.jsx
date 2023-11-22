@@ -19,7 +19,7 @@ import { COLOR_THEME } from "../../constant";
 import Notify from "../notify/notify";
 import { BiLogOut } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import RoomsHome from "../chat-float/room-float";
 import axios from "axios";
 
@@ -39,6 +39,7 @@ const MenuItemPc = ({ icon, onOpen }) => {
 };
 
 const NavMenuPc = () => {
+  const { pathname } = useLocation();
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const userLogin = JSON.parse(localStorage.getItem("user"));
@@ -73,7 +74,10 @@ const NavMenuPc = () => {
       </Menu>
       <Menu placement="bottom">
         <Tooltip label="message">
-          <MenuButton _expanded={{ color: "grassTeal" }}>
+          <MenuButton
+            display={pathname.includes("/chat") ? "none" : "block"}
+            _expanded={{ color: "grassTeal" }}
+          >
             <MenuItemPc icon={<AiFillMessage />} title="message" />
           </MenuButton>
         </Tooltip>

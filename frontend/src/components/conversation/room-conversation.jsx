@@ -23,6 +23,7 @@ import axios from "axios";
 const RoomConversation = () => {
   const baseUrl = process.env.REACT_APP_API_URL;
   const [messages, setMessages] = useState([]);
+  const [filterMess, setFilterMess] = useState({ message: "" });
   const params = useParams();
   const refDiv = useRef(null);
   const receiverId = new URLSearchParams(document.location.search).get(
@@ -36,7 +37,7 @@ const RoomConversation = () => {
 
   const bgHeader = useColorModeValue("#ffffff40", "#20202380");
   const { sendMessage, disconnect, connect } = useMemo(
-    () => socketService(setMessages),
+    () => socketService(setMessages, setFilterMess),
     [],
   );
 
@@ -48,7 +49,21 @@ const RoomConversation = () => {
     if (roomId) connect("messages", roomId);
     return () => disconnect();
   }, [roomId]);
-
+  useEffect(() => {
+    if (filterMess.message) {
+      const messRecallIndex = messages.findIndex(
+        (el) => el.id === filterMess.message,
+      );
+      if (messRecallIndex !== -1) {
+        const newListMessage = messages;
+        newListMessage[messRecallIndex] = {
+          ...newListMessage[messRecallIndex],
+          content: "",
+        };
+        setMessages([...newListMessage]);
+      }
+    }
+  }, [filterMess]);
   useEffect(() => {
     const getMessages = async () => {
       try {
@@ -109,6 +124,7 @@ const RoomConversation = () => {
               maxH="100%"
               ref={refDiv}
               overflowY="auto"
+              overflowX="hidden"
             >
               <Box display="flex" flexDir="column" alignItems="center" mb={20}>
                 <Avatar src={user?.avatar} size="xl" alt={user?.displayName} />
@@ -118,12 +134,11 @@ const RoomConversation = () => {
                 {messages.map((message, index) => {
                   return (
                     <Message
+                      roomId={roomId}
                       key={index}
-                      createAt={message?.createAt}
-                      userId={message?.userId}
                       avatar={user?.avatar}
-                      displayName={user?.displayName}
-                      content={message?.content}
+                      {...message}
+                      sendMessage={sendMessage}
                     />
                   );
                 })}

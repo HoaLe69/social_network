@@ -22,15 +22,33 @@ const ChatFloatRoom = ({ receiver, roomId }) => {
   const dispatch = useDispatch();
   const refDiv = useRef();
   const [messages, setMessages] = useState([]);
+  const [filterMess, setfilterMess] = useState({ message: "" });
   const userLogin = JSON.parse(localStorage.getItem("user"));
   const baseUrl = process.env.REACT_APP_API_URL;
   const { sendMessage, connect, disconnect } = useMemo(
-    () => WebSocket(setMessages),
+    () => WebSocket(setMessages, setfilterMess),
     [],
   );
   useEffect(() => {
     if (roomId) connect("messages", roomId);
   }, []);
+
+  useEffect(() => {
+    if (filterMess.message) {
+      const messRecallIndex = messages.findIndex(
+        (el) => el.id === filterMess.message,
+      );
+      if (messRecallIndex !== -1) {
+        const newListMessage = messages;
+        newListMessage[messRecallIndex] = {
+          ...newListMessage[messRecallIndex],
+          content: "",
+        };
+        setMessages([...newListMessage]);
+      }
+    }
+  }, [filterMess.message]);
+
   useEffect(() => {
     const getMessages = async () => {
       try {
@@ -110,6 +128,8 @@ const ChatFloatRoom = ({ receiver, roomId }) => {
                 {...message}
                 avatar={receiver?.avatar}
                 key={message?.id || index}
+                roomId={roomId}
+                sendMessage={sendMessage}
                 isFloat
               />
             );

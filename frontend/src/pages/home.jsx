@@ -17,6 +17,7 @@ import CreatePostModal from "@components/modals/create";
 import PostFollowing from "@components/post/post-from-user-following";
 import { memo, useState } from "react";
 import News from "@components/new/new";
+import ChatFloat from "@components/chat-float/chat-float";
 
 const Home = () => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -78,6 +79,7 @@ const Home = () => {
           </TabPanel>
         </TabPanels>
       </Tabs>
+      <ChatFloat />
     </LayoutFull>
   );
 };
