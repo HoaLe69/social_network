@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class UserResponse {
+public class UserResponseLogin {
     private String id;
     private String userName;
     private String email;
@@ -18,8 +18,10 @@ public class UserResponse {
     private List<String> follower;
     private List<String> following;
     private String createAt;
+    private String accessToken;
 
-    public UserResponse(UserCollection user) {
+
+    public UserResponseLogin(UserCollection user, String accessToken) {
         this.id = user.getId();
         this.userName = user.getUserName();
         this.email = user.getEmail();
@@ -30,5 +32,6 @@ public class UserResponse {
         this.follower = user.getFollower();
         this.following = user.getFollowing();
         this.createAt = user.getCreateAt();
+        this.accessToken = accessToken;
     }
 }

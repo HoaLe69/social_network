@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.mongodb.core.query.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -42,8 +43,23 @@ public class ConversationController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<?> getAllRoomConversation() {
-        return ResponseEntity.ok(conversationRepository.findAll());
+    @GetMapping("/all/{id}")
+    public ResponseEntity<?> getAllRoomConversation(@PathVariable String id) {
+        List<ConversationCollection> rooms = conversationRepository.findAll();
+        List<ConversationCollection> roomRes = new ArrayList<>();
+        for (ConversationCollection room : rooms) {
+            String idMemberFirst = room.getMember().get(0);
+            String idMemberSecond = room.getMember().get(1);
+            if (idMemberFirst.equals(id) || idMemberSecond.equals(id)) roomRes.add(room);
+        }
+        return ResponseEntity.ok(roomRes);
+    }
+
+    @PatchMapping("/update/lastestMessage/{id}")
+    public ResponseEntity<?> updateLastestMessage(@PathVariable String id, @RequestBody ConversationCollection conversation) {
+        ConversationCollection conversationCollection = conversationRepository.findConversationCollectionById(id);
+        conversationCollection.setLastestMessage(conversation.getLastestMessage());
+        conversationRepository.save(conversationCollection);
+        return ResponseEntity.ok(new MessageResponse("ok"));
     }
 }

@@ -23,16 +23,18 @@ public class PostCollection {
     private String cloudinaryId;
     private String photoUrl;
     private String displayName;
+    private String tag;
     private String thumbnail;
     private List<String> like;
     private String description;
     private long comments;
     private String createAt;
 
-    public PostCollection(String userId, String photoUrl, String displayName, String thumbnail, String cloudinaryId, String description) {
+    public PostCollection(String userId, String photoUrl, String displayName, String tag, String thumbnail, String cloudinaryId, String description) {
         this.userId = userId;
         this.photoUrl = photoUrl;
         this.displayName = displayName;
+        this.tag = tag;
         this.thumbnail = thumbnail;
         this.cloudinaryId = cloudinaryId;
         this.like = new ArrayList<>();

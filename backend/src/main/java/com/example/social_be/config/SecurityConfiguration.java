@@ -60,6 +60,8 @@ public class SecurityConfiguration {
                                 .requestMatchers("/api/user/**").authenticated()
                                 .requestMatchers("/api/post/**").authenticated()
                                 .requestMatchers("/api/conversation/**").authenticated()
+                                .requestMatchers("/api/message/**").authenticated()
+                                .requestMatchers("/api/comment/**").authenticated()
                 )
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS));

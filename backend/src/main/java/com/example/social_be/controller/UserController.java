@@ -2,7 +2,7 @@ package com.example.social_be.controller;
 
 import com.example.social_be.model.collection.PostCollection;
 import com.example.social_be.model.collection.UserCollection;
-import com.example.social_be.model.request.FollowingRequest;
+import com.example.social_be.model.request.RequestList;
 import com.example.social_be.model.request.UserUpdateRequest;
 import com.example.social_be.model.response.MessageResponse;
 import com.example.social_be.model.response.UserResponse;
@@ -11,6 +11,7 @@ import com.example.social_be.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -47,11 +48,11 @@ public class UserController {
     }
 
     @PostMapping("/getUserFollow")
-    public ResponseEntity<?> getUserFollowing(@RequestBody FollowingRequest following) {
-        if (following.getFollow() != null) {
-            List<UserCollection> userFollowing = new ArrayList<>();
-            for (int i = 0; i < following.getFollow().size(); i++) {
-                userFollowing.add(userRepository.findUserCollectionById((String) following.getFollow().get(i)));
+    public ResponseEntity<?> getUserFollowing(@RequestBody RequestList following) {
+        if (following.getList() != null) {
+            List<UserResponse> userFollowing = new ArrayList<>();
+            for (int i = 0; i < following.getList().size(); i++) {
+                userFollowing.add(new UserResponse(userRepository.findUserCollectionById((String) following.getList().get(i))));
             }
             return ResponseEntity.ok(userFollowing);
         }
@@ -81,7 +82,7 @@ public class UserController {
                 user.setAvatar(update.getAvatar() != null ? update.getAvatar() : user.getAvatar());
                 user.setPassword(pass != null ? pass : user.getPassword());
                 userRepository.save(user);
-                return ResponseEntity.ok(new MessageResponse("Update successfully"));
+                return ResponseEntity.ok(new UserResponse(user));
             } else {
                 return ResponseEntity.badRequest().body(new MessageResponse("Something wrong"));
             }
@@ -99,6 +100,7 @@ public class UserController {
 
     //follow and unfollow
     @PatchMapping("/interactive/{id}")
+    @Transactional
     public ResponseEntity<?> interactiveUser(@RequestBody UserCollection userId, @PathVariable String id) {
         String currentId = userId.getId();
         if (!currentId.equals(id)) {
@@ -115,7 +117,7 @@ public class UserController {
                     listFollower.add(currentId);
                     userFollow.setFollower(listFollower);
                     userRepository.save(userFollow);
-                    return ResponseEntity.ok(currentUser);
+                    return ResponseEntity.ok(new UserResponse(userFollow));
                 } else {
                     listFollowing.remove(id);
                     currentUser.setFollowing(listFollowing);
@@ -123,7 +125,7 @@ public class UserController {
                     listFollower.remove(currentId);
                     userFollow.setFollower(listFollower);
                     userRepository.save(userFollow);
-                    return ResponseEntity.ok(userFollow);
+                    return ResponseEntity.ok(new UserResponse(userFollow));
                 }
             } catch (Exception ex) {
                 throw new RuntimeException("fail to perform follow!!", ex);

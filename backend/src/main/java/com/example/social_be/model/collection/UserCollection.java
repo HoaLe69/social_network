@@ -1,6 +1,7 @@
 package com.example.social_be.model.collection;
 
 import com.example.social_be.model.request.AuthSignUpRequest;
+import com.example.social_be.util.Utilties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,17 +17,18 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 public class UserCollection {
-    protected String id;
-    protected String userName;
+    private String id;
+    private String userName;
     private String password;
-    protected String email;
-    protected String displayName;
-    protected String avatar;
-    protected String about;
-    protected boolean isOnline;
-    protected List<String> follower;
-    protected List<String> following;
-    protected Date createAt;
+    private String email;
+    private String displayName;
+    private String avatar;
+    private String about;
+    private boolean isOnline;
+    private List<String> follower;
+    private List<String> following;
+    private String createAt;
+    private int activeAccount;
 
     public UserCollection() {
         this.displayName = null;
@@ -43,8 +45,9 @@ public class UserCollection {
         this.displayName = authSignUpRequest.getUserName();
         this.avatar = null;
         this.about = null;
+        this.activeAccount = 0;
         this.follower = new ArrayList<>();
         this.following = new ArrayList<>();
-        this.createAt = new Date();
+        this.createAt = new Utilties().dayTimeFormat();
     }
 }

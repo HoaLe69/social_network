@@ -1,5 +1,7 @@
 package com.example.social_be.config;
 
+import com.example.social_be.repository.TokenRepository;
+import com.example.social_be.repository.UserRepository;
 import com.example.social_be.service.UserService;
 import com.example.social_be.util.JwtTokenUtil;
 import jakarta.servlet.FilterChain;
@@ -24,6 +26,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private TokenRepository tokenRepository;
 
     @Autowired
     private UserService userService;
@@ -47,7 +51,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             if (StringUtils.hasText(token)) {
                 String userName = jwtTokenUtil.getUserNameFromAccessToken(token);
                 UserDetails userDetails = userService.loadUserByUsername(userName);
-                if (userDetails != null && jwtTokenUtil.validateJwtAccessToken(token, userDetails.getUsername())) {
+                String tokenFromDB = tokenRepository.findTokenByUserName(userName).getAcessToken();
+                if (token.equals(tokenFromDB) && userDetails != null && jwtTokenUtil.validateJwtAccessToken(token, userDetails.getUsername())) {
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, new ArrayList<>());
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);

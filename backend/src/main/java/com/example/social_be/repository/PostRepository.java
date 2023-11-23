@@ -9,4 +9,5 @@ public interface PostRepository extends MongoRepository<PostCollection, String> 
     PostCollection findPostCollectionById(String id);
 
     List<PostCollection> findAllByUserId(String id);
+
 }
