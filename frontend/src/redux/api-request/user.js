@@ -44,11 +44,15 @@ export const updateUser = async (
 ) => {
   dispatch(updateUserStart());
   try {
-    const res = await axiosClient.patch(`/user/update/${id}`, userInforUpdate, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
+    const res = await axios.patch(
+      `${baseUrl}/user/update/${id}`,
+      userInforUpdate,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       },
-    });
+    );
     dispatch(updateUserSuccess());
   } catch (err) {
     console.log(err);

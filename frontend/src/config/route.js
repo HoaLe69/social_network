@@ -12,6 +12,8 @@ const route = {
   login: "/login",
   register: "/register",
   testsocket: "/testsocket/:id",
+  verify: "/verify/:hash/:username",
+  reset: "/newpass/:hash/:username",
 };
 
 export default route;

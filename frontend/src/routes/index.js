@@ -10,6 +10,8 @@ import Profile from "@pages/profile";
 import ChatPc from "@pages/chat-pc";
 import Login from "@pages/auth/login";
 import Register from "@pages/auth/register";
+import Verification from "@pages/vefity";
+import ResetPassWordFrom from "@pages/auth/reset-password";
 
 export const routesPrivate = [
   {
@@ -60,7 +62,16 @@ export const routesPublic = [
     component: <Login />,
   },
   {
+    path: route.verify,
+    component: <Verification />,
+  },
+  {
     path: route.register,
     component: <Register />,
+  },
+
+  {
+    path: route.reset,
+    component: <ResetPassWordFrom />,
   },
 ];

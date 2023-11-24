@@ -33,7 +33,7 @@ const RoomConversation = () => {
   const roomFormStore = useSelector((state) => state.room.selectedRoom.id);
   const roomId = roomFormStore || params?.id;
   const url = `${baseUrl}/user/${receiverId}`;
-  const { apiData: user } = useFetchData(url, userLogin.accessToken);
+  const { apiData: user } = useFetchData(url, userLogin?.accessToken);
 
   const bgHeader = useColorModeValue("#ffffff40", "#20202380");
   const { sendMessage, disconnect, connect } = useMemo(
@@ -68,7 +68,7 @@ const RoomConversation = () => {
     const getMessages = async () => {
       try {
         const res = await axios.get(`${baseUrl}/message/all/${roomId}`, {
-          headers: { Authorization: `Bearer ${userLogin.accessToken}` },
+          headers: { Authorization: `Bearer ${userLogin?.accessToken}` },
         });
         setMessages(res);
       } catch (err) {
@@ -76,7 +76,7 @@ const RoomConversation = () => {
       }
     };
     if (roomId) getMessages();
-  }, [roomId, baseUrl, userLogin.accessToken]);
+  }, [roomId, baseUrl, userLogin?.accessToken]);
   return (
     <>
       {roomId ? (

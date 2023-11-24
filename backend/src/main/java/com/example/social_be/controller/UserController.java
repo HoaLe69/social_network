@@ -1,15 +1,18 @@
 package com.example.social_be.controller;
 
+import com.example.social_be.model.collection.CommentCollection;
 import com.example.social_be.model.collection.PostCollection;
 import com.example.social_be.model.collection.UserCollection;
 import com.example.social_be.model.request.RequestList;
 import com.example.social_be.model.request.UserUpdateRequest;
 import com.example.social_be.model.response.MessageResponse;
 import com.example.social_be.model.response.UserResponse;
+import com.example.social_be.repository.CommentRepository;
 import com.example.social_be.repository.PostRepository;
 import com.example.social_be.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +33,9 @@ public class UserController {
 
     @Autowired
     private PostRepository postRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
 
     @GetMapping("/search")
@@ -61,10 +67,13 @@ public class UserController {
 
     // update user by id
     @PatchMapping("/update/{id}")
+    @Transactional
+    @Async
     public ResponseEntity<?> updateUser(@RequestBody UserUpdateRequest update, @PathVariable String id) {
         try {
             UserCollection user = userRepository.findUserCollectionById(id);
             List<PostCollection> posts = postRepository.findAllByUserId(id);
+            List<CommentCollection> comments = commentRepository.findAllByUserId(id);
             if (user != null) {
                 if (!posts.isEmpty()) {
                     for (PostCollection post : posts) {
@@ -73,14 +82,16 @@ public class UserController {
                         postRepository.save(post);
                     }
                 }
-                String pass = null;
-                if (update.getPassword() != null) {
-                    pass = encoder.encode(update.getPassword());
+                if (!comments.isEmpty()) {
+                    for (CommentCollection comment : comments) {
+                        comment.setDisplayName(update.getDisplayName() != null ? update.getDisplayName() : user.getDisplayName());
+                        comment.setAvatar(update.getAvatar() != null ? update.getAvatar() : user.getAvatar());
+                        commentRepository.save(comment);
+                    }
                 }
                 user.setDisplayName(update.getDisplayName() != null ? update.getDisplayName() : user.getDisplayName());
                 user.setAbout(update.getAbout() != null ? update.getAbout() : user.getAbout());
                 user.setAvatar(update.getAvatar() != null ? update.getAvatar() : user.getAvatar());
-                user.setPassword(pass != null ? pass : user.getPassword());
                 userRepository.save(user);
                 return ResponseEntity.ok(new UserResponse(user));
             } else {

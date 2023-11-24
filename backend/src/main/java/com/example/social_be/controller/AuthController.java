@@ -26,12 +26,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.context.Context;
 
 import java.io.IOException;
 
 
 @RestController
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin("http://localhost:3000/")
 @RequestMapping(value = "/api/auth")
 public class AuthController {
     @Autowired
@@ -83,7 +84,9 @@ public class AuthController {
             authSignUpRequest.setPassword(pass);
             UserCollection userCollection = new UserCollection(authSignUpRequest);
             userRepository.save(userCollection);
-            emailService.sendEmail(authSignUpRequest.getEmail(), "Verify Account", "http://localhost:3000/verify/dGhpcyBpcyB1cmwgdG8gdmVyaWZ5IHlvdXIgZW1haWwgYWRkcmVzcy5JdCBlbmNvZGUgYnkgYWxnb3JpdGhtIGJhc2U2NA/" + authSignUpRequest.getUserName());
+            Context context = new Context();
+            context.setVariable("username", authSignUpRequest.getUserName());
+            emailService.sendEmailWithHtmlTemplate(authSignUpRequest.getEmail(), "Penguin hup", "verification-email", context);
             return ResponseEntity.ok(new MessageResponse("Register successfully"));
         }
         return ResponseEntity.badRequest().body(new MessageResponse("Username is exiting"));
@@ -107,6 +110,28 @@ public class AuthController {
         return ResponseEntity.badRequest().body(new MessageResponse("You are not Authenticated"));
     }
 
+    @PostMapping("/send-email/forgot-pass")
+    public ResponseEntity<?> sendEmailForgotPass(@RequestBody UserCollection userRequest) {
+        UserCollection user = userRepository.findUserCollectionByUserName(userRequest.getUserName());
+        if (user == null) return ResponseEntity.badRequest().body(new MessageResponse("User not found"));
+        if (!user.getEmail().equals(userRequest.getEmail()))
+            return ResponseEntity.badRequest().body(new MessageResponse("Email is invalid"));
+        Context context = new Context();
+        context.setVariable("username", userRequest.getUserName());
+        emailService.sendEmailWithHtmlTemplate(userRequest.getEmail(), "Penguin hup", "forgot-password", context);
+        return ResponseEntity.ok("ok");
+    }
+
+    @PatchMapping("/reset-pass/{userName}")
+    public ResponseEntity<?> resetPassWord(@PathVariable String userName, @RequestBody UserCollection userRequest) {
+        UserCollection user = userRepository.findUserCollectionByUserName(userName);
+        if (user == null) return ResponseEntity.badRequest().body(new MessageResponse("user not found"));
+        String pass = encoder.encode(userRequest.getPassword());
+        user.setPassword(pass);
+        userRepository.save(user);
+        return ResponseEntity.ok(new MessageResponse("Successfully!!!"));
+    }
+
     @GetMapping("/active-account/{username}")
     public ResponseEntity<?> activeAcccount(@PathVariable String username) {
         UserCollection user = userRepository.findUserCollectionByUserName(username);
@@ -120,7 +145,9 @@ public class AuthController {
 
     @PostMapping("/send/{email}")
     public ResponseEntity<?> sendEmail(@PathVariable("email") String email) throws IOException {
-        emailService.sendEmail(email, "test", "<p><h1> hello new user</h1></p>");
+        Context context = new Context();
+        context.setVariable("username", "lelelele");
+        emailService.sendEmailWithHtmlTemplate(email, "Penguin hup", "verification-email", context);
         return ResponseEntity.ok(new MessageResponse("send successfully"));
     }
 }

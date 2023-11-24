@@ -12,6 +12,8 @@ public interface CommentRepository extends MongoRepository<CommentCollection, St
 
     CommentCollection findCommentCollectionById(String id);
 
+    List<CommentCollection> findAllByUserId(String id);
+
     void deleteCommentCollectionById(String id);
 
     void deleteAllByPostId(String id);

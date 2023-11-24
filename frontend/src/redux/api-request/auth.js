@@ -24,13 +24,12 @@ export const login = async (dispatch, navigate, formData) => {
     dispatch(loginFailed(err.response.data.message || "Mật khẩu không đúng"));
   }
 };
-
+// register account
 export const register = async (dispatch, navigate, formData) => {
   dispatch(registerStart());
   try {
     await axios.post(`${baseUrl}/auth/register`, formData, config);
     dispatch(registerSuccess());
-    navigate(route.login);
   } catch (err) {
     console.log(err);
     dispatch(registerFailed(err.response.data.message));
