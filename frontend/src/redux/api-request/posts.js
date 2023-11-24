@@ -40,13 +40,19 @@ export const createPost = async (dispatch, navigate, formData) => {
 };
 
 // edit post
-export const editPost = async (dispatch, formData, postId, cloudId) => {
+export const editPost = async (
+  dispatch,
+  formData,
+  postId,
+  cloudId,
+  accessToken,
+) => {
   dispatch(editPostStart());
   try {
     const res = await axios.patch(
       `${baseUrl}/post/edit/${postId}/${cloudId}`,
       formData,
-      config,
+      { headers: { Authorization: `Bearer ${accessToken}` } },
     );
     console.log(res);
     dispatch(editPostSuccess(res));

@@ -1,7 +1,7 @@
 import { Box, Heading, Image, Text } from "@chakra-ui/react";
 import images from "../../assets";
 
-const VerifyEmail = ({ email }) => {
+const VerifyEmail = ({ email, title, des }) => {
   return (
     <Box display="flex" flexDir="column" gap="30px" alignItems="center">
       <Image
@@ -11,10 +11,8 @@ const VerifyEmail = ({ email }) => {
         rounded="full"
         objectFit="cover"
       />
-      <Heading>Verify your email</Heading>
-      <Text textAlign="center">
-        To continue using Penguin app, please verify your email address
-      </Text>
+      <Heading>{title}</Heading>
+      <Text textAlign="center">{des}</Text>
       <Text>
         <strong>{email}</strong>
       </Text>

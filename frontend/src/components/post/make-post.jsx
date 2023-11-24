@@ -9,6 +9,7 @@ import {
   useColorModeValue,
   Avatar,
   useToast,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { MdOutlineCloudUpload } from "react-icons/md";
@@ -25,23 +26,20 @@ const MakePost = ({ postDataEditMode }) => {
   const navigate = useNavigate();
   const isLoading = useSelector((state) => state.post.createPost.isFetching);
   const isLoadingEdit = useSelector((state) => state.post.editPost.isFetching);
-  const [description, setDescription] = useState(
-    postDataEditMode?.description || "",
-  );
   const [previewSource, setPreviewSource] = useState(
     postDataEditMode?.thumbnail || undefined,
   );
-  const currentUser = JSON.parse(localStorage.getItem("user"));
+  const userLogin = JSON.parse(localStorage.getItem("user"));
   const [err, setErr] = useState("");
   const [showEmoji, setShowEmoji] = useState(false);
 
   const [formData, setFormData] = useState({
     thumbnail: null,
     formData: {
-      userId: currentUser?.id,
-      photoUrl: currentUser?.avatar,
-      description: description,
-      displayName: currentUser?.displayName,
+      userId: userLogin?.id,
+      photoUrl: userLogin?.avatar,
+      description: postDataEditMode?.description || "",
+      displayName: userLogin?.displayName,
       tag: postDataEditMode?.tag || "",
     },
   });
@@ -74,7 +72,6 @@ const MakePost = ({ postDataEditMode }) => {
         ...pre,
         formData: { ...pre.formData, [name]: value },
       }));
-      setDescription(value);
     }
   };
   const previewImage = (file) => {
@@ -101,6 +98,7 @@ const MakePost = ({ postDataEditMode }) => {
         form,
         postDataEditMode?.id,
         postDataEditMode?.cloudinaryId,
+        userLogin?.accessToken,
       );
     } else createPost(dispatch, navigate, form);
   };
@@ -112,8 +110,8 @@ const MakePost = ({ postDataEditMode }) => {
     <Box pb={2} pt={2} onClick={handleHideEmojiKeyboard}>
       <Box>
         <Box display="flex" alignItems="center" gap="5px">
-          <Avatar size="sm" src={currentUser?.avatar} />
-          <Heading fontSize="15px">{currentUser?.displayName}</Heading>
+          <Avatar size="sm" src={userLogin?.avatar} />
+          <Heading fontSize="15px">{userLogin?.displayName}</Heading>
         </Box>
         <Box position="relative">
           <Textarea
@@ -123,7 +121,7 @@ const MakePost = ({ postDataEditMode }) => {
             resize="vertical"
             name="description"
             onChange={handleOnChange}
-            value={description}
+            value={formData.formData.description}
           />
           <Box
             fontSize="20px"
@@ -148,7 +146,13 @@ const MakePost = ({ postDataEditMode }) => {
                 searchLabel="Procurar emoji"
                 searchDisabled={false}
                 onEmojiSelect={(emoji) =>
-                  setDescription((pre) => pre + emoji.character)
+                  setFormData((pre) => ({
+                    ...pre,
+                    formData: {
+                      ...pre.formData,
+                      description: pre.formData.description + emoji.character,
+                    },
+                  }))
                 }
                 categoryDisabled={false}
               />

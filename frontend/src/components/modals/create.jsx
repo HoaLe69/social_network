@@ -12,8 +12,11 @@ import { COLOR_THEME } from "../../constant";
 import MakePost from "../post/make-post";
 
 const CreatePostModal = ({ mode, isOpen, onClose, postDataEditMode }) => {
-  const isCreateSuccess = useSelector((state) => state.post.createPost.success);
-  const isEditSuccess = useSelector((state) => state.post.editPost.success);
+  const isCreateSuccess = useSelector(
+    (state) => state.post.createPost.isFetching,
+  );
+  const isEditSuccess = useSelector((state) => state.post.editPost.isFetching);
+  console.log(isEditSuccess);
   useEffect(() => {
     if (isCreateSuccess || isEditSuccess) onClose();
   }, [isCreateSuccess, onClose, isEditSuccess]);

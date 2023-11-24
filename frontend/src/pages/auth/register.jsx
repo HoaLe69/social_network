@@ -159,7 +159,11 @@ const Register = () => {
           </Text>
         </FormStyled>
       ) : (
-        <VerifyEmail />
+        <VerifyEmail
+          email={formik.values.email}
+          title="Verify your email"
+          des="To continue using Penguin app, please verify your email address"
+        />
       )}
     </AuthWrap>
   );
