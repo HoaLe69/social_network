@@ -79,7 +79,7 @@ const News = ({ index }) => {
         console.log(err);
       }
     };
-    if (index === 1) getNews();
+    getNews();
   }, [page]);
   return (
     <Box>

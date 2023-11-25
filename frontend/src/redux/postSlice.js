@@ -43,6 +43,10 @@ export const postSlice = createSlice({
     },
   },
   reducers: {
+    resetStatus: (state) => {
+      state.createPost.success = false;
+      state.editPost.success = false;
+    },
     editPostStart: (state) => {
       state.editPost.isFetching = true;
     },
@@ -83,7 +87,7 @@ export const postSlice = createSlice({
       state.allPost.isFetching = false;
     },
     getAllPostUserStart: (state) => {
-      state.allPost.isFetching = true;
+      state.allPostFromUser.isFetching = true;
     },
     getAllPostUserSuccess: (state, action) => {
       state.allPostFromUser.isFetching = false;
@@ -148,6 +152,7 @@ export const postSlice = createSlice({
 });
 
 export const {
+  resetStatus,
   editPostStart,
   editPostFailed,
   editPostSuccess,

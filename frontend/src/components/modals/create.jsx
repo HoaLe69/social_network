@@ -7,18 +7,20 @@ import {
   ModalHeader,
 } from "@chakra-ui/react";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { COLOR_THEME } from "../../constant";
+import { resetStatus } from "../../redux/postSlice";
 import MakePost from "../post/make-post";
 
 const CreatePostModal = ({ mode, isOpen, onClose, postDataEditMode }) => {
-  const isCreateSuccess = useSelector(
-    (state) => state.post.createPost.isFetching,
-  );
-  const isEditSuccess = useSelector((state) => state.post.editPost.isFetching);
-  console.log(isEditSuccess);
+  const dispatch = useDispatch();
+  const isCreateSuccess = useSelector((state) => state.post.createPost.success);
+  const isEditSuccess = useSelector((state) => state.post.editPost.success);
   useEffect(() => {
-    if (isCreateSuccess || isEditSuccess) onClose();
+    if (isCreateSuccess || isEditSuccess) {
+      onClose();
+      dispatch(resetStatus());
+    }
   }, [isCreateSuccess, onClose, isEditSuccess]);
 
   return (

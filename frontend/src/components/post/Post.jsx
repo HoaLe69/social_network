@@ -18,8 +18,9 @@ import { useDispatch } from "react-redux";
 import { getCurrentPostInfor } from "@redux/postSlice";
 import FeedModal from "../modals/feed";
 import { reactPost } from "@redux/api-request/posts";
-import { forwardRef, useState, memo } from "react";
+import { forwardRef, useState, memo, useRef, useEffect } from "react";
 import formatTime from "../../util/timeago";
+import { isDate } from "moment";
 
 const Post = forwardRef((props, ref) => {
   const {
@@ -38,6 +39,9 @@ const Post = forwardRef((props, ref) => {
   } = props;
 
   const userLogin = JSON.parse(localStorage.getItem("user"));
+  const [numberOfLines, setNumberOfLines] = useState(0);
+  // paragraph ref
+  const pRef = useRef();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [isLiked, setIsLike] = useState(() =>
     like ? like?.includes(userLogin?.id) : false,
@@ -83,6 +87,23 @@ const Post = forwardRef((props, ref) => {
     }
   };
   const bgPost = useColorModeValue("whiteAlpha.700", "whiteAlpha.200");
+
+  useEffect(() => {
+    if (pRef.current) {
+      const lineHeight = parseFloat(
+        window.getComputedStyle(pRef.current).lineHeight,
+      );
+      const height = pRef.current.getBoundingClientRect().height;
+      const calculatedNumberOfLines = Math.round(height / lineHeight);
+      setNumberOfLines(calculatedNumberOfLines);
+    }
+  }, []);
+
+  const handleReadMorePost = () => {
+    handleShowFullPost();
+    onOpen();
+  };
+  console.log(numberOfLines);
   return (
     <Box mb={4} ref={ref} bg={isDetail ? "none" : bgPost} rounded="10px">
       <HStack as="header" p={2} display="flex">
@@ -115,8 +136,27 @@ const Post = forwardRef((props, ref) => {
         )}
       </HStack>
       <Box pl={2}>
-        <Text textAlign="left" noOfLines={`${isDetail ? "none" : 3}`}>
+        <Text
+          ref={pRef}
+          textAlign="left"
+          noOfLines={numberOfLines >= 3 && !isDetail ? "3" : "none"}
+        >
           {description}
+        </Text>
+      </Box>
+      <Box
+        display={numberOfLines >= 3 && !isDetail ? "block" : "none"}
+        textAlign="left"
+        pl={2}
+      >
+        <Text
+          onClick={handleReadMorePost}
+          cursor="pointer"
+          fontSize="12px"
+          _hover={{ textDecoration: "underline" }}
+          color={useColorModeValue("blue.500", "pink.500")}
+        >
+          <strong> read more </strong>
         </Text>
       </Box>
       <Box pb={2} pl={2} textAlign="left">

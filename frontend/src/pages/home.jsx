@@ -72,7 +72,7 @@ const Home = () => {
             <PostContainer />
           </TabPanel>
           <TabPanel>
-            <News />
+            <News index={tabIndex} />
           </TabPanel>
           <TabPanel px={0}>
             <PostFollowing index={tabIndex} />

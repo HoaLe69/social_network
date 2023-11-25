@@ -152,15 +152,6 @@ const Message = ({
                   </MenuItem>
                 </MenuList>
               </Menu>
-              <IconButton
-                sx={{ transform: "rotate(180deg)" }}
-                _groupHover={{ display: "flex" }}
-                display="none"
-                backgroundColor="transparent"
-                icon={<BsReplyFill />}
-                rounded="full"
-                size="sm"
-              />
             </Box>
           </Box>
 

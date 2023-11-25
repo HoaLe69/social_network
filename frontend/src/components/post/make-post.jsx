@@ -100,7 +100,7 @@ const MakePost = ({ postDataEditMode }) => {
         postDataEditMode?.cloudinaryId,
         userLogin?.accessToken,
       );
-    } else createPost(dispatch, navigate, form);
+    } else createPost(dispatch, navigate, form, userLogin?.accessToken);
   };
   const handleHideEmojiKeyboard = (e) => {
     if (e.target.closest(".emoji")) setShowEmoji(true);

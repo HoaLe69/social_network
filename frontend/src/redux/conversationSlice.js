@@ -30,15 +30,23 @@ const conversationSlice = createSlice({
       const isOpened = state.roomFloatSelect.Listreceiver.some((room) => {
         return room?.roomId === action.payload.roomId;
       });
-      if (isOpened)
+      const quantityRoom = state.roomFloatSelect.Listreceiver.length >= 3;
+      if (quantityRoom && !isOpened) {
         state.roomFloatSelect.Listreceiver = [
-          ...state.roomFloatSelect.Listreceiver,
-        ];
-      else
-        state.roomFloatSelect.Listreceiver = [
+          ...state.roomFloatSelect.Listreceiver.slice(1),
           { ...action.payload },
-          ...state.roomFloatSelect.Listreceiver,
         ];
+      } else {
+        if (isOpened)
+          state.roomFloatSelect.Listreceiver = [
+            ...state.roomFloatSelect.Listreceiver,
+          ];
+        else
+          state.roomFloatSelect.Listreceiver = [
+            { ...action.payload },
+            ...state.roomFloatSelect.Listreceiver,
+          ];
+      }
     },
     closeRoomFloat: (state, action) => {
       state.roomFloatSelect.Listreceiver =

@@ -27,10 +27,12 @@ import { config } from "./configAxiosHeader";
 const baseUrl = process.env.REACT_APP_API_URL;
 
 //create post
-export const createPost = async (dispatch, navigate, formData) => {
+export const createPost = async (dispatch, navigate, formData, accessToken) => {
   dispatch(createPostStart());
   try {
-    const res = await axios.post(`${baseUrl}/post/upload`, formData, config);
+    const res = await axios.post(`${baseUrl}/post/upload`, formData, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
     console.log(res);
     dispatch(createPostSuccess(res));
   } catch (err) {

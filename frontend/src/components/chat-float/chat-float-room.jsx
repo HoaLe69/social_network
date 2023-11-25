@@ -1,4 +1,5 @@
 import {
+  Text,
   Avatar,
   Box,
   Flex,
@@ -122,18 +123,28 @@ const ChatFloatRoom = ({ receiver, roomId }) => {
           overflowY="auto"
           ref={refDiv}
         >
-          {messages?.map((message, index) => {
-            return (
-              <Message
-                {...message}
-                avatar={receiver?.avatar}
-                key={message?.id || index}
-                roomId={roomId}
-                sendMessage={sendMessage}
-                isFloat
-              />
-            );
-          })}
+          <Box display="flex" flexDir="column" alignItems="center" mb={20}>
+            <Avatar
+              src={receiver?.avatar}
+              size="md"
+              alt={receiver?.displayName}
+            />
+            <Text color="gray.500">Let chat with {receiver?.displayName}</Text>
+          </Box>
+          <Box>
+            {messages?.map((message, index) => {
+              return (
+                <Message
+                  {...message}
+                  avatar={receiver?.avatar}
+                  key={message?.id || index}
+                  roomId={roomId}
+                  sendMessage={sendMessage}
+                  isFloat
+                />
+              );
+            })}
+          </Box>
         </Box>
         <InputRoomChat roomId={roomId} sendMessage={sendMessage} />
       </Box>
