@@ -5,82 +5,83 @@ import {
   Avatar,
   Heading,
   useColorModeValue,
-  Link,
-} from "@chakra-ui/react";
-import { AiOutlineLeft } from "react-icons/ai";
-import { Link as ReactRouterLink, useParams } from "react-router-dom";
-import route from "@config/route";
-import { COLOR_THEME } from "../../constant";
-import { useSelector } from "react-redux";
-import useFetchData from "../../hooks/useFetchData";
-import EmptyRoom from "./room-empty";
-import Message from "./message";
-import socketService from "../../hooks/useWebSocket";
-import { useEffect, useRef, useState, useMemo } from "react";
-import InputRoomChat from "./input-mess";
-import axios from "axios";
+  Link
+} from '@chakra-ui/react'
+import { AiOutlineLeft } from 'react-icons/ai'
+import { Link as ReactRouterLink, useParams } from 'react-router-dom'
+import route from '@config/route'
+import { COLOR_THEME } from '../../constant'
+import { useSelector } from 'react-redux'
+import useFetchData from '../../hooks/useFetchData'
+import EmptyRoom from './room-empty'
+import Message from './message'
+import socketService from '../../hooks/useWebSocket'
+import { useEffect, useRef, useState, useMemo } from 'react'
+import InputRoomChat from './input-mess'
+import axios from 'axios'
 
 const RoomConversation = () => {
-  const baseUrl = process.env.REACT_APP_API_URL;
-  const [messages, setMessages] = useState([]);
-  const [filterMess, setFilterMess] = useState({ message: "" });
-  const params = useParams();
-  const refDiv = useRef(null);
+  const baseUrl = process.env.REACT_APP_API_URL
+  const [messages, setMessages] = useState([])
+  const [filterMess, setFilterMess] = useState({ message: '' })
+  const params = useParams()
+  const refDiv = useRef(null)
   const receiverId = new URLSearchParams(document.location.search).get(
-    "receiver",
-  );
-  const userLogin = JSON.parse(localStorage.getItem("user"));
-  const roomFormStore = useSelector((state) => state.room.selectedRoom.id);
-  const roomId = roomFormStore || params?.id;
-  const url = `${baseUrl}/user/${receiverId}`;
-  const { apiData: user } = useFetchData(url, userLogin?.accessToken);
+    'receiver'
+  )
+  const userLogin = JSON.parse(localStorage.getItem('user'))
+  const roomFormStore = useSelector(state => state.room.selectedRoom.id)
+  const roomId = roomFormStore || params?.id
+  const url = `${baseUrl}/user/${receiverId}`
+  const { apiData: user } = useFetchData(url, userLogin?.accessToken)
 
-  const bgHeader = useColorModeValue("#ffffff40", "#20202380");
+  const bgHeader = useColorModeValue('#ffffff40', '#20202380')
   const { sendMessage, disconnect, connect } = useMemo(
     () => socketService(setMessages, setFilterMess),
-    [],
-  );
+    []
+  )
 
   useEffect(() => {
-    if (refDiv.current) refDiv.current.scrollTop = refDiv.current.scrollHeight;
-  }, [messages]);
+    if (refDiv.current) refDiv.current.scrollTop = refDiv.current.scrollHeight
+  }, [messages])
 
   useEffect(() => {
-    if (roomId) connect("messages", roomId);
-    return () => disconnect();
-  }, [roomId]);
+    if (roomId) connect('messages', roomId)
+    return () => disconnect()
+  }, [roomId])
+
   useEffect(() => {
     if (filterMess.message) {
       const messRecallIndex = messages.findIndex(
-        (el) => el.id === filterMess.message,
-      );
+        el => el.id === filterMess.message
+      )
       if (messRecallIndex !== -1) {
-        const newListMessage = messages;
+        const newListMessage = messages
         newListMessage[messRecallIndex] = {
           ...newListMessage[messRecallIndex],
-          content: "",
-        };
-        setMessages([...newListMessage]);
+          content: ''
+        }
+        setMessages([...newListMessage])
       }
     }
-  }, [filterMess]);
+  }, [filterMess])
   useEffect(() => {
     const getMessages = async () => {
       try {
         const res = await axios.get(`${baseUrl}/message/all/${roomId}`, {
-          headers: { Authorization: `Bearer ${userLogin?.accessToken}` },
-        });
-        setMessages(res);
+          headers: { Authorization: `Bearer ${userLogin?.accessToken}` }
+        })
+        setMessages(res)
       } catch (err) {
-        console.log(err);
+        console.log(err)
       }
-    };
-    if (roomId) getMessages();
-  }, [roomId, baseUrl, userLogin?.accessToken]);
+    }
+    if (roomId) getMessages()
+  }, [roomId, baseUrl, userLogin?.accessToken])
   return (
     <>
       {roomId ? (
-        <Box display="flex" h={{ base: "100vh", lg: "full" }} flexDir="column">
+        <Box display="flex" h={{ base: '100vh', lg: 'full' }} flexDir="column">
           <Flex
             as="header"
             gap="10px"
@@ -88,11 +89,11 @@ const RoomConversation = () => {
             borderBottomWidth={1}
             borderColor={COLOR_THEME.BORDER}
             py={2}
-            css={{ backdropFilter: "blur(10px)" }}
+            css={{ backdropFilter: 'blur(10px)' }}
             bg={bgHeader}
           >
             <Link
-              display={{ lg: "none", base: "block" }}
+              display={{ lg: 'none', base: 'block' }}
               as={ReactRouterLink}
               to={route.message}
             >
@@ -112,7 +113,7 @@ const RoomConversation = () => {
           </Flex>
           <Box
             flex="1"
-            sx={{ height: "calc(100% - 56px)" }}
+            sx={{ height: 'calc(100% - 56px)' }}
             display="flex"
             flexDir="column"
             justifyContent="flex-end"
@@ -140,7 +141,7 @@ const RoomConversation = () => {
                       {...message}
                       sendMessage={sendMessage}
                     />
-                  );
+                  )
                 })}
               </Box>
             </Box>
@@ -151,7 +152,7 @@ const RoomConversation = () => {
         <EmptyRoom />
       )}
     </>
-  );
-};
+  )
+}
 
-export default RoomConversation;
+export default RoomConversation

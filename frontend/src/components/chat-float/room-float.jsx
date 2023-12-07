@@ -24,7 +24,6 @@ const RoomsHome = () => {
       getAllRoomConversation(dispatch, userLogin.accessToken, userLogin?.id);
     }
   }, [userLogin?.accessToken, dispatch, userLogin?.id]);
-
   return (
     <WrapContent title="Messages">
       {rooms?.map((room, index) => {
