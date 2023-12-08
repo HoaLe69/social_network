@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios'
 import {
   createPostStart,
   createPostSuccess,
@@ -20,26 +20,25 @@ import {
   getAllPostUserFailed,
   editPostStart,
   editPostSuccess,
-  editPostFailed,
-} from "../postSlice";
-import { config } from "./configAxiosHeader";
+  editPostFailed
+} from '../postSlice'
 
-const baseUrl = process.env.REACT_APP_API_URL;
+const baseUrl = process.env.REACT_APP_API_URL
 
 //create post
 export const createPost = async (dispatch, navigate, formData, accessToken) => {
-  dispatch(createPostStart());
+  dispatch(createPostStart())
   try {
     const res = await axios.post(`${baseUrl}/post/upload`, formData, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-    console.log(res);
-    dispatch(createPostSuccess(res));
+      headers: { Authorization: `Bearer ${accessToken}` }
+    })
+    console.log(res)
+    dispatch(createPostSuccess(res))
   } catch (err) {
-    console.log(err);
-    dispatch(createPostFailed());
+    console.log(err)
+    dispatch(createPostFailed())
   }
-};
+}
 
 // edit post
 export const editPost = async (
@@ -47,85 +46,85 @@ export const editPost = async (
   formData,
   postId,
   cloudId,
-  accessToken,
+  accessToken
 ) => {
-  dispatch(editPostStart());
+  dispatch(editPostStart())
   try {
     const res = await axios.patch(
       `${baseUrl}/post/edit/${postId}/${cloudId}`,
       formData,
-      { headers: { Authorization: `Bearer ${accessToken}` } },
-    );
-    console.log(res);
-    dispatch(editPostSuccess(res));
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    )
+    console.log(res)
+    dispatch(editPostSuccess(res))
   } catch (err) {
-    console.log(err);
-    dispatch(editPostFailed());
+    console.log(err)
+    dispatch(editPostFailed())
   }
-};
+}
 //get all post
 export const getAllPost = async (dispatch, accessToken, page, setHasmore) => {
-  dispatch(getAllPostStart());
+  dispatch(getAllPostStart())
   try {
     const res = await axios.get(`${baseUrl}/post/all-post?page=${page}`, {
       headers: {
-        Authorization: "Bearer " + accessToken,
-      },
-    });
-    setHasmore(res.content.length > 0);
-    dispatch(getAllPostSuccess(res));
+        Authorization: 'Bearer ' + accessToken
+      }
+    })
+    setHasmore(res.content.length > 0)
+    dispatch(getAllPostSuccess(res))
   } catch (err) {
-    console.log(err);
-    dispatch(getAllPostFailed());
+    console.log(err)
+    dispatch(getAllPostFailed())
   }
-};
+}
 
 //deletePost
 export const deletePost = async (dispatch, id, cloudId, accessToken) => {
-  dispatch(deletePostStart());
+  dispatch(deletePostStart())
   try {
     await axios.delete(`${baseUrl}/post/delete/${id}/${cloudId}`, {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    dispatch(deletePostSuccess(id));
+        Authorization: `Bearer ${accessToken}`
+      }
+    })
+    dispatch(deletePostSuccess(id))
   } catch (err) {
-    dispatch(deletePostFailed());
+    dispatch(deletePostFailed())
   }
-};
+}
 
 // get all post of user
 export const getAllPostUser = async (dispatch, id, accessToken) => {
-  dispatch(getPostUserStart());
+  dispatch(getPostUserStart())
   try {
     const res = await axios.get(`${baseUrl}/post/all-post-user/${id}`, {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    dispatch(getPostUserSuccess(res));
+        Authorization: `Bearer ${accessToken}`
+      }
+    })
+    dispatch(getPostUserSuccess(res))
   } catch (err) {
-    console.log(err);
-    dispatch(getPostUserFalied());
+    console.log(err)
+    dispatch(getPostUserFalied())
   }
-};
+}
 
 // get  post by id
 export const getPostById = async (dispatch, id, accessToken) => {
-  dispatch(getPostByIdStart());
+  dispatch(getPostByIdStart())
   try {
     const res = await axios.get(`${baseUrl}/post/${id}`, {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    dispatch(getPostByIdSuccess(res));
+        Authorization: `Bearer ${accessToken}`
+      }
+    })
+    dispatch(getPostByIdSuccess(res))
   } catch (err) {
-    console.log(err);
-    dispatch(getPostByIdFailed());
+    console.log(err)
+    dispatch(getPostByIdFailed())
   }
-};
+}
 
 // react post
 export const reactPost = async (accessToken, postId, userId) => {
@@ -133,12 +132,12 @@ export const reactPost = async (accessToken, postId, userId) => {
     axios.patch(
       `${baseUrl}/post/react/${postId}/${userId}`,
       {},
-      { headers: { Authorization: `Bearer ${accessToken}` } },
-    );
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    )
   } catch (err) {
-    console.log(err);
+    console.log(err)
   }
-};
+}
 
 // get all post from userFollowing
 // get list following
@@ -146,22 +145,22 @@ export const reactPost = async (accessToken, postId, userId) => {
 export const getAllPostFromUserFollowing = async (
   dispatch,
   listIdUser,
-  accessToken,
+  accessToken
 ) => {
-  dispatch(getAllPostUserStart());
+  dispatch(getAllPostUserStart())
   try {
     const res = await axios.post(
       `${baseUrl}/post/all-post-user-following`,
       { list: listIdUser },
       {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
-    );
-    dispatch(getAllPostUserSuccess(res));
+          Authorization: `Bearer ${accessToken}`
+        }
+      }
+    )
+    dispatch(getAllPostUserSuccess(res))
   } catch (err) {
-    console.log(err);
-    dispatch(getAllPostUserFailed());
+    console.log(err)
+    dispatch(getAllPostUserFailed())
   }
-};
+}

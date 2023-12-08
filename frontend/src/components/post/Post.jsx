@@ -9,18 +9,17 @@ import {
   Flex,
   Badge,
   useColorModeValue,
-  useDisclosure,
-} from "@chakra-ui/react";
-import { Link as ReactRouterLink } from "react-router-dom";
-import MenuPost from "../menu-post";
-import { AiOutlineHeart, AiFillHeart, AiOutlineMessage } from "react-icons/ai";
-import { useDispatch } from "react-redux";
-import { getCurrentPostInfor } from "@redux/postSlice";
-import FeedModal from "../modals/feed";
-import { reactPost } from "@redux/api-request/posts";
-import { forwardRef, useState, memo, useRef, useEffect } from "react";
-import formatTime from "../../util/timeago";
-import { isDate } from "moment";
+  useDisclosure
+} from '@chakra-ui/react'
+import { Link as ReactRouterLink } from 'react-router-dom'
+import MenuPost from '../menu-post'
+import { AiOutlineHeart, AiFillHeart, AiOutlineMessage } from 'react-icons/ai'
+import { useDispatch } from 'react-redux'
+import { getCurrentPostInfor } from '@redux/postSlice'
+import FeedModal from '../modals/feed'
+import { reactPost } from '@redux/api-request/posts'
+import { forwardRef, useState, memo, useRef, useEffect } from 'react'
+import formatTime from '../../util/timeago'
 
 const Post = forwardRef((props, ref) => {
   const {
@@ -35,29 +34,29 @@ const Post = forwardRef((props, ref) => {
     tag,
     comments,
     createAt,
-    isDetail,
-  } = props;
+    isDetail
+  } = props
 
-  const userLogin = JSON.parse(localStorage.getItem("user"));
-  const [numberOfLines, setNumberOfLines] = useState(0);
+  const userLogin = JSON.parse(localStorage.getItem('user'))
+  const [numberOfLines, setNumberOfLines] = useState(0)
   // paragraph ref
-  const pRef = useRef();
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const pRef = useRef()
+  const { isOpen, onClose, onOpen } = useDisclosure()
   const [isLiked, setIsLike] = useState(() =>
-    like ? like?.includes(userLogin?.id) : false,
-  );
-  const [liked, setLiked] = useState(like || []);
-  const dispatch = useDispatch();
+    like ? like?.includes(userLogin?.id) : false
+  )
+  const [liked, setLiked] = useState(like || [])
+  const dispatch = useDispatch()
 
   const handleOnClickLike = () => {
     if (userLogin?.accessToken && id) {
-      reactPost(userLogin?.accessToken, id, userLogin?.id);
+      reactPost(userLogin?.accessToken, id, userLogin?.id)
     }
     if (isLiked) {
-      setLiked([...liked].filter((likerId) => likerId !== userLogin?.id));
-    } else setLiked([...liked, userLogin?.id]);
-    setIsLike(!isLiked);
-  };
+      setLiked([...liked].filter(likerId => likerId !== userLogin?.id))
+    } else setLiked([...liked, userLogin?.id])
+    setIsLike(!isLiked)
+  }
   const handleShowFullPost = () => {
     dispatch(
       getCurrentPostInfor({
@@ -72,45 +71,44 @@ const Post = forwardRef((props, ref) => {
         like: liked,
         comments,
         createAt,
-        isDetail,
-      }),
-    );
-  };
-  const colorReact = useColorModeValue("#1a202c", "#ffffff");
+        isDetail
+      })
+    )
+  }
+  const colorReact = useColorModeValue('#1a202c', '#ffffff')
   const showRectPost = () => {
-    const quantity = liked?.length;
-    if (quantity === 0) return "0";
+    const quantity = liked?.length
+    if (quantity === 0) return '0'
     else {
-      if (quantity === 1 && isLiked) return "you";
-      else if (isLiked) return `you and ${quantity - 1} other`;
-      return `${quantity} other`;
+      if (quantity === 1 && isLiked) return 'you'
+      else if (isLiked) return `you and ${quantity - 1} other`
+      return `${quantity} other`
     }
-  };
-  const bgPost = useColorModeValue("whiteAlpha.700", "whiteAlpha.200");
+  }
+  const bgPost = useColorModeValue('whiteAlpha.700', 'whiteAlpha.200')
 
   useEffect(() => {
     if (pRef.current) {
       const lineHeight = parseFloat(
-        window.getComputedStyle(pRef.current).lineHeight,
-      );
-      const height = pRef.current.getBoundingClientRect().height;
-      const calculatedNumberOfLines = Math.round(height / lineHeight);
-      setNumberOfLines(calculatedNumberOfLines);
+        window.getComputedStyle(pRef.current).lineHeight
+      )
+      const height = pRef.current.getBoundingClientRect().height
+      const calculatedNumberOfLines = Math.round(height / lineHeight)
+      setNumberOfLines(calculatedNumberOfLines)
     }
-  }, []);
+  }, [])
 
   const handleReadMorePost = () => {
-    handleShowFullPost();
-    onOpen();
-  };
-  console.log(numberOfLines);
+    handleShowFullPost()
+    onOpen()
+  }
   return (
-    <Box mb={4} ref={ref} bg={isDetail ? "none" : bgPost} rounded="10px">
+    <Box mb={4} ref={ref} bg={isDetail ? 'none' : bgPost} rounded="10px">
       <HStack as="header" p={2} display="flex">
         <Link
           as={ReactRouterLink}
           to={`/profile/${userId}`}
-          _hover={{ textDecoration: "none" }}
+          _hover={{ textDecoration: 'none' }}
           display="flex"
           alignItems="center"
           gap="5px"
@@ -122,8 +120,8 @@ const Post = forwardRef((props, ref) => {
             </Heading>
             <Text
               fontSize="12px"
-              textAlign={"left"}
-              color={useColorModeValue("blackAlpha.600", "whiteAlpha.500")}
+              textAlign={'left'}
+              color={useColorModeValue('blackAlpha.600', 'whiteAlpha.500')}
             >
               {formatTime(createAt)}
             </Text>
@@ -139,13 +137,13 @@ const Post = forwardRef((props, ref) => {
         <Text
           ref={pRef}
           textAlign="left"
-          noOfLines={numberOfLines >= 3 && !isDetail ? "3" : "none"}
+          noOfLines={numberOfLines >= 3 && !isDetail ? '3' : 'none'}
         >
           {description}
         </Text>
       </Box>
       <Box
-        display={numberOfLines >= 3 && !isDetail ? "block" : "none"}
+        display={numberOfLines >= 3 && !isDetail ? 'block' : 'none'}
         textAlign="left"
         pl={2}
       >
@@ -153,8 +151,8 @@ const Post = forwardRef((props, ref) => {
           onClick={handleReadMorePost}
           cursor="pointer"
           fontSize="12px"
-          _hover={{ textDecoration: "underline" }}
-          color={useColorModeValue("blue.500", "pink.500")}
+          _hover={{ textDecoration: 'underline' }}
+          color={useColorModeValue('blue.500', 'pink.500')}
         >
           <strong> read more </strong>
         </Text>
@@ -163,7 +161,7 @@ const Post = forwardRef((props, ref) => {
         {tag && <Badge colorScheme="red">{tag}</Badge>}
       </Box>
       {thumbnail && (
-        <Box overflow={"hidden"}>
+        <Box overflow={'hidden'}>
           <Image
             loading="lazy"
             minH="400px"
@@ -171,7 +169,7 @@ const Post = forwardRef((props, ref) => {
             w="full"
             src={thumbnail}
             alt={displayName}
-            objectFit={"cover"}
+            objectFit={'cover'}
           />
         </Box>
       )}
@@ -181,8 +179,8 @@ const Post = forwardRef((props, ref) => {
         justify="space-between"
         borderBottom="1px"
         borderBottomColor={useColorModeValue(
-          "blackAlpha.200",
-          "whiteAlpha.200",
+          'blackAlpha.200',
+          'whiteAlpha.200'
         )}
       >
         <Box display="flex" alignItems="center" gap="5px">
@@ -202,8 +200,8 @@ const Post = forwardRef((props, ref) => {
         mt={1}
         borderBottom="1px"
         borderBottomColor={useColorModeValue(
-          "blackAlpha.200",
-          "whiteAlpha.200",
+          'blackAlpha.200',
+          'whiteAlpha.200'
         )}
       >
         <Flex
@@ -213,10 +211,10 @@ const Post = forwardRef((props, ref) => {
           justify="center"
           py={1}
           rounded="5px"
-          _hover={{ bg: useColorModeValue("whiteAlpha.500", "whiteAlpha.200") }}
+          _hover={{ bg: useColorModeValue('whiteAlpha.500', 'whiteAlpha.200') }}
           cursor="pointer"
           onClick={handleOnClickLike}
-          color={isLiked ? "pink.400" : colorReact}
+          color={isLiked ? 'pink.400' : colorReact}
         >
           <Box lineHeight={1}>
             <AiOutlineHeart />
@@ -225,7 +223,7 @@ const Post = forwardRef((props, ref) => {
         </Flex>
         <Box
           flex={1}
-          pointerEvents={isDetail && "none"}
+          pointerEvents={isDetail && 'none'}
           onClick={handleShowFullPost}
         >
           <Flex
@@ -234,7 +232,7 @@ const Post = forwardRef((props, ref) => {
             py={1}
             rounded="5px"
             _hover={{
-              bg: useColorModeValue("whiteAlpha.500", "whiteAlpha.200"),
+              bg: useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')
             }}
             flex={1}
             alignItems="center"
@@ -248,7 +246,7 @@ const Post = forwardRef((props, ref) => {
         </Box>
       </Flex>
     </Box>
-  );
-});
+  )
+})
 
-export default memo(Post);
+export default memo(Post)

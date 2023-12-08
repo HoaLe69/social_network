@@ -1,12 +1,5 @@
-import WrapContent from "@components/common/wrap-content";
-import {
-  Text,
-  Avatar,
-  Button,
-  Flex,
-  useColorModeValue,
-} from "@chakra-ui/react";
-import { notifyDt } from "../../samepleData";
+import WrapContent from '@components/common/wrap-content'
+import { Text, Avatar, Button, Flex, useColorModeValue } from '@chakra-ui/react'
 
 const NotifyItem = ({ photoUrl, displayName }) => {
   return (
@@ -15,9 +8,9 @@ const NotifyItem = ({ photoUrl, displayName }) => {
       gap="10px"
       _hover={{
         backgroundColor: `${useColorModeValue(
-          "blackAlpha.200",
-          "whiteAlpha.300",
-        )}`,
+          'blackAlpha.200',
+          'whiteAlpha.300'
+        )}`
       }}
       p={2}
       cursor="pointer"
@@ -29,10 +22,11 @@ const NotifyItem = ({ photoUrl, displayName }) => {
       </Text>
       <Button colorScheme="teal">Follow back</Button>
     </Flex>
-  );
-};
+  )
+}
 
 const Notify = () => {
+  const notifyDt = []
   return (
     <WrapContent title="Notification">
       {notifyDt.map((dt, index) => {
@@ -42,10 +36,10 @@ const Notify = () => {
             displayName={dt.displayName}
             key={index}
           />
-        );
+        )
       })}
     </WrapContent>
-  );
-};
+  )
+}
 
-export default Notify;
+export default Notify

@@ -1,5 +1,5 @@
-import PostContainer from "@components/post/post-container";
-import LayoutFull from "@layout/layout-full";
+import PostContainer from '@components/post/post-container'
+import LayoutFull from '@layout/layout-full'
 import {
   Tabs,
   TabList,
@@ -11,18 +11,18 @@ import {
   Text,
   Box,
   useColorModeValue,
-  useDisclosure,
-} from "@chakra-ui/react";
-import CreatePostModal from "@components/modals/create";
-import PostFollowing from "@components/post/post-from-user-following";
-import { memo, useState } from "react";
-import News from "@components/new/new";
-import ChatFloat from "@components/chat-float/chat-float";
+  useDisclosure
+} from '@chakra-ui/react'
+import CreatePostModal from '@components/modals/create'
+import PostFollowing from '@components/post/post-from-user-following'
+import { memo, useState } from 'react'
+import News from '@components/new/new'
+import ChatFloat from '@components/chat-float/chat-float'
 
 const Home = () => {
-  const [tabIndex, setTabIndex] = useState(0);
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const userLogin = JSON.parse(localStorage.getItem("user"));
+  const [tabIndex, setTabIndex] = useState(0)
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const userLogin = JSON.parse(localStorage.getItem('user'))
   return (
     <LayoutFull>
       <Tabs
@@ -30,7 +30,7 @@ const Home = () => {
         variant="unstyled"
         position="relative"
         align="center"
-        onChange={(index) => setTabIndex(index)}
+        onChange={index => setTabIndex(index)}
       >
         <TabList>
           <Tab>HOT🔥</Tab>
@@ -48,20 +48,20 @@ const Home = () => {
               rounded="20px"
               px={2}
               justifyContent="flex-start"
-              bg={useColorModeValue("whiteAlpha.700", "whiteAlpha.200")}
+              bg={useColorModeValue('whiteAlpha.700', 'whiteAlpha.200')}
               onClick={onOpen}
             >
               <Avatar src={userLogin?.avatar} alt={userLogin?.displayName} />
               <Box
-                textAlign={"left"}
+                textAlign={'left'}
                 flex="1"
                 height="40px"
                 rounded="25px"
                 px={4}
               >
                 <Text
-                  lineHeight={"40px"}
-                  color={useColorModeValue("blackAlpha.700", "whiteAlpha.700")}
+                  lineHeight={'40px'}
+                  color={useColorModeValue('blackAlpha.700', 'whiteAlpha.700')}
                 >
                   {userLogin?.displayName} let share your great moment to
                   everyone
@@ -81,7 +81,7 @@ const Home = () => {
       </Tabs>
       <ChatFloat />
     </LayoutFull>
-  );
-};
+  )
+}
 
-export default memo(Home);
+export default memo(Home)

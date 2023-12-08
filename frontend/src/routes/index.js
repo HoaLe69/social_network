@@ -1,77 +1,72 @@
-import route from "@config/route";
-import Home from "@pages/home";
-import Explore from "@pages/explore";
-import DetailPost from "@pages/detail-post";
-import Notification from "@pages/notification";
-import Message from "@pages/message";
-import RoomConversation from "@components/conversation/room-conversation";
-import CreatePost from "@pages/create-post";
-import Profile from "@pages/profile";
-import ChatPc from "@pages/chat-pc";
-import Login from "@pages/auth/login";
-import Register from "@pages/auth/register";
-import Verification from "@pages/vefity";
-import ResetPassWordFrom from "@pages/auth/reset-password";
+import route from '@config/route'
+import Home from '@pages/home'
+import DetailPost from '@pages/detail-post'
+import Notification from '@pages/notification'
+import Message from '@pages/message'
+import RoomConversation from '@components/conversation/room-conversation'
+import CreatePost from '@pages/create-post'
+import Profile from '@pages/profile'
+import ChatPc from '@pages/chat-pc'
+import Login from '@pages/auth/login'
+import Register from '@pages/auth/register'
+import Verification from '@pages/vefity'
+import ResetPassWordFrom from '@pages/auth/reset-password'
 
 export const routesPrivate = [
   {
     path: route.home,
-    component: <Home />,
-  },
-  {
-    path: route.search,
-    component: <Explore />,
+    component: <Home />
   },
   {
     path: route.detailPost,
-    component: <DetailPost />,
+    component: <DetailPost />
   },
   {
     path: route.notifi,
-    component: <Notification />,
+    component: <Notification />
   },
   {
     path: route.message,
-    component: <Message />,
+    component: <Message />
   },
   {
     path: route.roomChat,
-    component: <RoomConversation />,
+    component: <RoomConversation />
   },
   {
     path: route.makePost,
-    component: <CreatePost />,
+    component: <CreatePost />
   },
   {
     path: route.profile,
-    component: <Profile />,
+    component: <Profile />
   },
   {
     path: route.chat,
-    component: <ChatPc />,
+    component: <ChatPc />
   },
   {
     path: route.chatRoom,
-    component: <ChatPc />,
-  },
-];
+    component: <ChatPc />
+  }
+]
 
 export const routesPublic = [
   {
     path: route.login,
-    component: <Login />,
+    component: <Login />
   },
   {
     path: route.verify,
-    component: <Verification />,
+    component: <Verification />
   },
   {
     path: route.register,
-    component: <Register />,
+    component: <Register />
   },
 
   {
     path: route.reset,
-    component: <ResetPassWordFrom />,
-  },
-];
+    component: <ResetPassWordFrom />
+  }
+]
