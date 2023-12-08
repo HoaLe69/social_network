@@ -8,104 +8,103 @@ import {
   Image,
   useColorModeValue,
   Avatar,
-  useToast,
-  FormErrorMessage,
-} from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { MdOutlineCloudUpload } from "react-icons/md";
-import { createPost } from "@redux/api-request/posts";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { EmojiKeyboard } from "reactjs-emoji-keyboard";
-import { FaRegSmile } from "react-icons/fa";
-import { editPost } from "../../redux/api-request/posts";
+  useToast
+} from '@chakra-ui/react'
+import { useEffect, useState } from 'react'
+import { MdOutlineCloudUpload } from 'react-icons/md'
+import { createPost } from '@redux/api-request/posts'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { EmojiKeyboard } from 'reactjs-emoji-keyboard'
+import { FaRegSmile } from 'react-icons/fa'
+import { editPost } from '../../redux/api-request/posts'
 
 const MakePost = ({ postDataEditMode }) => {
-  const toast = useToast();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const isLoading = useSelector((state) => state.post.createPost.isFetching);
-  const isLoadingEdit = useSelector((state) => state.post.editPost.isFetching);
+  const toast = useToast()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const isLoading = useSelector(state => state.post.createPost.isFetching)
+  const isLoadingEdit = useSelector(state => state.post.editPost.isFetching)
   const [previewSource, setPreviewSource] = useState(
-    postDataEditMode?.thumbnail || undefined,
-  );
-  const userLogin = JSON.parse(localStorage.getItem("user"));
-  const [err, setErr] = useState("");
-  const [showEmoji, setShowEmoji] = useState(false);
+    postDataEditMode?.thumbnail || undefined
+  )
+  const userLogin = JSON.parse(localStorage.getItem('user'))
+  const [err, setErr] = useState('')
+  const [showEmoji, setShowEmoji] = useState(false)
 
   const [formData, setFormData] = useState({
     thumbnail: null,
     formData: {
       userId: userLogin?.id,
       photoUrl: userLogin?.avatar,
-      description: postDataEditMode?.description || "",
+      description: postDataEditMode?.description || '',
       displayName: userLogin?.displayName,
-      tag: postDataEditMode?.tag || "",
-    },
-  });
+      tag: postDataEditMode?.tag || ''
+    }
+  })
   useEffect(() => {
     if (err) {
       toast({
-        title: "Create Post",
+        title: 'Create Post',
         description: err,
-        status: "error",
+        status: 'error',
         duration: 9000,
         isClosable: true,
-        position: "top-right",
-      });
-      setErr("");
+        position: 'top-right'
+      })
+      setErr('')
     }
-  }, [err]);
-  const handleOnChange = (e) => {
-    let { name, value } = e.target;
-    if (name === "image") {
-      const file = e.target.files[0];
-      setFormData((pre) => ({ ...pre, thumbnail: file }));
-      previewImage(file);
-    } else if (name === "tag") {
-      setFormData((pre) => ({
+  }, [err])
+  const handleOnChange = e => {
+    let { name, value } = e.target
+    if (name === 'image') {
+      const file = e.target.files[0]
+      setFormData(pre => ({ ...pre, thumbnail: file }))
+      previewImage(file)
+    } else if (name === 'tag') {
+      setFormData(pre => ({
         ...pre,
-        formData: { ...pre.formData, [name]: value },
-      }));
+        formData: { ...pre.formData, [name]: value }
+      }))
     } else {
-      setFormData((pre) => ({
+      setFormData(pre => ({
         ...pre,
-        formData: { ...pre.formData, [name]: value },
-      }));
+        formData: { ...pre.formData, [name]: value }
+      }))
     }
-  };
-  const previewImage = (file) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
+  }
+  const previewImage = file => {
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
     reader.onloadend = function () {
-      setPreviewSource(reader.result);
-    };
-  };
+      setPreviewSource(reader.result)
+    }
+  }
   const handleSubmit = () => {
     if (!formData.thumbnail && !formData.formData.description) {
-      setErr("empty post");
-      return;
+      setErr('empty post')
+      return
     }
-    const form = new FormData();
+    const form = new FormData()
     const blob = new Blob([JSON.stringify(formData.formData)], {
-      type: "application/json",
-    });
-    form.append("thumbnail", formData.thumbnail);
-    form.append("formData", blob);
+      type: 'application/json'
+    })
+    form.append('thumbnail', formData.thumbnail)
+    form.append('formData', blob)
     if (postDataEditMode) {
       editPost(
         dispatch,
         form,
         postDataEditMode?.id,
         postDataEditMode?.cloudinaryId,
-        userLogin?.accessToken,
-      );
-    } else createPost(dispatch, navigate, form, userLogin?.accessToken);
-  };
-  const handleHideEmojiKeyboard = (e) => {
-    if (e.target.closest(".emoji")) setShowEmoji(true);
-    else setShowEmoji(false);
-  };
+        userLogin?.accessToken
+      )
+    } else createPost(dispatch, navigate, form, userLogin?.accessToken)
+  }
+  const handleHideEmojiKeyboard = e => {
+    if (e.target.closest('.emoji')) setShowEmoji(true)
+    else setShowEmoji(false)
+  }
   return (
     <Box pb={2} pt={2} onClick={handleHideEmojiKeyboard}>
       <Box>
@@ -117,7 +116,7 @@ const MakePost = ({ postDataEditMode }) => {
           <Textarea
             mt={2}
             placeholder="What your on mind ?"
-            bg={useColorModeValue("whiteAlpha.700", "whiteAlpha.200")}
+            bg={useColorModeValue('whiteAlpha.700', 'whiteAlpha.200')}
             resize="vertical"
             name="description"
             onChange={handleOnChange}
@@ -134,24 +133,24 @@ const MakePost = ({ postDataEditMode }) => {
           >
             <FaRegSmile />
             <Box
-              display={showEmoji ? "block" : "none"}
+              display={showEmoji ? 'block' : 'none'}
               position="absolute"
               top={0}
-              right={"20px"}
+              right={'20px'}
             >
               <EmojiKeyboard
                 height={320}
                 width={350}
-                theme={useColorModeValue("light", "dark")}
+                theme={useColorModeValue('light', 'dark')}
                 searchLabel="Procurar emoji"
                 searchDisabled={false}
-                onEmojiSelect={(emoji) =>
-                  setFormData((pre) => ({
+                onEmojiSelect={emoji =>
+                  setFormData(pre => ({
                     ...pre,
                     formData: {
                       ...pre.formData,
-                      description: pre.formData.description + emoji.character,
-                    },
+                      description: pre.formData.description + emoji.character
+                    }
                   }))
                 }
                 categoryDisabled={false}
@@ -169,7 +168,7 @@ const MakePost = ({ postDataEditMode }) => {
           bg="teal"
           borderRadius="10px"
           cursor="pointer"
-          color={useColorModeValue("whiteAlpha.900", "gray.900")}
+          color={useColorModeValue('whiteAlpha.900', 'gray.900')}
         >
           Upload
           <MdOutlineCloudUpload />
@@ -201,16 +200,16 @@ const MakePost = ({ postDataEditMode }) => {
       <Box pt="3" display="flex" justifyContent="center">
         <Button
           isLoading={postDataEditMode ? isLoadingEdit : isLoading}
-          loadingText={postDataEditMode ? "Saving..." : "Upload..."}
+          loadingText={postDataEditMode ? 'Saving...' : 'Upload...'}
           colorScheme="teal"
           px={8}
           onClick={handleSubmit}
         >
-          {postDataEditMode ? "Save" : "Post"}
+          {postDataEditMode ? 'Save' : 'Post'}
         </Button>
       </Box>
     </Box>
-  );
-};
+  )
+}
 
-export default MakePost;
+export default MakePost

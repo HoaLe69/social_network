@@ -62,6 +62,7 @@ const Home = () => {
                 <Text
                   lineHeight={'40px'}
                   color={useColorModeValue('blackAlpha.700', 'whiteAlpha.700')}
+                  noOfLines={1}
                 >
                   {userLogin?.displayName} let share your great moment to
                   everyone

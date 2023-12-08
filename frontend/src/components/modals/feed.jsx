@@ -5,15 +5,15 @@ import {
   ModalCloseButton,
   ModalBody,
   ModalHeader,
-  Box,
-} from "@chakra-ui/react";
-import Comment from "../post/comment";
-import { useSelector } from "react-redux";
-import Post from "../post/post";
-import { COLOR_THEME } from "../../constant";
+  Box
+} from '@chakra-ui/react'
+import Comment from '../post/comment'
+import { useSelector } from 'react-redux'
+import Post from '../post/post'
+import { COLOR_THEME } from '../../constant'
 
 const FeedModal = ({ isOpen, onClose }) => {
-  const postInfor = useSelector((state) => state.post?.currentPostInfor.post);
+  const postInfor = useSelector(state => state.post?.currentPostInfor.post)
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="3xl">
       <ModalOverlay />
@@ -41,7 +41,7 @@ const FeedModal = ({ isOpen, onClose }) => {
         </ModalBody>
       </ModalContent>
     </Modal>
-  );
-};
+  )
+}
 
-export default FeedModal;
+export default FeedModal

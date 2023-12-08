@@ -10,26 +10,26 @@ import {
   InputRightElement,
   Spinner,
   Avatar,
-  Heading,
-} from "@chakra-ui/react";
-import NavWrap from "./nav-wrap";
-import Logo from "./logo";
-import { AiOutlineHeart, AiOutlineMessage } from "react-icons/ai";
-import { Link as ReactRouterLink } from "react-router-dom";
-import NavMenuPc from "./nav-menu-items-pc";
-import route from "@config/route";
-import { BiSearchAlt } from "react-icons/bi";
-import { useEffect, useState } from "react";
-import useDebounce from "../../hooks/useDebounce";
-import axios from "axios";
-import { IoMdClose } from "react-icons/io";
+  Heading
+} from '@chakra-ui/react'
+import NavWrap from './nav-wrap'
+import Logo from './logo'
+import { AiOutlineHeart, AiOutlineMessage } from 'react-icons/ai'
+import { Link as ReactRouterLink } from 'react-router-dom'
+import NavMenuPc from './nav-menu-items-pc'
+import route from '@config/route'
+import { BiSearchAlt } from 'react-icons/bi'
+import { useEffect, useState } from 'react'
+import useDebounce from '../../hooks/useDebounce'
+import axios from 'axios'
+import { IoMdClose } from 'react-icons/io'
 
 const PopResult = ({ result, setResult, userLoginId }) => {
-  const bgHover = useColorModeValue("blackAlpha.200", "whiteAlpha.300");
-  const users = result.filter((user) => user.id !== userLoginId) || [];
+  const bgHover = useColorModeValue('blackAlpha.200', 'whiteAlpha.300')
+  const users = result.filter(user => user.id !== userLoginId) || []
   return (
     <Box
-      display={users?.length > 0 ? "block" : "none"}
+      display={users?.length > 0 ? 'block' : 'none'}
       p={1}
       rounded="10px"
       pos="absolute"
@@ -37,7 +37,7 @@ const PopResult = ({ result, setResult, userLoginId }) => {
       left="0"
       top="90%"
       width="100%"
-      bg={useColorModeValue("#fff", "#2D3748")}
+      bg={useColorModeValue('#fff', '#2D3748')}
     >
       <Box display="flex" alignItems="center">
         <Heading fontSize="16px">Result</Heading>
@@ -53,10 +53,10 @@ const PopResult = ({ result, setResult, userLoginId }) => {
         <Box p={1}>Khong tim thay ket qua</Box>
       ) : (
         <Box p={1}>
-          {users?.map((user) => {
+          {users?.map(user => {
             return (
               <Link
-                _hover={{ textDecoration: "none" }}
+                _hover={{ textDecoration: 'none' }}
                 key={user?.id}
                 as={ReactRouterLink}
                 to={`/profile/${user?.id}`}
@@ -68,7 +68,7 @@ const PopResult = ({ result, setResult, userLoginId }) => {
                   px={2}
                   rounded="10px"
                   _hover={{
-                    backgroundColor: bgHover,
+                    backgroundColor: bgHover
                   }}
                 >
                   <Avatar
@@ -79,58 +79,58 @@ const PopResult = ({ result, setResult, userLoginId }) => {
                   <Heading fontSize="13px">{user?.displayName}</Heading>
                 </Flex>
               </Link>
-            );
+            )
           })}
         </Box>
       )}
     </Box>
-  );
-};
+  )
+}
 
 const NavTop = ({ isFixed }) => {
-  const baseUrl = process.env.REACT_APP_API_URL;
+  const baseUrl = process.env.REACT_APP_API_URL
 
-  const [search, setSearchValue] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState([]);
-  const searchOutput = useDebounce(search);
-  const userLogin = JSON.parse(localStorage.getItem("user"));
+  const [search, setSearchValue] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [result, setResult] = useState([])
+  const searchOutput = useDebounce(search)
+  const userLogin = JSON.parse(localStorage.getItem('user'))
 
   useEffect(() => {
     if (!searchOutput.trim()) {
-      setLoading(false);
-      return;
+      setLoading(false)
+      return
     }
-    setLoading(true);
+    setLoading(true)
     const getSearchResult = async () => {
       try {
-        setLoading(true);
+        setLoading(true)
         const res = await axios.get(
           `${baseUrl}/user/search?name=${searchOutput}`,
-          { headers: { Authorization: `Bearer ${userLogin?.accessToken}` } },
-        );
+          { headers: { Authorization: `Bearer ${userLogin?.accessToken}` } }
+        )
         if (res) {
-          setResult(res);
-          setLoading(false);
+          setResult(res)
+          setLoading(false)
         }
       } catch (err) {
-        setLoading(false);
-        console.log(err);
+        setLoading(false)
+        console.log(err)
       }
-    };
-    getSearchResult();
-  }, [searchOutput, baseUrl]);
+    }
+    getSearchResult()
+  }, [searchOutput, baseUrl])
 
-  const handleOnChange = (e) => {
-    setSearchValue(e.target.value);
-  };
+  const handleOnChange = e => {
+    setSearchValue(e.target.value)
+  }
   return (
     <NavWrap isFixed={isFixed}>
       <Flex justify="space-between">
         <Logo />
-        <Box pos="relative">
+        <Box pos="relative" display={{ base: 'none' }}>
           <InputGroup
-            bg={useColorModeValue("whiteAlpha.700", "whiteAlpha.200")}
+            bg={useColorModeValue('whiteAlpha.700', 'whiteAlpha.200')}
             rounded="20px"
             w="300px"
           >
@@ -157,29 +157,29 @@ const NavTop = ({ isFixed }) => {
           />
         </Box>
 
-        <Box display={{ lg: "none" }}>
+        <Box display={{ lg: 'none' }}>
           <Link to={route.notifi} as={ReactRouterLink}>
             <IconButton
-              fontSize={"20px"}
+              fontSize={'20px'}
               isRound={true}
               icon={<AiOutlineHeart />}
-              bg={useColorModeValue("whiteAlpha.500", "whiteAlpha.200")}
+              bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
             />
           </Link>
           <Link to={route.message} as={ReactRouterLink}>
             <IconButton
-              fontSize={"20px"}
+              fontSize={'20px'}
               isRound={true}
               ml={2}
               icon={<AiOutlineMessage />}
-              bg={useColorModeValue("whiteAlpha.500", "whiteAlpha.200")}
+              bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
             />
           </Link>
         </Box>
         <NavMenuPc />
       </Flex>
     </NavWrap>
-  );
-};
+  )
+}
 
-export default NavTop;
+export default NavTop

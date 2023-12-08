@@ -5,14 +5,14 @@ import {
   Image,
   Grid,
   GridItem,
-  useDisclosure,
-} from "@chakra-ui/react";
-import { AiFillHeart } from "react-icons/ai";
-import { getAllPostUser } from "@redux/api-request/posts";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { getCurrentPostInfor } from "@redux/postSlice";
-import FeedModal from "../modals/feed";
+  useDisclosure
+} from '@chakra-ui/react'
+import { AiFillHeart } from 'react-icons/ai'
+import { getAllPostUser } from '@redux/api-request/posts'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import { getCurrentPostInfor } from '@redux/postSlice'
+import FeedModal from '../modals/feed'
 
 const ProfilePostItem = ({
   userId,
@@ -26,10 +26,10 @@ const ProfilePostItem = ({
   like,
   id,
   createAt,
-  isDetail,
+  isDetail
 }) => {
-  const { isOpen, onClose, onOpen } = useDisclosure();
-  const dispatch = useDispatch();
+  const { isOpen, onClose, onOpen } = useDisclosure()
+  const dispatch = useDispatch()
   const handleShowFullPost = () => {
     dispatch(
       getCurrentPostInfor({
@@ -44,11 +44,11 @@ const ProfilePostItem = ({
         like,
         comments,
         createAt,
-        isDetail,
-      }),
-    );
-    onOpen();
-  };
+        isDetail
+      })
+    )
+    onOpen()
+  }
   return (
     <Box
       position="relative"
@@ -56,7 +56,7 @@ const ProfilePostItem = ({
       cursor="pointer"
       onClick={handleShowFullPost}
     >
-      <Box height="400px">
+      <Box height={{ base: '300px', lg: '400px' }}>
         <Image
           src={thumbnail}
           alt={id}
@@ -72,8 +72,8 @@ const ProfilePostItem = ({
         left={0}
         bottom={0}
         display="none"
-        bg={"blackAlpha.500"}
-        _groupHover={{ display: "grid" }}
+        bg={'blackAlpha.500'}
+        _groupHover={{ display: 'grid' }}
         placeItems="center"
       >
         <Box
@@ -87,21 +87,21 @@ const ProfilePostItem = ({
         <FeedModal isOpen={isOpen} onClose={onClose} />
       </Box>
     </Box>
-  );
-};
+  )
+}
 
 const ProfilePost = ({ userId }) => {
-  const dispatch = useDispatch();
-  const profilePost = useSelector((state) => state.post.getPostUser.posts);
-  const accessToken = JSON.parse(localStorage.getItem("user"))?.accessToken;
+  const dispatch = useDispatch()
+  const profilePost = useSelector(state => state.post.getPostUser.posts)
+  const accessToken = JSON.parse(localStorage.getItem('user'))?.accessToken
   useEffect(() => {
-    getAllPostUser(dispatch, userId, accessToken);
-  }, [userId, dispatch, accessToken]);
+    getAllPostUser(dispatch, userId, accessToken)
+  }, [userId, dispatch, accessToken])
   return (
     <Box pt={5}>
       <Heading
         textAlign="center"
-        fontSize={"md"}
+        fontSize={'md'}
         textUnderlineOffset={4}
         textDecoration="underline"
         textDecorationThickness={4}
@@ -111,24 +111,24 @@ const ProfilePost = ({ userId }) => {
       </Heading>
       <Grid
         templateColumns={{
-          base: "repeat(2, 1fr)",
-          sm: "repeat(2, 1fr)",
-          md: "repeat(3 , 1fr)",
-          lg: "repeat(3 , 1fr) ",
+          base: 'repeat(2, 1fr)',
+          sm: 'repeat(2, 1fr)',
+          md: 'repeat(3 , 1fr)',
+          lg: 'repeat(3 , 1fr) '
         }}
         gap={2}
         pt={4}
       >
-        {profilePost.map((data) => {
+        {profilePost.map(data => {
           return (
             <GridItem key={data.id}>
               <ProfilePostItem {...data} />
             </GridItem>
-          );
+          )
         })}
       </Grid>
     </Box>
-  );
-};
+  )
+}
 
-export default ProfilePost;
+export default ProfilePost
