@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import { Box } from '@chakra-ui/react'
 import { routesPublic, routesPrivate } from './routes'
 import RequireAuthentication from './components/require-auth'
+import PageNotFound from './pages/not-found'
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             />
           )
         })}
+        <Route path="*" element={<PageNotFound />} />
       </Routes>
     </Box>
   )

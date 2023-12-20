@@ -47,10 +47,10 @@ const MakePost = ({ postDataEditMode }) => {
       toast({
         title: 'Create Post',
         description: err,
-        status: 'error',
-        duration: 9000,
+        status: 'warning',
+        duration: 3000,
         isClosable: true,
-        position: 'top-right'
+        position: 'bottom-right'
       })
       setErr('')
     }
@@ -81,6 +81,14 @@ const MakePost = ({ postDataEditMode }) => {
     }
   }
   const handleSubmit = () => {
+    if (
+      !formData.thumbnail &&
+      formData.formData.description &&
+      !postDataEditMode
+    ) {
+      setErr('You must upload image')
+      return
+    }
     if (!formData.thumbnail && !formData.formData.description) {
       setErr('empty post')
       return
@@ -170,7 +178,7 @@ const MakePost = ({ postDataEditMode }) => {
           cursor="pointer"
           color={useColorModeValue('whiteAlpha.900', 'gray.900')}
         >
-          Upload
+          {postDataEditMode ? 'Change' : 'Upload'}
           <MdOutlineCloudUpload />
           <Input
             id="input-file"

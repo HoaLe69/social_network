@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
-import { Text, useColorModeValue } from "@chakra-ui/react";
-import styled from "@emotion/styled";
-import { AiOutlineQq } from "react-icons/ai";
+import { Link } from 'react-router-dom'
+import { Text, useColorModeValue } from '@chakra-ui/react'
+import styled from '@emotion/styled'
+import { AiOutlineQq } from 'react-icons/ai'
 
 const LogoBox = styled.span`
   font-weight: bold;
@@ -10,16 +10,19 @@ const LogoBox = styled.span`
   align-items: center;
   padding: 10px 0;
   line-height: 20px;
-`;
+`
 
 const Logo = () => {
+  const handleOnClickLogo = () => {
+    console.log(1)
+  }
   return (
-    <Link to={"/"}>
-      <LogoBox>
+    <Link to={'/'}>
+      <LogoBox onClick={handleOnClickLogo}>
         <AiOutlineQq />
         <Text
-          color={useColorModeValue("gray.800", "whiteAlpha.900")}
-          fontWeight={"bold"}
+          color={useColorModeValue('gray.800', 'whiteAlpha.900')}
+          fontWeight={'bold'}
           ml={1}
           fontFamily={`'M PLUS Rounded 1c' , san-serif`}
         >
@@ -27,6 +30,6 @@ const Logo = () => {
         </Text>
       </LogoBox>
     </Link>
-  );
-};
-export default Logo;
+  )
+}
+export default Logo

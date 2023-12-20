@@ -33,9 +33,15 @@ const Home = () => {
         onChange={index => setTabIndex(index)}
       >
         <TabList>
-          <Tab>HOT🔥</Tab>
-          <Tab>NEWS</Tab>
-          <Tab>FOLLOWING</Tab>
+          <Tab fontWeight="bold" fontFamily={`'M PLUS Rounded 1c' , san-serif`}>
+            HOT🔥
+          </Tab>
+          <Tab fontWeight="bold" fontFamily={`'M PLUS Rounded 1c' , san-serif`}>
+            NEWS
+          </Tab>
+          <Tab fontWeight="bold" fontFamily={`'M PLUS Rounded 1c' , san-serif`}>
+            FOLLOWING
+          </Tab>
         </TabList>
         <TabIndicator height="2px" bg="grassTeal" rounded="2px" mt="-1.5px" />
         <TabPanels>

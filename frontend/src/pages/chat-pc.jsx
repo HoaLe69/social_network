@@ -14,10 +14,10 @@ const ChatPc = () => {
     >
       <NavTop isFixed={true} />
       <Box display="flex" flex={1} overflow="hidden">
-        <Box borderRightWidth={1} borderColor={COLOR_THEME.BORDER}>
+        <Box borderRightWidth={1} flex={1} borderColor={COLOR_THEME.BORDER}>
           <Converstation />
         </Box>
-        <Box flex={1}>
+        <Box flex={3}>
           <RoomConversation />
         </Box>
       </Box>

@@ -1,6 +1,7 @@
 package com.example.social_be.config;
 
 import com.cloudinary.Cloudinary;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -9,9 +10,12 @@ import java.util.Map;
 
 @Configuration
 public class CloudinaryConfig {
-    private final String CLOUD_NAME = "diu2t7xwt";
-    private final String API_KEY = "238761215516355";
-    private final String SECRET_KEY = "gcrMeCevplqkXzibw5Oh5Hlls9o";
+    @Value("${social_app.cloudName}")
+    private String CLOUD_NAME;
+    @Value("${social_app.cloudApiKey}")
+    private String API_KEY;
+    @Value("${social_app.cloudSecretKey}")
+    private String SECRET_KEY;
 
     @Bean
     public Cloudinary cloudinary() {

@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -50,6 +51,7 @@ public class AuthController {
 
     @PostMapping("/login")
     @Transactional
+    @Async
     public ResponseEntity<?> login(@RequestBody AuthLoginRequest authLoginRequest, HttpServletResponse response) {
         UserCollection userCheck = userRepository.findUserCollectionByUserName(authLoginRequest.getUserName());
         if (userCheck == null)
@@ -62,8 +64,13 @@ public class AuthController {
         if (authentication.isAuthenticated()) {
             String accessToken = jwtTokenUtil.generateJwtAccessToken(authLoginRequest.getUserName());
             String refreshToken = jwtTokenUtil.generateJwtRefreshToken(authLoginRequest.getUserName());
-            Token token = new Token(authLoginRequest.getUserName(), accessToken, refreshToken);
-            tokenRepository.save(token);
+            Token token = tokenRepository.findTokenByUserName(authLoginRequest.getUserName());
+            if (token == null) {
+                Token _token = new Token(authLoginRequest.getUserName(), accessToken, refreshToken);
+                tokenRepository.save(_token);
+            } else {
+                return ResponseEntity.badRequest().body(new MessageResponse("Tài khoản của bạn đang đăng nhập ở nơi khác! , Vui lòng đăng xuất"));
+            }
             UserResponseLogin currentUserLogin = new UserResponseLogin(userCheck, accessToken);
             return ResponseEntity.ok(currentUserLogin);
         }

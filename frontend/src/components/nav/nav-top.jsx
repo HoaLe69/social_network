@@ -128,7 +128,7 @@ const NavTop = ({ isFixed }) => {
     <NavWrap isFixed={isFixed}>
       <Flex justify="space-between">
         <Logo />
-        <Box pos="relative" display={{ base: 'none' }}>
+        <Box pos="relative">
           <InputGroup
             bg={useColorModeValue('whiteAlpha.700', 'whiteAlpha.200')}
             rounded="20px"
