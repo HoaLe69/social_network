@@ -11,6 +11,8 @@ import Login from '@pages/auth/login'
 import Register from '@pages/auth/register'
 import Verification from '@pages/vefity'
 import ResetPassWordFrom from '@pages/auth/reset-password'
+import FollowingPage from '../pages/following'
+import NewsPage from '../pages/news'
 
 export const routesPrivate = [
   {
@@ -48,6 +50,14 @@ export const routesPrivate = [
   {
     path: route.chatRoom,
     component: <ChatPc />
+  },
+  {
+    path: route.following,
+    component: <FollowingPage />
+  },
+  {
+    path: route.news,
+    component: <NewsPage />
   }
 ]
 

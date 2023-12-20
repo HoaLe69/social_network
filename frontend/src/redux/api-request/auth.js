@@ -4,34 +4,35 @@ import {
   loginSuccess,
   registerStart,
   registerSuccess,
-  registerFailed,
-} from "../authSlice";
-import route from "@config/route";
-import { config } from "./configAxiosHeader";
-import axios from "axios";
+  registerFailed
+} from '../authSlice'
+import route from '@config/route'
+import { config } from './configAxiosHeader'
+import axios from 'axios'
 
-const baseUrl = process.env.REACT_APP_API_URL;
+const baseUrl = process.env.REACT_APP_API_URL
 
 export const login = async (dispatch, navigate, formData) => {
-  dispatch(loginStart());
+  dispatch(loginStart())
   try {
-    const res = await axios.post(`${baseUrl}/auth/login`, formData);
-    dispatch(loginSuccess(res));
-    localStorage.setItem("user", JSON.stringify(res));
-    navigate(route.home);
+    const res = await axios.post(`${baseUrl}/auth/login`, formData)
+    dispatch(loginSuccess(res))
+    localStorage.setItem('user', JSON.stringify(res))
+    window.dispatchEvent(new Event('storage'))
+    navigate(route.home)
   } catch (err) {
-    console.log(err);
-    dispatch(loginFailed(err.response.data.message || "Mật khẩu không đúng"));
+    console.log(err)
+    dispatch(loginFailed(err.response.data.message || 'Mật khẩu không đúng'))
   }
-};
+}
 // register account
 export const register = async (dispatch, navigate, formData) => {
-  dispatch(registerStart());
+  dispatch(registerStart())
   try {
-    await axios.post(`${baseUrl}/auth/register`, formData, config);
-    dispatch(registerSuccess());
+    await axios.post(`${baseUrl}/auth/register`, formData, config)
+    dispatch(registerSuccess())
   } catch (err) {
-    console.log(err);
-    dispatch(registerFailed(err.response.data.message));
+    console.log(err)
+    dispatch(registerFailed(err.response.data.message))
   }
-};
+}

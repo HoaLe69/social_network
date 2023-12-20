@@ -63,7 +63,7 @@ const NewCard = forwardRef(({ infor }, ref) => {
   )
 })
 
-const News = ({ index }) => {
+const News = () => {
   const { page, setHasmore, lastPostRef } = useInfinity()
   const [news, setNews] = useState([])
   useEffect(() => {
@@ -79,6 +79,7 @@ const News = ({ index }) => {
         console.log(err)
       }
     }
+    getNews()
   }, [page])
   return (
     <Box>
