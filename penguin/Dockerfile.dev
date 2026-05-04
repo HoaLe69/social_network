@@ -1,0 +1,28 @@
+FROM node:alpine
+
+# working directory
+WORKDIR /app
+
+# copy lib def file
+COPY package.json ./
+
+# copy config file
+COPY config-overrides.js ./
+
+# install dependencies
+RUN npm install
+
+
+# copy static files
+COPY public ./public
+
+# copy source to container
+COPY src ./src
+
+# copy env
+COPY .env ./
+
+EXPOSE 3000
+
+# run project
+CMD ["npm", "start"]
