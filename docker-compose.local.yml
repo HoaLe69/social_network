@@ -1,0 +1,29 @@
+services:
+  penguin-fe:
+    build: 
+      dockerfile: Dockerfile
+      context: ./penguin
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./penguin:/app
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      
+  penguin-be:
+    build: 
+      dockerfile: Dockerfile.dev
+      context: ./penguin-services
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./penguin-services:/app
+    environment:
+      - SPRING_DEVTOOLS_RESTART_POLL_INTERVAL=2000
+      - SPRING_DEVTOOLS_RESTART_QUIET_PERIOD=1000
+  
+  db:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+      

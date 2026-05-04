@@ -1,0 +1,29 @@
+services:
+  fe-prod:
+    build: 
+      dockerfile: Dockerfile
+      context: ./penguin
+      cache_from:
+        - fe-prod:latest
+    ports:
+      - "3000:3000"
+    depends_on:
+      - be-prod
+      - mongodb-prod
+      
+
+  be-prod:
+    build: 
+      dockerfile: Dockerfile
+      context: ./penguin-services
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongodb-prod
+ 
+  
+  mongodb-prod:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+      
